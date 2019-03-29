@@ -2,6 +2,8 @@
 
 namespace App\Pianissimo;
 
+use ReflectionClass;
+
 class Environment
 {
     public function __construct()
@@ -63,9 +65,11 @@ class Environment
             line-height: 1.5em;
         ';
 
+        $exceptionName = (new ReflectionClass($exception))->getShortName();
+        
         echo
             '<div style="' . $css . '">' .
-            get_class($exception) . ': ' . $exception->getMessage() . '<br />' .
+            $exceptionName . ': ' . $exception->getMessage() . '<br />' .
             '<small>in ' . $exception->getFile() . ' on line ' . $exception->getLine() . '</small>' .
             '</div>';
     }
