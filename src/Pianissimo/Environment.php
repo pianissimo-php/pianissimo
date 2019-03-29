@@ -64,8 +64,8 @@ class Environment
         ';
 
         echo
-            '<div style="' . $css . '">
-            Exception: ' . $exception->getMessage() . '<br />' .
+            '<div style="' . $css . '">' .
+            get_class($exception) . ': ' . $exception->getMessage() . '<br />' .
             '<small>in ' . $exception->getFile() . ' on line ' . $exception->getLine() . '</small>' .
             '</div>';
     }

@@ -3,7 +3,7 @@
 namespace App\Pianissimo\Component\Annotation;
 
 use App\Pianissimo\Component\Routing\Annotation\Route;
-use Exception;
+use BadFunctionCallException;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -12,7 +12,7 @@ class AnnotationReader
     public function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationName = null): array
     {
         if (class_exists($className) === false) {
-            throw new Exception(sprintf("Class '%s' not found. Did u forget an use statement?", $className));
+            throw new BadFunctionCallException(sprintf("Class '%s' not found. Did u forget an use statement?", $className));
         }
 
         $property = new ReflectionProperty($className, $propertyName);
@@ -24,7 +24,7 @@ class AnnotationReader
     public function getFunctionAnnotations(string $className, string $functionName, ?string $annotationName = null): array
     {
         if (class_exists($className) === false) {
-            throw new Exception(sprintf("Class '%s' not found. Did u forget an use statement?", $className));
+            throw new BadFunctionCallException(sprintf("Class '%s' not found. Did u forget an use statement?", $className));
         }
 
         $class = new ReflectionClass($className);
