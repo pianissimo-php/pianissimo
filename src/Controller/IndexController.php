@@ -18,19 +18,13 @@ class IndexController
     }
 
     /**
-     * @Route(path="/jon/mulder", name="app_home")
-     * @Route(path="/jon/mulder/2", name="app_home2")
+     * @Route(path="", name="app_home")
+     * @Route(path="/jon", name="app_home2")
      */
     public function index(): Response
     {
         $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
         dump($annotations);
-
-        /*
-        if (isset($_SERVER['QUERY_STRING'])) {
-            dump($_SERVER['QUERY_STRING']);
-        }
-        */
 
         return new Response();
     }

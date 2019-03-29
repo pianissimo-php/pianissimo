@@ -2,11 +2,9 @@
 
 namespace App\Pianissimo;
 
-use App\Pianissimo\Component\Annotation\AnnotationReader;
 use App\Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use App\Pianissimo\Component\HttpFoundation\Response;
 use App\Pianissimo\Component\Routing\RoutingService;
-use App\TestClass;
 
 class PianoEngine
 {
@@ -33,6 +31,12 @@ class PianoEngine
         if ($route === null) {
             throw new NotFoundHttpException('404 Not Found');
         }
+
+        /*
+        if (isset($_SERVER['QUERY_STRING'])) {
+            dump($_SERVER['QUERY_STRING']);
+        }
+        */
 
         $response = $this->routingService->handleRoute($route);
         return $response;
