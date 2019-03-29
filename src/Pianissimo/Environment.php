@@ -25,6 +25,9 @@ class Environment
         }
     }
 
+    /**
+     * Temporary solution
+     */
     public static function errorHandler($errno, $errstr, $error_file, $error_line): void
     {
         $css = '
@@ -45,6 +48,9 @@ class Environment
         die();
     }
 
+    /**
+     * Temporary solution
+     */
     public static function exceptionHandler($exception): void
     {
         $css = '
@@ -59,7 +65,7 @@ class Environment
 
         echo
             '<div style="' . $css . '">
-            Uncaught exception: ' . $exception->getMessage() . '<br />' .
+            Exception: ' . $exception->getMessage() . '<br />' .
             '<small>in ' . $exception->getFile() . ' on line ' . $exception->getLine() . '</small>' .
             '</div>';
     }

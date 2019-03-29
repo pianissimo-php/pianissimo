@@ -4,6 +4,9 @@ namespace App\Pianissimo\Component\Routing;
 
 use App\Pianissimo\Component\Annotation\AnnotationReader;
 use App\Controller\IndexController;
+use App\Pianissimo\Component\HttpFoundation\Response;
+use App\Pianissimo\Container;
+use UnexpectedValueException;
 
 class RoutingService
 {
@@ -13,27 +16,61 @@ class RoutingService
     /** @var AnnotationReader */
     private $annotationReader;
 
-    public function __construct(AnnotationReader $annotationReader)
+    /** @var Container */
+    private $container;
+
+    public function __construct(AnnotationReader $annotationReader, Container $container)
     {
         $this->registry = [];
         $this->annotationReader = $annotationReader;
+        $this->container = $container;
     }
 
+    /**
+     * Returns the registry with the initialized routes.
+     */
     private function getRegistry(): array
     {
         return $this->registry;
     }
 
+    /**
+     * Adds a new record to the route registry.
+     */
     public function register(Route $route): void
     {
         $this->registry[] = $route;
     }
 
+    /**
+     * Initializes all routes and it registers them in the registry.
+     */
     public function initializeRoutes(): void
     {
         $this->registerControllerRoutes();
     }
 
+    /**
+     * Calls the matching controller function and returns its Response object.
+     */
+    public function handleRoute(Route $route): Response
+    {
+        $class = $route->getClass();
+        $function = $route->getFunction();
+
+        $controller = $this->container->get($class);
+        $response = $controller->$function();
+
+        if (!$response instanceof Response) {
+            throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return a Response object, '%s' given.", $function, $class, gettype($response)));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Returns the Route instance whose paths match or returns null if there are no matches.
+     */
     public function matchRoute(string $path): ?Route
     {
         $routes = $this->getRegistry();
@@ -48,6 +85,9 @@ class RoutingService
         return null;
     }
 
+    /**
+     * Registers all routes (in all controllers) in the registry.
+     */
     private function registerControllerRoutes(): void
     {
         $classes = $this->findControllerClasses();
@@ -66,6 +106,10 @@ class RoutingService
         }
     }
 
+    /**
+     * Returns all Controller classes
+     * TODO logic
+     */
     private function findControllerClasses(): array
     {
         //$match = preg_match('/Controller\\\\(.*)Controller/', $class);

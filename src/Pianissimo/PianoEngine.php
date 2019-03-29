@@ -3,6 +3,8 @@
 namespace App\Pianissimo;
 
 use App\Pianissimo\Component\Annotation\AnnotationReader;
+use App\Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
+use App\Pianissimo\Component\HttpFoundation\Response;
 use App\Pianissimo\Component\Routing\RoutingService;
 use App\TestClass;
 
@@ -11,34 +13,28 @@ class PianoEngine
     /** @var RoutingService */
     private $routingService;
 
-    /** @var AnnotationReader */
-    private $annotationReader;
-
-    public function __construct(RoutingService $routingService, AnnotationReader $annotationReader)
+    public function __construct(RoutingService $routingService)
     {
         $this->routingService = $routingService;
-        $this->annotationReader = $annotationReader;
     }
 
     /**
      * Each request wil go through the PianoEngine. From this place, all services will be auto wired!
+     *
+     * @throws NotFoundHttpException
      */
-    public function start(): void
+    public function start(): Response
     {
         $this->routingService->initializeRoutes();
 
         $path = $_SERVER['PATH_INFO'] ?? '';
         $route = $this->routingService->matchRoute($path);
-        dump($route);
 
-        $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
-        dump($annotations);
-
-        die;
-        /*
-        if (isset($_SERVER['QUERY_STRING'])) {
-            dump($_SERVER['QUERY_STRING']);
+        if ($route === null) {
+            throw new NotFoundHttpException('404 Not Found');
         }
-        */
+
+        $response = $this->routingService->handleRoute($route);
+        return $response;
     }
 }

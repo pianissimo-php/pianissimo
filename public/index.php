@@ -4,10 +4,9 @@ use App\Pianissimo\Container;
 use App\Pianissimo\Environment;
 use App\Pianissimo\PianoEngine;
 
-require __DIR__ . '/vendor/autoload.php';
+require '../vendor/autoload.php';
 
 const ENV = 'dev';
-
 $environment = new Environment();
 
 function dump($var):void
@@ -25,7 +24,7 @@ function dd($var):void
 
 function getRootDirectory()
 {
-    return __DIR__;
+    return __DIR__ . '..';
 }
 
 function getProjectDirectory()
