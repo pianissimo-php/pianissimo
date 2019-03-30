@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Pianissimo\Component\Allegro\Allegro;
 use App\Pianissimo\Component\Annotation\AnnotationReader;
 use App\Pianissimo\Component\HttpFoundation\Response;
 use App\Pianissimo\Component\Routing\Annotation\Route;
@@ -12,9 +13,13 @@ class IndexController
     /** @var AnnotationReader */
     private $annotationReader;
 
-    public function __construct(AnnotationReader $annotationReader)
+    /** @var Allegro */
+    private $allegro;
+
+    public function __construct(AnnotationReader $annotationReader, Allegro $allegro)
     {
         $this->annotationReader = $annotationReader;
+        $this->allegro = $allegro;
     }
 
     /**
@@ -23,7 +28,7 @@ class IndexController
      */
     public function index(): Response
     {
-        return new Response('Ik ben Jon!');
+        return new Response($this->allegro->render('index.html.allegro'));
     }
 
     /**

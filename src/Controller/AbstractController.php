@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use App\Pianissimo\Component\Allegro\AllegroService;
+use App\Pianissimo\Component\Allegro\Allegro;
 
 class AbstractController
 {
-    /** @var AllegroService */
+    /** @var Allegro */
     private $allegroService;
 
-    public function __construct(AllegroService $allegroService)
+    public function __construct(Allegro $allegroService)
     {
         $this->allegroService = $allegroService;
     }
