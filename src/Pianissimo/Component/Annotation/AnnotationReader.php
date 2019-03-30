@@ -4,6 +4,7 @@ namespace App\Pianissimo\Component\Annotation;
 
 use App\Pianissimo\Component\Routing\Annotation\Route;
 use BadFunctionCallException;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -98,7 +99,7 @@ class AnnotationReader
             $isQuoted = (bool)preg_match('/^(["\']).*\1$/m', $dataValue);
 
             if ($isQuoted === false && is_numeric($dataValue) === false) {
-                throw new \RuntimeException('You have an syntax error in an annotation');
+                throw new InvalidArgumentException('You have an syntax error in an annotation');
             }
 
             // Remove single/double quotes at the beginning & the end of de value.
@@ -106,7 +107,7 @@ class AnnotationReader
 
             if (property_exists($object, $dataKey) === false) {
                 $availableOptions = implode(', ', array_keys(get_object_vars($object)));
-                throw new \RuntimeException(sprintf("The option '%s' is not an valid option. The available options are: %s", $dataKey, $availableOptions));
+                throw new InvalidArgumentException(sprintf("The option '%s' is not an valid option. The available options are: %s", $dataKey, $availableOptions));
             }
 
             $object->$dataKey = $dataValue;

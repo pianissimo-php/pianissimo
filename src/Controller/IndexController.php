@@ -19,13 +19,21 @@ class IndexController
 
     /**
      * @Route(path="", name="app_home")
-     * @Route(path="/jon", name="app_home2")
+     * @Route(path="/jon", name="app_jon")
      */
     public function index(): Response
     {
-        $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
-        dump($annotations);
+        return new Response('Ik ben Jon!');
+    }
 
-        return new Response();
+    /**
+     * @Route(path="/develop", name="app_develop")
+     */
+    public function develop(): Response
+    {
+        $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
+
+        $content = dump($annotations, true);
+        return new Response($content);
     }
 }

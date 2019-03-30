@@ -2,12 +2,24 @@
 
 namespace App\Pianissimo;
 
-use ReflectionClass;
+use App\Pianissimo\Component\HttpFoundation\Controller\ErrorController;
+use App\Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
+use App\Pianissimo\Component\HttpFoundation\HttpService;
+use Throwable;
 
 class Environment
 {
-    public function __construct()
+    /** @var HttpService */
+    private $httpService;
+
+    /** @var Container */
+    private $container;
+
+    public function __construct(HttpService $httpService, Container $container)
     {
+        $this->httpService = $httpService;
+        $this->container = $container;
+
         if (ENV === 'dev') {
             $this->setDebugMode(true);
         }
@@ -19,8 +31,8 @@ class Environment
     private function setDebugMode(bool $mode): void
     {
         if ($mode === true) {
-            set_error_handler([__CLASS__, 'errorHandler']);
-            set_exception_handler([__CLASS__, 'exceptionHandler']);
+            set_error_handler([$this, 'errorHandler'], E_STRICT);
+            set_exception_handler([$this, 'exceptionHandler']);
         } else {
             ini_set('display_errors', 0);
             ini_set('log_errors', 1);
@@ -28,49 +40,25 @@ class Environment
     }
 
     /**
-     * Temporary solution
+     * Calls the ErrorController and handles it's Response
+     * TODO controller parameters -> request
      */
-    public static function errorHandler($errno, $errstr, $error_file, $error_line): void
+    public function errorHandler($errorNo, $errorString, $errorFile, $errorLine): void
     {
-        $css = '
-            background-color: #e74c3c;
-            color: white;
-            font-size: 1.6em;
-            text-align: center;
-            font-family: verdana;
-            padding: 50px 0px;
-            line-height: 1.5em;
-        ';
+        $errorController = $this->container->get(ErrorController::class);
+        $response = $errorController->index($errorNo, $errorString, $errorFile, $errorLine);
 
-        echo
-            '<div style="' . $css . '">
-            Error: ' . $errstr . '<br />' .
-            '<small>in ' . $error_file . ' on line ' . $error_line . '</small>' .
-            '</div>';
-        die();
+        $this->httpService->handleResponse($response);
     }
 
     /**
-     * Temporary solution
+     * Calls the ExceptionController and handles it's Response
      */
-    public static function exceptionHandler($exception): void
+    public function exceptionHandler(Throwable $exception): void
     {
-        $css = '
-            background-color: #e74c3c;
-            color: white;
-            font-size: 1.6em;
-            text-align: center;
-            font-family: verdana;
-            padding: 50px 0px;
-            line-height: 1.5em;
-        ';
+        $exceptionController = $this->container->get(ExceptionController::class);
+        $response = $exceptionController->index($exception);
 
-        $exceptionName = (new ReflectionClass($exception))->getShortName();
-        
-        echo
-            '<div style="' . $css . '">' .
-            $exceptionName . ': ' . $exception->getMessage() . '<br />' .
-            '<small>in ' . $exception->getFile() . ' on line ' . $exception->getLine() . '</small>' .
-            '</div>';
+        $this->httpService->handleResponse($response);
     }
 }

@@ -1,19 +1,25 @@
 <?php
 
+use App\Pianissimo\Component\HttpFoundation\HttpService;
+use App\Pianissimo\Component\HttpFoundation\Request;
 use App\Pianissimo\Container;
 use App\Pianissimo\Environment;
-use App\Pianissimo\PianoEngine;
 
 require '../vendor/autoload.php';
 
 const ENV = 'dev';
-$environment = new Environment();
 
-function dump($var):void
+$container = new Container();
+$environment = $container->get(Environment::class);
+
+function dump($var, $return = false)
 {
-    echo '<pre style="border: 2px solid black; padding: 20px;">';
-    print_r($var);
-    echo '</pre>';
+    $dump = '<pre style="border: 2px solid black; padding: 20px;">' . print_r($var, true) . '</pre>';
+
+    if ($return === true) {
+        return $dump;
+    }
+    echo $dump;
 }
 
 function dd($var):void
@@ -32,7 +38,8 @@ function getProjectDirectory()
     return getRootDirectory() . '/src';
 }
 
-$container = new Container();
+$httpService = $container->get(HttpService::class);
 
-$pianoEngine = $container->get(PianoEngine::class);
-$pianoEngine->start();
+$request = new Request();
+$response = $httpService->getResponse($request);
+$httpService->handleResponse($response);

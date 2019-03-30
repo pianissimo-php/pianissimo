@@ -62,7 +62,7 @@ class RoutingService
         $response = $controller->$function();
 
         if (!$response instanceof Response) {
-            throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return a Response object, '%s' given.", $function, $class, gettype($response)));
+            throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return an instance of '%s', '%s' given.", $function, $class, Response::class, gettype($response)));
         }
 
         return $response;
