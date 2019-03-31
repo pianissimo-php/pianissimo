@@ -2,15 +2,19 @@
 
 namespace App\Pianissimo\Component\Container;
 
+use App\Pianissimo\Component\Container\Exception\ConfigurationFileException;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
+/**
+ * The Container holds the registry with initialized Services and the initialized Configuration.
+ */
 class Container
 {
     /** @var array */
-    private static $registry;
+    private $registry;
 
     /** @var array */
     private $configuration;
@@ -21,8 +25,8 @@ class Container
      */
     public function __construct()
     {
-        // Load ConfigurationService manually, handler hasn't to be available in de service container
-        $configurationService = new ConfigurationService();
+        // Load ConfigurationHandler manually, handler hasn't to be available in de service container
+        $configurationService = new ConfigurationHandler();
         $this->configuration = $configurationService->load();
     }
 
@@ -32,16 +36,16 @@ class Container
      */
     public function get(string $className)
     {
-        if (isset(self::$registry[$className]) === false) {
+        if (isset($this->registry[$className]) === false) {
             $this->set($className);
         }
 
-        return self::$registry[$className];
+        return $this->registry[$className];
     }
 
     /**
      * This function creates an new instance of the given class name and adds it to the registry.
-     * It will also auto wire the parameters of the new instance. (Dependency Injection)
+     * It will auto wire the parameters of the new instance. (Dependency Injection)
      * @throws ReflectionException
      */
     private function set(string $className): void
@@ -55,10 +59,6 @@ class Container
         $constructor = $class->getConstructor();
         $parentClass = $class->getParentClass();
 
-        if ($parentClass !== false) {
-            $parentInstance = $this->get($parentClass->getName());
-        }
-
         $parameters = [];
 
         if ($constructor !== null) {
@@ -68,19 +68,12 @@ class Container
 
         $instance = new $className(...$parameters);
 
-        self::$registry[$className] = $instance;
+        $this->registry[$className] = $instance;
     }
 
-    public function has(string $className): bool
-    {
-        return array_key_exists($className, self::$registry);
-    }
-
-    public function getSetting(string $setting)
-    {
-        return $this->configuration[$setting];
-    }
-
+    /**
+     * Auto wires the parameters of the given ReflectionMethod.
+     */
     private function autoWireMethod(ReflectionMethod $method): array
     {
         $parameters = $method->getParameters();
@@ -92,5 +85,21 @@ class Container
         }
 
         return $autoWiredParameters;
+    }
+
+    /**
+     * Checks if Service exists in the registry
+     */
+    public function has(string $className): bool
+    {
+        return array_key_exists($className, $this->registry);
+    }
+
+    /**
+     * Returns an Configuration item
+     */
+    public function getSetting(string $setting)
+    {
+        return $this->configuration[$setting];
     }
 }

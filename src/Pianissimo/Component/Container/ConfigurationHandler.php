@@ -2,10 +2,10 @@
 
 namespace App\Pianissimo\Component\Container;
 
-use App\Pianissimo\Component\Configuration\Exception\ConfigurationFileException;
+use App\Pianissimo\Component\Container\Exception\ConfigurationFileException;
 use Symfony\Component\Yaml\Yaml;
 
-class ConfigurationService
+class ConfigurationHandler
 {
     /**
      * @throws ConfigurationFileException
@@ -51,17 +51,17 @@ class ConfigurationService
     private function ensureSettings(array $settings, array $data): array
     {
         foreach ($settings as $setting => $options) {
-            // Throw an Exception if the setting is required and doesn't exist
+            // Throw an Exception if the setting is required and doesn't exist.
             if (isset($data[$setting]) === false && $options['required'] === true) {
                 throw new ConfigurationFileException(sprintf("Missing required setting '%s'", $setting));
             }
 
-            // Throw an Exception if the setting has not the right type
+            // Throw an Exception if the setting has not the right type.
             if ((isset($data[$setting]) === true) && gettype($data[$setting]) !== $options['type']) {
                 throw new ConfigurationFileException(sprintf("Setting '%s' has type '%s', must be type of '%s'", $setting, gettype($data[$setting]), $options['type']));
             }
 
-            // Set the default setting if the setting doesn't exist
+            // Set the default setting if the setting doesn't exist.
             if (isset($data[$setting]) === false) {
                 $data[$setting] = $options['default'];
             }
