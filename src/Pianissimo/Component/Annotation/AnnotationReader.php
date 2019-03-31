@@ -2,6 +2,7 @@
 
 namespace App\Pianissimo\Component\Annotation;
 
+use App\Pianissimo\Component\Annotation\Exception\AnnotationNotFoundException;
 use App\Pianissimo\Component\Container\Container;
 use App\Pianissimo\Component\Routing\Annotation\Route;
 use BadFunctionCallException;
@@ -77,10 +78,14 @@ class AnnotationReader
 
     /**
      * TODO improve logic
+     * @throws AnnotationNotFoundException
      */
     private function getAnnotationClass(string $annotationName): string
     {
         $annotations = $this->container->getSetting('annotations');
+        if (isset($annotations[$annotationName]) === false) {
+            throw new AnnotationNotFoundException(sprintf("Annotation '%s' not found. Did u forget to configure it in 'config/config.yaml?'", $annotationName));
+        }
         return $annotations[$annotationName];
     }
 
