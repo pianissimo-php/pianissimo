@@ -4,7 +4,6 @@ namespace App\Pianissimo\Component\Container;
 
 use App\Pianissimo\Component\Container\Exception\ConfigurationFileException;
 use Symfony\Component\Yaml\Yaml;
-use App\Pianissimo\Component\Routing\Annotation\Route;
 
 class ConfigurationHandler
 {

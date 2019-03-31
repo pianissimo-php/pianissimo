@@ -33,6 +33,7 @@ class Container
     /**
      * This functions gets an object out of the registry.
      * If it is not in the registry, it adds an new instance of the class to the registry.
+     * @throws ReflectionException
      */
     public function get(string $className)
     {
