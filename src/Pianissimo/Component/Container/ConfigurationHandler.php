@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pianissimo\Component\Configuration;
+namespace App\Pianissimo\Component\Container;
 
 use App\Pianissimo\Component\Configuration\Exception\ConfigurationFileException;
 use Symfony\Component\Yaml\Yaml;
@@ -10,12 +10,12 @@ class ConfigurationService
     /**
      * @throws ConfigurationFileException
      */
-    public function load(): Configuration
+    public function load(): array
     {
         $data = Yaml::parseFile(getRootDirectory() . '../../config/config.yaml');
 
         $data = $this->ensureSettings($this->getCriteria(), $data);
-        return new Configuration($data);
+        return $data;
     }
 
     /**

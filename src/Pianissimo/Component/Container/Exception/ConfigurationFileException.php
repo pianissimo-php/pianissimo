@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pianissimo\Component\Configuration\Exception;
+namespace App\Pianissimo\Component\Container\Exception;
 
 use Exception;
 

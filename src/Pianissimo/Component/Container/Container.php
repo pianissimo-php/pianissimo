@@ -2,9 +2,6 @@
 
 namespace App\Pianissimo\Component\Container;
 
-use App\Pianissimo\Component\Configuration\Configuration;
-use App\Pianissimo\Component\Configuration\ConfigurationService;
-use App\Pianissimo\Component\Configuration\Exception\ConfigurationFileException;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -15,7 +12,7 @@ class Container
     /** @var array */
     private static $registry;
 
-    /** @var Configuration */
+    /** @var array */
     private $configuration;
 
     /**
@@ -81,7 +78,7 @@ class Container
 
     public function getSetting(string $setting)
     {
-        return $this->configuration->get($setting);
+        return $this->configuration[$setting];
     }
 
     private function autoWireMethod(ReflectionMethod $method): array
