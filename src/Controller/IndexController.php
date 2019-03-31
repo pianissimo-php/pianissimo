@@ -28,17 +28,17 @@ class IndexController
      */
     public function index(): Response
     {
-        return new Response($this->allegro->render('index.html.allegro'));
-    }
-
-    /**
-     * @Route(path="/develop", name="app_develop")
-     */
-    public function develop(): Response
-    {
         $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
 
         $content = dump($annotations, true);
         return new Response($content);
+    }
+
+    /**
+     * @Route(path="/allegro", name="app_develop")
+     */
+    public function develop(): Response
+    {
+        return new Response($this->allegro->render('index.html.allegro'));
     }
 }

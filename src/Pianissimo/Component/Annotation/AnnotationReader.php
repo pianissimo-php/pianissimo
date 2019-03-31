@@ -2,6 +2,7 @@
 
 namespace App\Pianissimo\Component\Annotation;
 
+use App\Pianissimo\Component\Container\Container;
 use App\Pianissimo\Component\Routing\Annotation\Route;
 use BadFunctionCallException;
 use InvalidArgumentException;
@@ -10,6 +11,14 @@ use ReflectionProperty;
 
 class AnnotationReader
 {
+    /** @var Container */
+    private $container;
+
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
     public function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationName = null): array
     {
         if (class_exists($className) === false) {
@@ -66,21 +75,13 @@ class AnnotationReader
         return $data;
     }
 
+    /**
+     * TODO improve logic
+     */
     private function getAnnotationClass(string $annotationName): string
     {
-        // Some logic to determine the right class that matches with the annotation
-
-        /*
-        if (class_exists($annotationName) === false) {
-            throw new Exception(sprintf("Annotation '%s' not found. Did u forget an use statement?", $annotationName));
-        }
-        */
-
-        if ($annotationName === 'Route') {
-            return Route::class;
-        }
-
-        return "App\\Annotation\\" . $annotationName;
+        $annotations = $this->container->getSetting('annotations');
+        return $annotations[$annotationName];
     }
 
     private function parseAnnotationContent(string $annotationContent, $object): void
@@ -89,8 +90,6 @@ class AnnotationReader
 
         $dataKeys = $result[1];
         $dataValues = $result[2];
-
-        $data = [];
 
         foreach ($dataKeys as $index => $dataKey) {
             $dataKey = trim($dataKey);

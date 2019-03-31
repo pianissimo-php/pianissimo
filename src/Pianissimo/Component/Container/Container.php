@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Pianissimo;
+namespace App\Pianissimo\Component\Container;
 
+use App\Pianissimo\Component\Configuration\Configuration;
+use App\Pianissimo\Component\Configuration\ConfigurationService;
+use App\Pianissimo\Component\Configuration\Exception\ConfigurationFileException;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -11,6 +14,20 @@ class Container
 {
     /** @var array */
     private static $registry;
+
+    /** @var Configuration */
+    private $configuration;
+
+    /**
+     * Initialize the Container
+     * @throws ConfigurationFileException
+     */
+    public function __construct()
+    {
+        // Load ConfigurationService manually, handler hasn't to be available in de service container
+        $configurationService = new ConfigurationService();
+        $this->configuration = $configurationService->load();
+    }
 
     /**
      * This functions gets an object out of the registry.
@@ -57,6 +74,16 @@ class Container
         self::$registry[$className] = $instance;
     }
 
+    public function has(string $className): bool
+    {
+        return array_key_exists($className, self::$registry);
+    }
+
+    public function getSetting(string $setting)
+    {
+        return $this->configuration->get($setting);
+    }
+
     private function autoWireMethod(ReflectionMethod $method): array
     {
         $parameters = $method->getParameters();
@@ -68,10 +95,5 @@ class Container
         }
 
         return $autoWiredParameters;
-    }
-
-    public function has(string $className): bool
-    {
-        return array_key_exists($className, self::$registry);
     }
 }

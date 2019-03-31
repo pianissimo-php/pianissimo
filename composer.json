@@ -5,6 +5,7 @@
     }
   },
   "require": {
-    "monolog/monolog": "^1.24"
+    "monolog/monolog": "^1.24",
+    "symfony/yaml": "^4.2"
   }
 }

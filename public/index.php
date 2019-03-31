@@ -1,13 +1,11 @@
 <?php
 
+use App\Pianissimo\Component\Container\Container;
 use App\Pianissimo\Component\HttpFoundation\HttpService;
 use App\Pianissimo\Component\HttpFoundation\Request;
-use App\Pianissimo\Container;
 use App\Pianissimo\Environment;
 
 require '../vendor/autoload.php';
-
-const ENV = 'dev';
 
 $container = new Container();
 $environment = $container->get(Environment::class);
@@ -39,7 +37,6 @@ function getProjectDirectory()
 }
 
 $httpService = $container->get(HttpService::class);
-
 $request = new Request();
 $response = $httpService->getResponse($request);
 $httpService->handleResponse($response);

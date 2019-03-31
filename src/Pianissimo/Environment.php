@@ -2,6 +2,7 @@
 
 namespace App\Pianissimo;
 
+use App\Pianissimo\Component\Container\Container;
 use App\Pianissimo\Component\HttpFoundation\Controller\ErrorController;
 use App\Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
 use App\Pianissimo\Component\HttpFoundation\HttpService;
@@ -19,11 +20,12 @@ class Environment
     {
         $this->httpService = $httpService;
         $this->container = $container;
+        $environment = $this->container->getSetting('environment');
 
-        if (ENV === 'dev') {
+        if ($environment === 'dev') {
             $this->setDebugMode(true);
         }
-        if (ENV === 'prod') {
+        if ($environment === 'prod') {
             $this->setDebugMode(false);
         }
     }

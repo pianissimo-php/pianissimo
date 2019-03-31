@@ -4,8 +4,8 @@ namespace App\Pianissimo\Component\Routing;
 
 use App\Pianissimo\Component\Annotation\AnnotationReader;
 use App\Controller\IndexController;
+use App\Pianissimo\Component\Container\Container;
 use App\Pianissimo\Component\HttpFoundation\Response;
-use App\Pianissimo\Container;
 use UnexpectedValueException;
 
 class RoutingService
@@ -108,15 +108,10 @@ class RoutingService
 
     /**
      * Returns all Controller classes
-     * TODO logic
+     * TODO improve logic
      */
     private function findControllerClasses(): array
     {
-        //$match = preg_match('/Controller\\\\(.*)Controller/', $class);
-        //return $match === 1;
-
-        return [
-            IndexController::class,
-        ];
+        return $this->container->getSetting('controllers');
     }
 }

@@ -31,12 +31,6 @@ class HttpService
             throw new NotFoundHttpException('404 Not Found');
         }
 
-        /*
-        if (isset($_SERVER['QUERY_STRING'])) {
-            dump($_SERVER['QUERY_STRING']);
-        }
-        */
-
         return $this->routingService->handleRoute($route);
     }
 

@@ -1,0 +1,7 @@
+environment: dev
+controllers:
+  - App\Controller\IndexController
+  - App\Controller\TestController
+annotations:
+  Route: App\Pianissimo\Component\Routing\Annotation\Route
+  Person: App\Annotation\Person
