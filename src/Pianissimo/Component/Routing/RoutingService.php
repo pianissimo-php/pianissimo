@@ -3,16 +3,13 @@
 namespace App\Pianissimo\Component\Routing;
 
 use App\Pianissimo\Component\Annotation\AnnotationReader;
-use App\Controller\IndexController;
 use App\Pianissimo\Component\Container\Container;
+use App\Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use App\Pianissimo\Component\HttpFoundation\Response;
 use UnexpectedValueException;
 
 class RoutingService
 {
-    /** @var array */
-    private $registry;
-
     /** @var AnnotationReader */
     private $annotationReader;
 
@@ -21,7 +18,6 @@ class RoutingService
 
     public function __construct(AnnotationReader $annotationReader, Container $container)
     {
-        $this->registry = [];
         $this->annotationReader = $annotationReader;
         $this->container = $container;
     }
@@ -31,15 +27,7 @@ class RoutingService
      */
     private function getRegistry(): array
     {
-        return $this->registry;
-    }
-
-    /**
-     * Adds a new record to the route registry.
-     */
-    public function register(Route $route): void
-    {
-        $this->registry[] = $route;
+        return $this->container->routeRegistry->all();
     }
 
     /**
@@ -47,7 +35,8 @@ class RoutingService
      */
     public function initializeRoutes(): void
     {
-        $this->registerControllerRoutes();
+        $routes = $this->findControllerRoutes();
+        $this->container->routeRegistry->initialize($routes);
     }
 
     /**
@@ -59,7 +48,10 @@ class RoutingService
         $function = $route->getFunction();
 
         $controller = $this->container->get($class);
+
+        /** @var Response $response */
         $response = $controller->$function();
+        $response->setRoute($route);
 
         if (!$response instanceof Response) {
             throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return an instance of '%s', '%s' given.", $function, $class, Response::class, gettype($response)));
@@ -86,10 +78,44 @@ class RoutingService
     }
 
     /**
-     * Registers all routes (in all controllers) in the registry.
+     * Returns the Route instance whose names match or returns null if there are no matches.
      */
-    private function registerControllerRoutes(): void
+    public function findRoute(string $routeName): ?Route
     {
+        $routes = $this->getRegistry();
+
+        /** @var Route $route */
+        foreach ($routes as $route) {
+            dump($route->getName() . '-' . $routeName);
+            if ($route->getName() === $routeName) {
+                return $route;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the Route instance whose names match or throws an exception if there are no matches.
+     * @throws NotFoundHttpException
+     */
+    public function getRoute(string $routeName): Route
+    {
+        $route = $this->findRoute($routeName);
+
+        if ($route === null) {
+            throw new NotFoundHttpException(sprintf("Route with name '%s' not found", $routeName));
+        }
+
+        return $route;
+    }
+
+    /**
+     * Returns all routes in the controllers.
+     */
+    private function findControllerRoutes(): array
+    {
+        $routes = [];
         $classes = $this->findControllerClasses();
 
         foreach ($classes as $class) {
@@ -100,10 +126,12 @@ class RoutingService
 
                 foreach ($annotations as $annotation) {
                     $route = new Route($class, $function, $annotation->path, $annotation->name);
-                    $this->register($route);
+                    $routes[] = $route;
                 }
             }
         }
+
+        return $routes;
     }
 
     /**

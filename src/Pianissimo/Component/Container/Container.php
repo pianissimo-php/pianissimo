@@ -5,19 +5,21 @@ namespace App\Pianissimo\Component\Container;
 use App\Pianissimo\Component\Container\Exception\ConfigurationFileException;
 use InvalidArgumentException;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
  * The Container holds the registry with initialized Services and the initialized Configuration.
  */
-class Container
+class Container implements RegistryInterface
 {
     /** @var array */
     private $registry;
 
-    /** @var array */
-    private $configuration;
+    /** @var RouteRegistry */
+    public $routeRegistry;
+
+    /** @var ConfigurationRegistry */
+    private $configurationRegistry;
 
     /**
      * Initialize the Container
@@ -25,15 +27,22 @@ class Container
      */
     public function __construct()
     {
+        // Initialize registries.
+        $this->registry = [];
+        $this->routeRegistry = new RouteRegistry();
+        $this->configurationRegistry = new ConfigurationRegistry();
+
+        // Inject this instance of the container in the registry
+        $this->registry[__CLASS__] = $this;
+
         // Load ConfigurationHandler manually, handler hasn't to be available in de service container
         $configurationService = new ConfigurationHandler();
-        $this->configuration = $configurationService->load();
+        $this->configurationRegistry->initialize($configurationService->load());
     }
 
     /**
      * This functions gets an object out of the registry.
      * If it is not in the registry, it adds an new instance of the class to the registry.
-     * @throws ReflectionException
      */
     public function get(string $className)
     {
@@ -47,7 +56,6 @@ class Container
     /**
      * This function creates an new instance of the given class name and adds it to the registry.
      * It will auto wire the parameters of the new instance. (Dependency Injection)
-     * @throws ReflectionException
      */
     private function set(string $className): void
     {
@@ -73,6 +81,14 @@ class Container
     }
 
     /**
+     * Checks if Service exists in the registry
+     */
+    public function has(string $name): bool
+    {
+        return array_key_exists($name, $this->registry);
+    }
+
+    /**
      * Auto wires the parameters of the given ReflectionMethod.
      */
     private function autoWireMethod(ReflectionMethod $method): array
@@ -89,18 +105,10 @@ class Container
     }
 
     /**
-     * Checks if Service exists in the registry
-     */
-    public function has(string $className): bool
-    {
-        return array_key_exists($className, $this->registry);
-    }
-
-    /**
      * Returns an Configuration item
      */
     public function getSetting(string $setting)
     {
-        return $this->configuration[$setting];
+        return $this->configurationRegistry->get($setting);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Pianissimo\Component\Annotation;
 
 use App\Pianissimo\Component\Annotation\Exception\AnnotationNotFoundException;
 use App\Pianissimo\Component\Container\Container;
-use App\Pianissimo\Component\Routing\Annotation\Route;
 use BadFunctionCallException;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -56,16 +55,16 @@ class AnnotationReader
         $data = [];
 
         foreach ($annotationNames as $index => $annotationName) {
-            // Check whether the annotation name is given, if so, continue if the names don't match.
-            if ($matchAnnotation !== null && $annotationName !== $matchAnnotation) {
-                continue;
-            }
-
             $annotationContent = $annotationContents[$index];
 
             // Determine annotation class and make a new instance.
             $annotationClass = $this->getAnnotationClass($annotationName);
             $annotationObject = new $annotationClass();
+
+            // Check whether the annotation name is given, if so, continue if the names don't match.
+            if ($matchAnnotation !== null && $annotationName !== $matchAnnotation) {
+                continue;
+            }
 
             // Parse the annotation content and bind it on the annotation object.
             $this->parseAnnotationContent($annotationContent, $annotationObject);

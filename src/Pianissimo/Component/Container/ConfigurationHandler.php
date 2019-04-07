@@ -28,6 +28,11 @@ class ConfigurationHandler
                 'required' => true,
                 'type' => 'string',
             ],
+            'piano-tuner' => [
+                'required' => false,
+                'type' => 'boolean',
+                'default' => true,
+            ],
             'controllers' => [
                 'required' => false,
                 'type' => 'array',

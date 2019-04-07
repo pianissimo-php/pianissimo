@@ -2,31 +2,50 @@
 
 namespace App\Controller;
 
-use App\Pianissimo\Component\Allegro\Allegro;
+use App\Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
 use App\Pianissimo\Component\Annotation\AnnotationReader;
+use App\Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use App\Pianissimo\Component\HttpFoundation\Response;
 use App\Pianissimo\Component\Routing\Annotation\Route;
+use App\Pianissimo\Component\Routing\ControllerService;
 use App\TestClass;
 
 class IndexController
 {
+    /** @var ControllerService */
+    private $controllerService;
+
     /** @var AnnotationReader */
     private $annotationReader;
 
-    /** @var Allegro */
-    private $allegro;
-
-    public function __construct(AnnotationReader $annotationReader, Allegro $allegro)
+    public function __construct(ControllerService $controllerService, AnnotationReader $annotationReader)
     {
+        $this->controllerService = $controllerService;
         $this->annotationReader = $annotationReader;
-        $this->allegro = $allegro;
     }
 
     /**
      * @Route(path="", name="app_home")
-     * @Route(path="/jon", name="app_jon")
      */
     public function index(): Response
+    {
+        $content = 'Pianissimo framework';
+        return new Response($content);
+    }
+
+    /**
+     * @Route(path="/redirect", name="app_redirect")
+     * @throws NotFoundHttpException
+     */
+    public function redirect(): Response
+    {
+        return $this->controllerService->redirectToRoute('app_annotation');
+    }
+
+    /**
+     * @Route(path="/annotation", name="app_annotation")
+     */
+    public function annotation(): Response
     {
         $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
 
@@ -35,10 +54,11 @@ class IndexController
     }
 
     /**
-     * @Route(path="/allegro", name="app_develop")
+     * @Route(path="/allegro", name="app_allegro")
+     * @throws TemplateNotFoundException
      */
-    public function develop(): Response
+    public function allegro(): Response
     {
-        return new Response($this->allegro->render('index.html.allegro'));
+        return $this->controllerService->render('index.html.allegro');
     }
 }

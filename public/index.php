@@ -37,6 +37,7 @@ function getProjectDirectory()
 }
 
 $httpService = $container->get(HttpService::class);
+
 $request = new Request();
 $response = $httpService->getResponse($request);
 $httpService->handleResponse($response);
