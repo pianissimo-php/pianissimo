@@ -1,8 +1,9 @@
 <p align="center">
     <a href="https://jonmulder.nl" target="_blank">
-        <img src="https://jonmulder.nl/pianissimo-logo1.1.svg" style="max-width: 400px;">
+        <img src="https://jonmulder.nl/pianissimo-logo1.1.svg" width="400px">
     </a>
 </p>
+
 The Pianissimo PHP framework
 
 
