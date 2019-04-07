@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
-use App\Pianissimo\Component\Annotation\AnnotationReader;
-use App\Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use App\Pianissimo\Component\HttpFoundation\Response;
-use App\Pianissimo\Component\Routing\Annotation\Route;
-use App\Pianissimo\Component\Routing\ControllerService;
+use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
+use Pianissimo\Component\Annotation\AnnotationReader;
+use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
+use Pianissimo\Component\HttpFoundation\Response;
+use Pianissimo\Component\Routing\Annotation\Route;
+use Pianissimo\Component\Routing\ControllerService;
 use App\TestClass;
 
 class IndexController

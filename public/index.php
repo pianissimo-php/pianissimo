@@ -1,9 +1,9 @@
 <?php
 
-use App\Pianissimo\Component\Container\Container;
-use App\Pianissimo\Component\HttpFoundation\HttpService;
-use App\Pianissimo\Component\HttpFoundation\Request;
-use App\Pianissimo\Environment;
+use Pianissimo\Component\Container\Container;
+use Pianissimo\Component\HttpFoundation\HttpService;
+use Pianissimo\Component\HttpFoundation\Request;
+use Pianissimo\Environment;
 
 require '../vendor/autoload.php';
 

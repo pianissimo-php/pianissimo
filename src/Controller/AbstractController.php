@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Pianissimo\Component\Allegro\Allegro;
+use Pianissimo\Component\Allegro\Allegro;
 
 class AbstractController
 {
