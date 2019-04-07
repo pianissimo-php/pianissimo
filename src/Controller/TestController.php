@@ -4,5 +4,4 @@ namespace App\Controller;
 
 class TestController
 {
-
 }

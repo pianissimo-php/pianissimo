@@ -8,5 +8,7 @@
   "require": {
     "monolog/monolog": "^1.24",
     "symfony/yaml": "^4.2"
+  },
+  "require-dev": {
   }
 }

@@ -30,6 +30,7 @@ class IndexController
     public function index(): Response
     {
         $content = 'Pianissimo framework';
+
         return new Response($content);
     }
 
@@ -50,6 +51,7 @@ class IndexController
         $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
 
         $content = dump($annotations, true);
+
         return new Response($content);
     }
 
