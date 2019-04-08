@@ -52,7 +52,7 @@ class IndexController
         $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
         $content = dump($annotations, true);
 
-        return $this->controllerService->render('annotation.html.allegro', [
+        return $this->controllerService->render('dump.html.allegro', [
             'dump' => $content,
         ]);
     }
