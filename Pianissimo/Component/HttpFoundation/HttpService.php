@@ -60,7 +60,7 @@ class HttpService
         ob_clean();
 
         echo $response->getContent();
-        echo  $pianoTuner ? $this->pianoTuner($response) : '';
+        echo $pianoTuner === true && $response->isRendered() === true ? $this->pianoTuner($response) : '';
         exit;
     }
 

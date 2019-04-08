@@ -2,24 +2,24 @@
 
 namespace Pianissimo\Component\HttpFoundation\Controller;
 
+use Pianissimo\Component\Allegro\Allegro;
+use Pianissimo\Component\Finder\Path;
 use Pianissimo\Component\HttpFoundation\Response;
 use ReflectionClass;
 use Throwable;
 
 class ExceptionController
 {
+    /** @var Allegro */
+    private $allegro;
+
+    public function __construct(Allegro $allegro)
+    {
+        $this->allegro = $allegro;
+    }
+
     public function index(Throwable $exception): Response
     {
-        $css = '
-            background-color: #eb4d4b;
-            color: white;
-            font-size: 1.6em;
-            text-align: center;
-            font-family: verdana;
-            padding: 50px 0px;
-            line-height: 1.5em;
-        ';
-
         $exceptionName = (new ReflectionClass($exception))->getShortName();
 
         /*
@@ -29,19 +29,18 @@ class ExceptionController
         }
         */
 
-        $content = '
-            <html>
-            <head>
-                <title>Pianissimo</title>
-            </head>
-            <body style="margin: 0;">
-                <div style="' . $css . '">' . $exceptionName . ': ' . $exception->getMessage() . '<br />
-                <small>in ' . $exception->getFile() . ' on line ' . $exception->getLine() . '</small>
-                </div>
-            </body>
-            </html>
-        ';
+        $template = Path::Start(__DIR__)->back()->dir('templates')->file('exception.html.allegro')->path();
 
-        return new Response($content, $exception->getCode());
+        $content = $this->allegro->render($template, [
+            'exceptionName' => $exceptionName,
+            'exceptionMessage' => $exception->getMessage(),
+            'exceptionFile' => $exception->getFile(),
+            'exceptionLine' => $exception->getLine(),
+        ]);
+
+        $response = new Response($content, $exception->getCode());
+        $response->setRendered(true);
+
+        return $response;
     }
 }

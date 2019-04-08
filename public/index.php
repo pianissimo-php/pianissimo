@@ -26,16 +26,6 @@ function dd($var):void
     die;
 }
 
-function getRootDirectory()
-{
-    return __DIR__ . '..';
-}
-
-function getProjectDirectory()
-{
-    return getRootDirectory() . '/src';
-}
-
 $httpService = $container->get(HttpService::class);
 
 $request = new Request();

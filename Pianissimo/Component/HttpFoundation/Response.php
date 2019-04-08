@@ -21,12 +21,16 @@ class Response
     /** @var Route|null */
     private $route;
 
+    /** @var bool */
+    private $isHtml;
+
     public function __construct(string $content, int $statusCode = 200)
     {
         $this->content = $content;
         $this->controllerClass = debug_backtrace()[1]['class'];
         $this->controllerFunction = debug_backtrace()[1]['function'];
         $this->statusCode = $statusCode;
+        $this->isRendered = false;
     }
 
     public function getContent(): string
@@ -54,9 +58,19 @@ class Response
         return $this->controllerFunction;
     }
 
+    public function isRendered(): bool
+    {
+        return $this->isRendered;
+    }
+
     public function setRoute(Route $route): self
     {
         $this->route = $route;
         return $this;
+    }
+
+    public function setRendered(bool $isRendered): void
+    {
+        $this->isRendered = $isRendered;
     }
 }
