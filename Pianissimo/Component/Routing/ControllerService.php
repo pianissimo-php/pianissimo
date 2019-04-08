@@ -34,8 +34,11 @@ class ControllerService
     /**
      * @throws TemplateNotFoundException
      */
-    public function render(string $template): Response
+    public function render(string $template, array $data = []): Response
     {
-        return new Response($this->allegro->render($template));
+        $response = new Response($this->allegro->render($template, $data));
+        $response->setRendered(true);
+
+        return $response;
     }
 }

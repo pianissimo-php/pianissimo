@@ -10,9 +10,9 @@ class ConfigurationHandler
     /**
      * @throws ConfigurationFileException
      */
-    public function load(): array
+    public function load(string $file): array
     {
-        $data = Yaml::parseFile(getRootDirectory() . '../../config/config.yaml');
+        $data = Yaml::parseFile($file);
 
         $data = $this->ensureSettings($this->getCriteria(), $data);
         return $data;

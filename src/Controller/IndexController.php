@@ -5,6 +5,7 @@ namespace App\Controller;
 use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
 use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
+use Pianissimo\Component\HttpFoundation\JsonResponse;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\Annotation\Route;
 use Pianissimo\Component\Routing\ControllerService;
@@ -29,9 +30,9 @@ class IndexController
      */
     public function index(): Response
     {
-        $content = 'Pianissimo framework';
-
-        return new Response($content);
+        return $this->controllerService->render('index.html.allegro', [
+            'title' => 'Pianissimo framework',
+        ]);
     }
 
     /**
@@ -49,10 +50,11 @@ class IndexController
     public function annotation(): Response
     {
         $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
-
         $content = dump($annotations, true);
 
-        return new Response($content);
+        return $this->controllerService->render('annotation.html.allegro', [
+            'dump' => $content,
+        ]);
     }
 
     /**
@@ -61,6 +63,22 @@ class IndexController
      */
     public function allegro(): Response
     {
-        return $this->controllerService->render('index.html.allegro');
+        return $this->controllerService->render('index.html.allegro', [
+            'title' => 'This is rendered by the Allegro templating engine!',
+        ]);
+    }
+
+    /**
+     * @Route(path="/json", name="app_annotation")
+     */
+    public function json(): Response
+    {
+        return new JsonResponse([
+            'This is' => 'a json response',
+            'Pianissimo' => [
+                'PHP',
+                'Framework',
+            ],
+        ]);
     }
 }
