@@ -86,7 +86,6 @@ class RoutingService
 
         /** @var Route $route */
         foreach ($routes as $route) {
-            dump($route->getName() . '-' . $routeName);
             if ($route->getName() === $routeName) {
                 return $route;
             }

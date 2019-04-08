@@ -32,6 +32,7 @@ class IndexController
     {
         return $this->controllerService->render('index.html.allegro', [
             'title' => 'Pianissimo framework',
+            'lead' => 'Welcome by the Pianissimo PHP framework!',
         ]);
     }
 
@@ -63,8 +64,9 @@ class IndexController
      */
     public function allegro(): Response
     {
-        return $this->controllerService->render('index.html.allegro', [
-            'title' => 'This is rendered by the Allegro templating engine!',
+        return $this->controllerService->render('allegro.html.allegro', [
+            'title' => 'Allegro template engine',
+            'lead' => 'This is rendered by the Allegro template engine!',
         ]);
     }
 
