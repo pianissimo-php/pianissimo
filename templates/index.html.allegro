@@ -7,7 +7,7 @@
     <meta name="author" content="@jonmldr">
     <meta name="generator" content="Pianissimo Framework">
 
-    <title>{{ title }}</title>
+    <title>Pianissimo framework</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -29,7 +29,7 @@
         <div class="container">
             <img src="https://jonmulder.nl/pianissimo-logo1.1.svg" width="400px" class="mt-5 mb-4" />
 
-            <p class="lead">{{ lead }}</p>
+            <p class="lead">Welcome by the Pianissimo PHP framework!</p>
             <p>Maybe you want to take a look at</p>
             <ul>
                 <li><a href="/allegro">Allegro template rendering engine</a></li>

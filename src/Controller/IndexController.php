@@ -30,10 +30,7 @@ class IndexController
      */
     public function index(): Response
     {
-        return $this->controllerService->render('index.html.allegro', [
-            'title' => 'Pianissimo framework',
-            'lead' => 'Welcome by the Pianissimo PHP framework!',
-        ]);
+        return $this->controllerService->render('index.html.allegro');
     }
 
     /**
