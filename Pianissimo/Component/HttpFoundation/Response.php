@@ -22,7 +22,7 @@ class Response
     private $route;
 
     /** @var bool */
-    private $isHtml;
+    private $isRendered;
 
     public function __construct(string $content, int $statusCode = 200)
     {
