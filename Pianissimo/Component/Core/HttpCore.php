@@ -1,24 +1,54 @@
 <?php
 
-namespace Pianissimo\Component\HttpFoundation;
+namespace Pianissimo\Component\Core;
 
 use Pianissimo\Component\Container\Container;
+use Pianissimo\Component\HttpFoundation\Controller\ErrorController;
+use Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
+use Pianissimo\Component\HttpFoundation\RedirectResponse;
+use Pianissimo\Component\HttpFoundation\Request;
+use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\RoutingService;
+use Pianissimo\Environment;
 use ReflectionClass;
+use Throwable;
 
-class HttpService
+/**
+ * This class is the Core class for the Http environment, with dependencies of the HttpFoundation Component.
+ *
+ * Configure the services that has to be used at the auto wiring for the given interfaces in config/services.yaml
+ */
+class HttpCore implements HttpCoreInterface
 {
-    /** @var RoutingService */
-    private $routingService;
-
     /** @var Container */
     private $container;
 
-    public function __construct(RoutingService $routingService, Container $container)
+    /** @var RoutingService */
+    private $routingService;
+
+    /** @var float */
+    private $startTime;
+
+    public function __construct()
     {
-        $this->routingService = $routingService;
-        $this->container = $container;
+        // Initialize the container
+        $this->container = new Container();
+
+        $this->routingService = $this->container->get(RoutingService::class);
+
+        // Start timer
+        $this->startTime = microtime(true);
+
+        // TODO Error & Exception handling
+        $environment = $this->container->getSetting('environment');
+
+        if ($environment === 'dev') {
+            $this->setDebugMode(true);
+        }
+        if ($environment === 'prod') {
+            $this->setDebugMode(false);
+        }
     }
 
     /**
@@ -26,7 +56,7 @@ class HttpService
      *
      * @throws NotFoundHttpException
      */
-    public function getResponse(Request $request): Response
+    public function handleRequest(Request $request): Response
     {
         $this->routingService->initializeRoutes();
 
@@ -51,7 +81,7 @@ class HttpService
             exit;
         }
 
-        $pianoTuner = $this->container->getSetting('piano-tuner');
+        $pianoTuner = $this->container->getSetting('piano_tuner');
 
         http_response_code($response->getStatusCode());
         header('Content-Type: text/html');
@@ -64,6 +94,24 @@ class HttpService
         exit;
     }
 
+    public function getContainer(): Container
+    {
+        return $this->container;
+    }
+
+    public function getEnvironment(): Environment
+    {
+        return $this->container->get(Environment::class);
+    }
+
+    public function getStartTime(): float
+    {
+        return $this->startTime;
+    }
+
+    /**
+     * All code below this line is temporary
+     */
     private function pianoTuner(Response $response): string
     {
         $controllerInfo = (new ReflectionClass($response->getControllerClass()))->getShortName() . '::' . $response->getControllerFunction();
@@ -78,12 +126,15 @@ class HttpService
             $codeColor = '#eb4d4b';
         }
 
+        $executionTime = round(((microtime(true) - $this->getStartTime()) * 1000), 0);
+
         return '
             <div id="' . $hashToolbar . '" style="font-family: Verdana; font-size: 14px; background: black; position: fixed; 
-                bottom: 0; left: 0; right: 0; height: 40px; color: white;">
+                bottom: 0; left: 0; right: 0; height: 40px; color: white; padding-right: 40px;">
                 <div style="background: ' . $codeColor . '; float: left; height: 100%; padding: 10px;">' . $response->getStatusCode() . '</div>
-                <div style="background: #1e272e; float: left; height: 100%; padding: 10px;">PianoTuner @' . $originInfo . ' </div>
-                <div style="background: #535c68; float: left; height: 100%; padding: 10px;">' . $_SERVER['REQUEST_METHOD'] . ' </div>
+                <div style="background: #1e272e; float: left; height: 100%; padding: 10px;">PianoTuner @' . $originInfo . '</div>
+                <div style="background: #22a6b3; float: left; height: 100%; padding: 10px;">' . $executionTime . ' ms</div>
+                <div style="background: #535c68; float: right; height: 100%; padding: 10px;">' . $_SERVER['REQUEST_METHOD'] . '</div>
             </div>
             <div style="background: #22a6b3; font-family: Verdana; width: 40px; height: 40px; vertical-align: middle;
                 font-size: 20px; position: fixed; bottom: 0; right: 0; line-height: 35px; padding: 0px; cursor: pointer;
@@ -111,5 +162,38 @@ class HttpService
                 }
             </script>
         ';
+    }
+
+    private function setDebugMode(bool $mode): void
+    {
+        if ($mode === true) {
+            set_error_handler([$this, 'errorHandler'], E_STRICT);
+            set_exception_handler([$this, 'exceptionHandler']);
+        } else {
+            ini_set('display_errors', 0);
+            ini_set('log_errors', 1);
+        }
+    }
+
+    /**
+     * Calls the ErrorController and handles it's Response
+     */
+    public function errorHandler($errorNo, $errorString, $errorFile, $errorLine): void
+    {
+        $errorController = $this->container->get(ErrorController::class);
+        $response = $errorController->index($errorNo, $errorString, $errorFile, $errorLine);
+
+        $this->handleResponse($response);
+    }
+
+    /**
+     * Calls the ExceptionController and handles it's Response
+     */
+    public function exceptionHandler(Throwable $exception): void
+    {
+        $exceptionController = $this->container->get(ExceptionController::class);
+        $response = $exceptionController->index($exception);
+
+        $this->handleResponse($response);
     }
 }

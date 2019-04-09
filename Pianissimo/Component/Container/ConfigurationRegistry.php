@@ -2,7 +2,7 @@
 
 namespace Pianissimo\Component\Container;
 
-use Pianissimo\Component\RegistryInterface;
+use Pianissimo\Component\Core\RegistryInterface;
 
 class ConfigurationRegistry implements RegistryInterface
 {
