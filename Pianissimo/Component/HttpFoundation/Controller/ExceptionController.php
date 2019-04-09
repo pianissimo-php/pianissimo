@@ -22,13 +22,6 @@ class ExceptionController
     {
         $exceptionName = (new ReflectionClass($exception))->getShortName();
 
-        /*
-        $trace = debug_backtrace();
-        foreach ($trace as $traceItem) {
-            dump($traceItem['class'] . '::' . $traceItem['function']);
-        }
-        */
-
         $template = Path::Start(__DIR__)->back()->dir('templates')->file('exception.html.allegro')->path();
 
         $content = $this->allegro->render($template, [
@@ -38,7 +31,12 @@ class ExceptionController
             'exceptionLine' => $exception->getLine(),
         ]);
 
-        $response = new Response($content . dump(debug_backtrace(), true), $exception->getCode());
+        // TODO nice stack trace
+        $tempDebug = array_map(static function ($traceItem) {
+           return $traceItem['class'] . ' -> <b>' . $traceItem['function'] . '</b>';
+        }, $exception->getTrace());
+
+        $response = new Response($content . dump($tempDebug, true), $exception->getCode());
         $response->setRendered(true);
 
         return $response;

@@ -1,12 +1,13 @@
 <?php
 
-namespace Pianissimo\Component\Routing;
+namespace Pianissimo\Component\Core;
 
 use Pianissimo\Component\Allegro\Allegro;
 use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Response;
+use Pianissimo\Component\Routing\RoutingService;
 
 class ControllerService
 {
