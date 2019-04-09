@@ -9,42 +9,119 @@
 
     <title>Pianissimo framework</title>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <style>
         body {
             font-family: 'Nunito', sans-serif;
         }
+
         a {
             color: #22a6b3;
         }
+
         a:hover {
             color: #7ed6df;
             text-decoration: none;
         }
+
+        table ul {
+            margin-bottom: 0;
+            padding-inline-start: 20px;
+        }
     </style>
 </head>
 <body>
-    <main role="main">
-        <div class="container">
-            <img src="https://jonmulder.nl/pianissimo-logo1.1.svg" width="400px" class="mt-5 mb-4" />
+<main role="main">
+    <div class="container">
+        <img src="https://jonmulder.nl/pianissimo-logo1.1.svg" width="400px" class="mt-5 mb-4"/>
 
-            <p class="lead">Welcome by the Pianissimo PHP framework!</p>
-            <p>Maybe you want to take a look at</p>
-            <ul>
-                <li><a href="/allegro">Allegro template rendering engine</a></li>
-                <li><a href="/annotation">Pianissimo annotation reader</a></li>
-                <li>PianoTuner debugging toolbar <span class="text-muted">(see below)</span></li>
-                <br />
-                <li><a href="/json">JsonResponse</a></li>
-                <li><a href="/redirect">RedirectResponse</a></li>
-            </ul>
+        <p class="lead">Welcome by the Pianissimo PHP framework!</p>
+        <p>Maybe you want to take a look at</p>
+        <ul>
+            <li><a href="/allegro">Allegro template rendering engine</a></li>
+            <li><a href="/annotation">Pianissimo annotation reader</a></li>
+            <li>PianoTuner debugging toolbar <span class="text-muted">(see below)</span></li>
+            <br/>
+            <li><a href="/json">JsonResponse</a></li>
+            <li><a href="/redirect">RedirectResponse</a></li>
+        </ul>
+
+        <h3 class="mt-5">Component dependencies</h3>
+
+        <div class="row col-md-7">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Dependencies</th>
+                    <th>Optional links</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Allegro</td>
+                    <td>
+                        <ul>
+                            <li>Finder</li>
+                        </ul>
+                    </td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Annotation</td>
+                    <td>
+                        <ul>
+                            <li>Container</li>
+                        </ul>
+                    </td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Container</td>
+                    <td>
+                        <ul>
+                            <li>Finder</li>
+                            <li>Route</li>
+                            <li class="text-muted">symfony/yaml</li>
+                        </ul>
+                    </td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Finder</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>HttpFoundation</td>
+                    <td>
+                        <ul>
+                            <li>Container</li>
+                            <li>Routing</li>
+                        </ul>
+                    </td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Routing</td>
+                    <td><ul>
+                        <li>Annotation</li>
+                        <li>Container</li>
+                        <li>HttpFoundation</li>
+                    </ul></td>
+                    <td>-</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </main>
-    <footer class="mt-5">
-        <div class="container text-muted">
-            Made with all the &hearts; in the world by <a href="https://github.com/jonmldr">@jonmldr</a>
-        </div>
-    </footer>
+    </div>
+</main>
+<footer class="mt-5">
+    <div class="container text-muted">
+        Made with all the &hearts; in the world by <a href="https://github.com/jonmldr">@jonmldr</a>
+    </div>
+</footer>
 </body>
 </html>
