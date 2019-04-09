@@ -83,7 +83,7 @@
                     <td>
                         <ul>
                             <li>Finder</li>
-                            <li>Routing</li>
+                            <li><del>Routing</del></li>
                             <li class="text-muted">symfony/yaml</li>
                         </ul>
                     </td>
@@ -119,7 +119,7 @@
 
         First things first:
         <ul>
-            <li>Container optional dependency of Routing</li>
+            <li><del>Container optional dependency of Routing</del></li>
             <li>Routing optional dependency of Annotation</li>
             <li>PianoTuner separate component</li>
             <li class="text-muted">Routing: routes.yaml as alternative for annotations (including data validation)</li>

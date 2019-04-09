@@ -1,8 +1,9 @@
 <?php
 
-namespace Pianissimo\Component\Container;
+namespace Pianissimo\Component\Routing;
 
-use Pianissimo\Component\Routing\Route;
+use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
+use Pianissimo\Component\RegistryInterface;
 
 class RouteRegistry implements RegistryInterface
 {
@@ -19,13 +20,23 @@ class RouteRegistry implements RegistryInterface
         $this->registry = $routes;
     }
 
-    public function get(string $name): ?Route
+    public function find(string $name): ?Route
     {
         if (isset($this->registry[$name]) === true) {
             return $this->registry[$name];
         }
 
         return null;
+    }
+
+    public function get(string $name): Route
+    {
+        $route = $this->find($name);
+        if ($route === null) {
+            throw new NotFoundHttpException('Route not found');
+        }
+
+        return $route;
     }
 
     public function has(string $name): bool

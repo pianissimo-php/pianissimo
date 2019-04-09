@@ -10,16 +10,20 @@ use UnexpectedValueException;
 
 class RoutingService
 {
-    /** @var AnnotationReader */
-    private $annotationReader;
-
     /** @var Container */
     private $container;
 
-    public function __construct(AnnotationReader $annotationReader, Container $container)
+    /** @var AnnotationReader */
+    private $annotationReader;
+
+    /** @var RouteRegistry */
+    private $routeRegistry;
+
+    public function __construct(Container $container, AnnotationReader $annotationReader, RouteRegistry $routeRegistry)
     {
-        $this->annotationReader = $annotationReader;
         $this->container = $container;
+        $this->annotationReader = $annotationReader;
+        $this->routeRegistry = $routeRegistry;
     }
 
     /**
@@ -27,7 +31,7 @@ class RoutingService
      */
     private function getRegistry(): array
     {
-        return $this->container->routeRegistry->all();
+        return $this->routeRegistry->all();
     }
 
     /**
@@ -36,7 +40,7 @@ class RoutingService
     public function initializeRoutes(): void
     {
         $routes = $this->findControllerRoutes();
-        $this->container->routeRegistry->initialize($routes);
+        $this->routeRegistry->initialize($routes);
     }
 
     /**

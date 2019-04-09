@@ -3,6 +3,7 @@
 namespace Pianissimo\Component\Container;
 
 use InvalidArgumentException;
+use Pianissimo\Component\RegistryInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -14,9 +15,6 @@ class Container implements RegistryInterface
     /** @var array */
     private $registry;
 
-    /** @var RouteRegistry */
-    public $routeRegistry;
-
     /** @var ConfigurationRegistry */
     private $configurationRegistry;
 
@@ -27,7 +25,6 @@ class Container implements RegistryInterface
     {
         // Initialize registries.
         $this->registry = [];
-        $this->routeRegistry = new RouteRegistry();
         $this->configurationRegistry = new ConfigurationRegistry();
 
         // Inject this instance of the container in the registry

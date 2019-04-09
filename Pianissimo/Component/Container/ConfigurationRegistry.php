@@ -2,6 +2,8 @@
 
 namespace Pianissimo\Component\Container;
 
+use Pianissimo\Component\RegistryInterface;
+
 class ConfigurationRegistry implements RegistryInterface
 {
     /** @var array */

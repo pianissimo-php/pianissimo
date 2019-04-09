@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Container;
+namespace Pianissimo\Component;
 
 interface RegistryInterface
 {

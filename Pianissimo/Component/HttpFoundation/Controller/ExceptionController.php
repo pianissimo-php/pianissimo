@@ -38,7 +38,7 @@ class ExceptionController
             'exceptionLine' => $exception->getLine(),
         ]);
 
-        $response = new Response($content, $exception->getCode());
+        $response = new Response($content . dump(debug_backtrace(), true), $exception->getCode());
         $response->setRendered(true);
 
         return $response;
