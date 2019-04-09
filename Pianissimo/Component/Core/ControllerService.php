@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Routing;
+namespace Pianissimo\Component\Core;
 
 use Pianissimo\Component\Allegro\Allegro;
 use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
