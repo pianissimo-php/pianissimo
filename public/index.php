@@ -1,14 +1,9 @@
 <?php
 
-use Pianissimo\Component\Container\Container;
-use Pianissimo\Component\HttpFoundation\HttpService;
+use Pianissimo\Component\Core\HttpCore;
 use Pianissimo\Component\HttpFoundation\Request;
-use Pianissimo\Environment;
 
 require '../vendor/autoload.php';
-
-$container = new Container();
-$environment = $container->get(Environment::class);
 
 function dump($var, $return = false)
 {
@@ -26,8 +21,8 @@ function dd($var):void
     die;
 }
 
-$httpService = $container->get(HttpService::class);
-
+$core = new HttpCore();
 $request = new Request();
-$response = $httpService->getResponse($request);
-$httpService->handleResponse($response);
+
+$response = $core->handleRequest($request);
+$core->handleResponse($response);

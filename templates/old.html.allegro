@@ -39,7 +39,7 @@
 
         <p class="lead">Welcome by the Pianissimo PHP framework!</p>
         <p>Maybe you want to take a look at</p>
-        <ul class="mb-5">
+        <ul>
             <li><a href="/allegro">Allegro template rendering engine</a></li>
             <li><a href="/annotation">Pianissimo annotation reader</a></li>
             <li>PianoTuner debugging toolbar <span class="text-muted">(see below)</span></li>
@@ -48,60 +48,106 @@
             <li><a href="/redirect">RedirectResponse</a></li>
         </ul>
 
-        <h3 class="mb-3">Components</h3>
+        <h3 class="mt-5">Component dependencies</h3>
 
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>Component</th>
-                <th>Description</th>
+                <th>Default dependencies</th>
+                <th>Interface dependencies</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>Allegro</td>
                 <td>
-                    N/A
+                    <ul>
+                        <li>Finder</li>
+                    </ul>
                 </td>
+                <td>N/A</td>
             </tr>
             <tr>
                 <td>Annotation</td>
                 <td>
-                    N/A
+                    <ul>
+                        <li>Container <span class="text-muted">&rsaquo; an container witch implements ContainerInterface</span></li>
+                    </ul>
                 </td>
+                <td>N/A</td>
             </tr>
             <tr>
                 <td>Container</td>
                 <td>
-                    N/A
+                    <ul>
+                        <li>Finder</li>
+                        <li>symfony/yaml</li>
+                    </ul>
+                </td>
+                <td>
+                    ContainerInterface
+                    <ul>
+                        <li>a registry (should implement RegistryInterface)</li>
+                    </ul>
                 </td>
             </tr>
             <tr>
                 <td>Core</td>
                 <td>
-                    N/A
+                    <ul>
+                        <li>Container <span class="text-muted">&rsaquo; an container witch implements ContainerInterface</span></li>
+                        <li>HttpCore: HttpFoundation</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Core with CoreInterface: -</li>
+                        <li>Core with HttpCoreInterface: HttpFoundation</li>
+                    </ul>
                 </td>
             </tr>
             <tr>
                 <td>Finder</td>
-                <td>
-                    N/A
-                </td>
+                <td>-</td>
+                <td>?</td>
             </tr>
             <tr>
                 <td>HttpFoundation</td>
                 <td>
-                    N/A
+                    <ul>
+                        <li>Container <span class="text-muted">&rsaquo; an container witch implements ContainerInterface</span></li>
+                        <li>Routing <span class="text-muted">&check;</span></li>
+                    </ul>
                 </td>
+                <td>?</td>
             </tr>
             <tr>
                 <td>Routing</td>
                 <td>
-                    N/A
+                    <ul>
+                        <li>Container <span class="text-muted">&rsaquo; an container witch implements ContainerInterface</span></li>
+                        <li>HttpFoundation <span class="text-muted">&check;</span></li>
+                        <li>Finder</li>
+                        <li>symfony/yaml</li>
+                    </ul>
                 </td>
+                <td>?</td>
             </tr>
             </tbody>
         </table>
+
+        First things first:
+        <ul>
+            <li><del>Container optional dependency of Routing</del></li>
+            <li><del>Routing optional dependency of Annotation</del></li>
+            <li><del>Core component</del></li>
+            <li>PianoTuner separate component</li>
+            <li class="text-muted">Routing: routes.yaml as alternative for annotations (including data validation)</li>
+            <li class="text-muted">Building more interfaces to inject them, instead of services.
+                Ensures that the developer can choose for an alternative for an component.
+            </li>
+        </ul>
     </div>
 </main>
 <footer class="mt-5 pb-5">
