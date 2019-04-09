@@ -16,6 +16,9 @@ class ConfigurationHandler
         return $this->loadYaml();
     }
 
+    /**
+     * @throws ConfigurationFileException
+     */
     private function loadYaml(): array
     {
         $file = Path::Root()->dir('config')->file('config.yaml')->path();
