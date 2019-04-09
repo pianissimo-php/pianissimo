@@ -10,7 +10,6 @@ use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\RoutingService;
-use Pianissimo\Environment;
 use ReflectionClass;
 use Throwable;
 
