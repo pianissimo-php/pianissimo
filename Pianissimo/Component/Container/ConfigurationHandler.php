@@ -3,6 +3,7 @@
 namespace Pianissimo\Component\Container;
 
 use Pianissimo\Component\Container\Exception\ConfigurationFileException;
+use Pianissimo\Component\Finder\Path;
 use Symfony\Component\Yaml\Yaml;
 
 class ConfigurationHandler
@@ -10,8 +11,14 @@ class ConfigurationHandler
     /**
      * @throws ConfigurationFileException
      */
-    public function load(string $file): array
+    public function load(): array
     {
+        return $this->loadYaml();
+    }
+
+    private function loadYaml(): array
+    {
+        $file = Path::Root()->dir('config')->file('config.yaml')->path();
         $data = Yaml::parseFile($file);
 
         $data = $this->ensureSettings($this->getCriteria(), $data);

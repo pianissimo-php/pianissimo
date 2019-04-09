@@ -3,7 +3,6 @@
 namespace Pianissimo\Component\Container;
 
 use InvalidArgumentException;
-use Pianissimo\Component\Finder\Path;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -35,10 +34,8 @@ class Container implements RegistryInterface
         $this->registry[__CLASS__] = $this;
 
         // Load ConfigurationHandler manually, handler hasn't to be available in de service container
-        $file = Path::Root()->dir('config')->file('config.yaml')->path();
-
         $configurationService = new ConfigurationHandler();
-        $this->configurationRegistry->initialize($configurationService->load($file));
+        $this->configurationRegistry->initialize($configurationService->load());
     }
 
     /**
