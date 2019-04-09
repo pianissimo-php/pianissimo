@@ -11,5 +11,7 @@ The Pianissimo PHP framework
 
 `php-cs-fixer fix src`
 
+`git remote set-url origin https://github.com/pianissimo-php/pianissimo.git`
+
 **Links**
 - https://flatuicolors.com/palette/au
