@@ -29,6 +29,9 @@ class HttpCore implements HttpCoreInterface
     /** @var float */
     private $startTime;
 
+    /** @var string */
+    private $environment;
+
     public function __construct()
     {
         // Initialize the container
@@ -41,6 +44,7 @@ class HttpCore implements HttpCoreInterface
 
         // TODO Error & Exception handling
         $environment = $this->container->getSetting('environment');
+        $this->environment = $environment;
 
         if ($environment === 'dev') {
             $this->setDebugMode(true);
@@ -98,9 +102,9 @@ class HttpCore implements HttpCoreInterface
         return $this->container;
     }
 
-    public function getEnvironment(): Environment
+    public function getEnvironment(): string
     {
-        return $this->container->get(Environment::class);
+        return $this->environment;
     }
 
     public function getStartTime(): float
