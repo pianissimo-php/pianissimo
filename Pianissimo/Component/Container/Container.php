@@ -3,14 +3,17 @@
 namespace Pianissimo\Component\Container;
 
 use InvalidArgumentException;
-use Pianissimo\Component\RegistryInterface;
+use Pianissimo\Component\Container\Exception\ClassNotFoundException;
+use Pianissimo\Component\Core\ContainerInterface;
+use Pianissimo\Component\Core\RegistryInterface;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 /**
  * The Container holds the registry with initialized Services and the initialized Configuration.
  */
-class Container implements RegistryInterface
+class Container implements ContainerInterface, RegistryInterface
 {
     /** @var array */
     private $registry;
@@ -38,6 +41,7 @@ class Container implements RegistryInterface
     /**
      * This functions gets an object out of the registry.
      * If it is not in the registry, it adds an new instance of the class to the registry.
+     * @throws ClassNotFoundException
      */
     public function get(string $className)
     {
@@ -51,15 +55,17 @@ class Container implements RegistryInterface
     /**
      * This function creates an new instance of the given class name and adds it to the registry.
      * It will auto wire the parameters of the new instance. (Dependency Injection)
+     * @throws ClassNotFoundException
      */
     private function set(string $className): void
     {
-        if (class_exists($className) === false) {
-            throw new InvalidArgumentException(sprintf("Not able to auto wire class '%s', class does not exist.", $className));
+        // The heart of the Dependency Injection.
+        try {
+            $class = new ReflectionClass($className);
+        } catch (ReflectionException $e) {
+            throw new ClassNotFoundException(sprintf("Not able to auto wire class '%s', class does not exist.", $className));
         }
 
-        // The heart of the Dependency Injection.
-        $class = new ReflectionClass($className);
         $constructor = $class->getConstructor();
         $parentClass = $class->getParentClass();
 
@@ -91,9 +97,14 @@ class Container implements RegistryInterface
         $parameters = $method->getParameters();
 
         $autoWiredParameters = [];
+
         foreach ($parameters as $parameter) {
-            $parameterClass = $parameter->getClass()->getName();
-            $autoWiredParameters[] = $this->get($parameterClass);
+            try {
+                $parameterClass = $parameter->getClass()->getName();
+                $autoWiredParameters[] = $this->get($parameterClass);
+            } catch (ReflectionException $e) {
+                throw new ClassNotFoundException($e->getMessage());
+            }
         }
 
         return $autoWiredParameters;
