@@ -83,7 +83,7 @@
                     <td>
                         <ul>
                             <li>Finder</li>
-                            <li>Route</li>
+                            <li>Routing</li>
                             <li class="text-muted">symfony/yaml</li>
                         </ul>
                     </td>
@@ -116,9 +116,20 @@
                 </tbody>
             </table>
         </div>
+
+        First things first:
+        <ul>
+            <li>Container optional dependency of Routing</li>
+            <li>Routing optional dependency of Annotation</li>
+            <li>PianoTuner separate component</li>
+            <li class="text-muted">Routing: routes.yaml as alternative for annotations (including data validation)</li>
+            <li class="text-muted">Kernel component</li>
+            <li class="text-muted">Building more interfaces to inject them, instead of services.
+                Ensures that the developer can choose for an alternative for an component.</li>
+        </ul>
     </div>
 </main>
-<footer class="mt-5">
+<footer class="mt-5 pb-5">
     <div class="container text-muted">
         Made with all the &hearts; in the world by <a href="https://github.com/jonmldr">@jonmldr</a>
     </div>
