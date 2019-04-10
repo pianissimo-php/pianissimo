@@ -36,6 +36,10 @@ class AnnotationLoader implements RouteLoaderInterface
         foreach ($classes as $class) {
             $functions = get_class_methods($class);
 
+            if ($functions === null) {
+                continue;
+            }
+
             foreach ($functions as $function) {
                 $annotations = $this->annotationReader->getFunctionAnnotations($class, $function, 'Route');
 
