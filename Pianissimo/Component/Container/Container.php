@@ -2,7 +2,6 @@
 
 namespace Pianissimo\Component\Container;
 
-use InvalidArgumentException;
 use Pianissimo\Component\Container\Exception\ClassNotFoundException;
 use Pianissimo\Component\Core\ContainerInterface;
 use Pianissimo\Component\Core\RegistryInterface;
