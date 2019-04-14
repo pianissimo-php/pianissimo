@@ -13,7 +13,7 @@ class RequestHandler implements RequestHandlerInterface
      *
      * May call other collaborating code to generate the response.
      *
-     * 
+     * Each request wil go through this function. From this place, all services will be auto wired!
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
