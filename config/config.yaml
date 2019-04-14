@@ -1,10 +1,6 @@
 environment: dev
-piano_tuner: true
 controllers:
   - App\Controller\IndexController
-  - App\Controller\TestController
 annotations:
   Route: Pianissimo\Component\Routing\Annotation\Route
   Person: App\Annotation\Person
-route_loaders:
-  annotation: Pianissimo\Component\Routing\AnnotationLoader
