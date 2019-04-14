@@ -1,5 +1,8 @@
 <?php
 
+use Pianissimo\Component\Core\HttpCore;
+use Pianissimo\Component\HttpFoundation\Request;
+
 require '../vendor/autoload.php';
 
 function dump($var, $return = false)
@@ -18,7 +21,12 @@ function dd($var):void
     die;
 }
 
-dd(123);
+$core = new HttpCore();
+
+$request = Request::fromGlobals();
+$response = $core->handle($request);
+
+dd($response);
 
 /*
 $core = new HttpCore();
