@@ -2,7 +2,7 @@
 
 namespace Pianissimo\Component\Core;
 
-use Pianissimo\Component\Core\Container\Container;
+use Pianissimo\Component\Container\Container;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\RequestHandler;
 use Pianissimo\Component\HttpFoundation\Response;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Core\Container\Exception;
+namespace Pianissimo\Component\Container\Exception;
 
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
