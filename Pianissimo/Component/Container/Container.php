@@ -15,11 +15,11 @@ use ReflectionMethod;
 class Container implements ContainerInterface
 {
     /** @var array */
-    private $registry;
+    private $serviceRegistry;
 
     public function __construct()
     {
-        $this->registry = [];
+        $this->serviceRegistry = [];
     }
 
     /**
@@ -35,7 +35,7 @@ class Container implements ContainerInterface
     public function get($id)
     {
         if ($this->has($id) === true) {
-            return $this->registry[$id];
+            return $this->serviceRegistry[$id];
         }
 
         throw new ServiceNotFoundException(sprintf("No entry was found for identifier '%s'", $id));
@@ -54,7 +54,7 @@ class Container implements ContainerInterface
      */
     public function has($id): bool
     {
-        return isset($this->registry[$id]) === true;
+        return isset($this->serviceRegistry[$id]) === true;
     }
 
     /**
@@ -63,7 +63,7 @@ class Container implements ContainerInterface
     public function set($id, $service)
     {
         if ($this->has($id) === false) {
-            $this->registry[$id] = $service;
+            $this->serviceRegistry[$id] = $service;
         } else {
             throw new ContainerException(sprintf("Service with id '%s' already exists", $id));
         }
