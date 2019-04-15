@@ -1,4 +1,0 @@
-event-listeners:
-  - event:  pianissimo.route
-    class:  Pianissimo\Routing\Annotation\RouteListener
-    method: findRouteAnnotations
