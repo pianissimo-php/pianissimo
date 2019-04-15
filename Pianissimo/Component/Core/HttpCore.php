@@ -2,7 +2,6 @@
 
 namespace Pianissimo\Component\Core;
 
-use Pianissimo\Component\Container\Container;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\RequestHandler;
 use Pianissimo\Component\HttpFoundation\Response;
@@ -14,8 +13,8 @@ class HttpCore extends Core
 
     public function __construct()
     {
-        $container = new Container();
-        $this->requestHandler = $container->autowire(RequestHandler::class);
+        parent::__construct();
+        $this->requestHandler = $this->container->autowire(RequestHandler::class);
     }
 
     public function handle(Request $request): Response
