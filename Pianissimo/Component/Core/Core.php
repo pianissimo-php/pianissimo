@@ -3,7 +3,7 @@
 namespace Pianissimo\Component\Core;
 
 use Pianissimo\Component\Container\Container;
-use Pianissimo\Component\Core\Command\GreetCommand;
+use Pianissimo\Component\Core\Command\DebugRoutesCommand;
 
 class Core
 {
@@ -18,7 +18,12 @@ class Core
     public function getCommands(): array
     {
         return [
-            GreetCommand::class,
+            DebugRoutesCommand::class,
         ];
+    }
+
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 }

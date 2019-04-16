@@ -30,6 +30,8 @@ The Pianissimo PHP framework
 - ~~guzzlehttp/psr7~~
 
 **Commands**
+- `bin/console debug:routes`
+
 
 - `php-cs-fixer fix src`
 - `git remote set-url origin https://github.com/pianissimo-php/pianissimo.git`
