@@ -3,7 +3,7 @@
 use Pianissimo\Component\Core\HttpCore;
 use Pianissimo\Component\HttpFoundation\Request;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 function dump($var, $return = false)
 {

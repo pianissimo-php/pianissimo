@@ -1,10 +1,15 @@
 #!/usr/bin/env php
-
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
+use Pianissimo\Component\Core\Command\GreetCommand;
+use Pianissimo\Component\Core\Core;
 use Symfony\Component\Console\Application;
 
+$core = new Core();
 $app = new Application();
+
+$app->add(new GreetCommand());
+
 $app->run();
