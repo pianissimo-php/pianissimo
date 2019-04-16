@@ -3,13 +3,16 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Pianissimo\Component\Core\Command\GreetCommand;
 use Pianissimo\Component\Core\Core;
 use Symfony\Component\Console\Application;
 
 $core = new Core();
+$commands = $core->getCommands();
+
 $app = new Application();
 
-$app->add(new GreetCommand());
+foreach ($commands as $command) {
+    $app->add(new $command());
+}
 
 $app->run();
