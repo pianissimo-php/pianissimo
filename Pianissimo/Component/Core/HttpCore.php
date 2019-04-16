@@ -4,7 +4,6 @@ namespace Pianissimo\Component\Core;
 
 use Pianissimo\Component\HttpFoundation\Controller\ErrorController;
 use Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
-use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\RequestHandler;
 use Pianissimo\Component\HttpFoundation\Response;
@@ -88,6 +87,11 @@ class HttpCore extends Core
     public function getStartTime(): float
     {
         return $this->startTime;
+    }
+
+    public function getEnvironment(): string
+    {
+        return $this->environment;
     }
 
     /**
