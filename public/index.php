@@ -24,9 +24,8 @@ function dd($var):void
 $core = new HttpCore();
 
 $request = Request::fromGlobals();
-$response = $core->handle($request);
-
-dd($response);
+$response = $core->handleRequest($request);
+$core->handleResponse($response);
 
 /*
 $core = new HttpCore();

@@ -1,4 +1,5 @@
 environment: dev
+piano_tuner: true
 controllers:
   - App\Controller\IndexController
 annotations:
