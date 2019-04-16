@@ -17,9 +17,21 @@ class Container implements ContainerInterface
     /** @var array */
     private $serviceRegistry;
 
+    /** @var ConfigurationRegistry */
+    private $configurationRegistry;
+
     public function __construct()
     {
         $this->serviceRegistry = [];
+
+        // Inject this instance of the container in the registry
+        $this->serviceRegistry[__CLASS__] = $this;
+
+        $this->configurationRegistry = new ConfigurationRegistry();
+
+        // Load ConfigurationHandler manually, handler hasn't to be available in de service container
+        $configurationHandler = new ConfigurationHandler();
+        $this->configurationRegistry->initialize($configurationHandler->load());
     }
 
     /**
@@ -124,5 +136,13 @@ class Container implements ContainerInterface
         }
 
         return $autoWiredParameters;
+    }
+
+    /**
+     * Returns an Configuration item
+     */
+    public function getSetting(string $setting)
+    {
+        return $this->configurationRegistry->get($setting);
     }
 }
