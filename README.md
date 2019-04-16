@@ -23,9 +23,10 @@ The Pianissimo PHP framework
 - Routing
 
 **Used libraries**
-- symfony/yaml
 - psr/container
 - psr/http-server-middleware
+- symfony/console
+- symfony/yaml
 - ~~guzzlehttp/psr7~~
 
 **Commands**
