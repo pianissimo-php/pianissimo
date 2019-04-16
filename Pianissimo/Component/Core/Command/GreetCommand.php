@@ -33,7 +33,7 @@ class GreetCommand extends Command
     {
         $name = $input->getArgument('name');
         if ($name) {
-            $text = 'Hello '.$name;
+            $text = 'Hello ' . $name;
         } else {
             $text = 'Hello';
         }

@@ -24,8 +24,6 @@ class ControllerService
     }
 
     /**
-     * @param string $routeName
-     * @return RedirectResponse
      * @throws RouteNotFoundException
      */
     public function redirectToRoute(string $routeName): RedirectResponse

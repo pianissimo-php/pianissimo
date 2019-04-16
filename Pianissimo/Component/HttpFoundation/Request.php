@@ -15,7 +15,6 @@ class Request extends ServerRequest
      * $_FILES
      * $_SERVER
      *
-     * @return Request
      */
     public static function fromGlobals(): Request
     {
