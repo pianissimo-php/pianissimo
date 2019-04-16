@@ -27,7 +27,7 @@ class RoutingService
     /**
      * Returns the registry with the initialized routes.
      */
-    private function getRegistry(): array
+    public function getRegistry(): array
     {
         return $this->routeRegistry->all();
     }
