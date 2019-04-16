@@ -31,8 +31,6 @@ The Pianissimo PHP framework
 
 **Commands**
 - `bin/console debug:routes`
-
-
 - `php-cs-fixer fix src`
 - `git remote set-url origin https://github.com/pianissimo-php/pianissimo.git`
 
