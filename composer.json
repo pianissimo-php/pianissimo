@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/",
+      "Pianissimo\\": "Pianissimo/"
+    }
+  },
+  "require": {
+    "monolog/monolog": "^1.24",
+    "symfony/yaml": "^4.2"
+  }
+}
