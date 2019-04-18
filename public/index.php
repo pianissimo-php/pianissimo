@@ -1,5 +1,6 @@
 <?php
 
+use Pianissimo\Component\Cache\CacheService;
 use Pianissimo\Component\Core\HttpCore;
 use Pianissimo\Component\HttpFoundation\Request;
 
@@ -20,6 +21,11 @@ function dd($var):void
     dump($var);
     die;
 }
+
+$cache = new CacheService();
+//dump($cache->set(1, 123123123));
+dump($cache->get(1, 2));
+die;
 
 $core = new HttpCore();
 
