@@ -53,7 +53,6 @@ class Path
         $this->extension = pathinfo($path, PATHINFO_EXTENSION);
     }
 
-
     public function back(int $times = 1): self
     {
         for ($i = 1; $i <= $times; $i++) {
@@ -109,6 +108,11 @@ class Path
     public function extension(): string
     {
         return $this->extension;
+    }
+
+    public function __toString(): string
+    {
+        return $this->path();
     }
 
     /**
