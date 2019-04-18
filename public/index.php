@@ -1,6 +1,5 @@
 <?php
 
-use Pianissimo\Component\Cache\CacheService;
 use Pianissimo\Component\Core\HttpCore;
 use Pianissimo\Component\HttpFoundation\Request;
 
