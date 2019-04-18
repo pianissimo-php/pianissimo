@@ -2,26 +2,70 @@
 
 namespace Pianissimo\Component\Cache;
 
+use DateInterval;
+use DateTime;
 use Pianissimo\Component\Cache\Exception\InvalidCacheKeyException;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
+use RuntimeException;
 
 class CacheService implements CacheInterface
 {
-    private const DIR = __DIR__ . '/../../../var/cache/';
+    private const DEFAULT_TTL = 86400;
+
+    private const CACHE_DIR = __DIR__ . '/../../../var/cache/';
+
+    /**
+     * Validates the given cache key.
+     * Invalid characters: {}()/\@:
+     */
+    public function validateKey($key): bool
+    {
+        return preg_match('/({|}|\(|\)|\\|\/|\@|\:)/', $key) === 0;
+    }
+
+    /**
+     * @param null|int|\DateInterval $ttl Optional. The TTL value of this item. If no value is sent and
+     *                                      the driver supports TTL then the library may set a default value
+     *                                      for it or let the driver take care of that.
+     */
+    private function getExpireDateTime($ttl): DateTime
+    {
+        $now = new DateTime();
+
+        if ($ttl instanceof DateInterval) {
+            $dateInterval = $ttl;
+        } else {
+            if (is_numeric($ttl)) {
+                $seconds = (int) $ttl;
+            } else {
+                $seconds = self::DEFAULT_TTL;
+            }
+
+            $dateInterval = DateInterval::createFromDateString($seconds . ' seconds');
+        }
+
+        return $now->add($dateInterval);
+    }
 
     /**
      * Returns the path to the cache file of the given key
      */
     private function getPath($key): string
     {
-        return self::DIR . md5($key);
+        return self::CACHE_DIR . md5($key);
     }
 
-    public function validateKey($key): bool
+    /**
+     * Creates the given directory if not exists.
+     */
+    private function mkdirIfNotExists(string $dir): void
     {
-        // TODO some logic
-        return rand(1, 20) !== 17;
+        if (file_exists($dir) === false) {
+            if (!mkdir($dir, 0777, true) && !is_dir($dir)) {
+                throw new RuntimeException(sprintf("Directory '%s' was not created", $dir));
+            }
+        }
     }
 
     /**
@@ -47,7 +91,8 @@ class CacheService implements CacheInterface
             return $default;
         }
 
-        return file_get_contents($path);
+        $contents = file_get_contents($path);
+        return $contents !== false ?: $default;
     }
 
     /**
@@ -66,10 +111,13 @@ class CacheService implements CacheInterface
      */
     public function set($key, $value, $ttl = null): bool
     {
+        $expireDateTime = $this->getExpireDateTime($ttl);
+
         if ($this->validateKey($key) === false) {
             throw new InvalidCacheKeyException(sprintf("Given cache key '%s' not valid", $key));
         }
 
+        $this->mkdirIfNotExists(self::CACHE_DIR);
         return file_put_contents($this->getPath($key), $value);
     }
 
@@ -105,7 +153,7 @@ class CacheService implements CacheInterface
      */
     public function clear(): bool
     {
-        $files = glob(self::DIR . '*');
+        $files = glob(self::CACHE_DIR . '*');
 
         foreach ($files as $file) {
             if (unlink($file) === false) {
