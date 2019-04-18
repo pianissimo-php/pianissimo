@@ -9,6 +9,11 @@ use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionProperty;
 
+/**
+ * TODO
+ * - remove container dependency
+ * - clean up logic
+ */
 class AnnotationReader
 {
     /** @var Container */
@@ -76,7 +81,6 @@ class AnnotationReader
     }
 
     /**
-     * TODO improve logic
      * @throws AnnotationNotFoundException
      */
     private function getAnnotationClass(string $annotationName): string

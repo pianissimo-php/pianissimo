@@ -3,7 +3,7 @@
 use Pianissimo\Component\Core\HttpCore;
 use Pianissimo\Component\HttpFoundation\Request;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 function dump($var, $return = false)
 {
@@ -22,7 +22,15 @@ function dd($var):void
 }
 
 $core = new HttpCore();
+
+$request = Request::fromGlobals();
+$response = $core->handleRequest($request);
+$core->handleResponse($response);
+
+/*
+$core = new HttpCore();
 $request = new Request();
 
 $response = $core->handleRequest($request);
 $core->handleResponse($response);
+*/

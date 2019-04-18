@@ -3,60 +3,90 @@
 namespace Pianissimo\Component\Container;
 
 use Pianissimo\Component\Container\Exception\ClassNotFoundException;
-use Pianissimo\Component\Core\ContainerInterface;
-use Pianissimo\Component\Core\RegistryInterface;
+use Pianissimo\Component\Container\Exception\ContainerException;
+use Pianissimo\Component\Container\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
-/**
- * The Container holds the registry with initialized Services and the initialized Configuration.
- */
-class Container implements ContainerInterface, RegistryInterface
+class Container implements ContainerInterface
 {
     /** @var array */
-    private $registry;
+    private $serviceRegistry;
 
     /** @var ConfigurationRegistry */
     private $configurationRegistry;
 
-    /**
-     * Initialize the Container
-     */
     public function __construct()
     {
-        // Initialize registries.
-        $this->registry = [];
-        $this->configurationRegistry = new ConfigurationRegistry();
+        $this->serviceRegistry = [];
 
         // Inject this instance of the container in the registry
-        $this->registry[__CLASS__] = $this;
+        $this->serviceRegistry[__CLASS__] = $this;
+
+        $this->configurationRegistry = new ConfigurationRegistry();
 
         // Load ConfigurationHandler manually, handler hasn't to be available in de service container
-        $configurationService = new ConfigurationHandler();
-        $this->configurationRegistry->initialize($configurationService->load());
+        $configurationHandler = new ConfigurationHandler();
+        $this->configurationRegistry->initialize($configurationHandler->load());
     }
 
     /**
-     * This functions gets an object out of the registry.
-     * If it is not in the registry, it adds an new instance of the class to the registry.
-     * @throws ClassNotFoundException
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     *
+     * @return mixed Entry.
      */
-    public function get(string $className)
+    public function get($id)
     {
-        if (isset($this->registry[$className]) === false) {
-            $this->set($className);
+        if ($this->has($id) === true) {
+            return $this->serviceRegistry[$id];
         }
 
-        return $this->registry[$className];
+        throw new ServiceNotFoundException(sprintf("No entry was found for identifier '%s'", $id));
     }
 
     /**
-     * This function creates an new instance of the given class name and adds it to the registry.
-     * It will auto wire the parameters of the new instance. (Dependency Injection)
-     * @throws ClassNotFoundException
+     * Returns true if the container can return an entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
+     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
      */
-    private function set(string $className): void
+    public function has($id): bool
+    {
+        return isset($this->serviceRegistry[$id]) === true;
+    }
+
+    /**
+     * @throws ContainerException
+     */
+    public function set($id, $service)
+    {
+        if ($this->has($id) === false) {
+            $this->serviceRegistry[$id] = $service;
+        } else {
+            throw new ContainerException(sprintf("Service with id '%s' already exists", $id));
+        }
+
+        return $service;
+    }
+
+    /**
+     * @throws ClassNotFoundException
+     * @throws ContainerException
+     */
+    public function autowire(string $className)
     {
         // The heart of the Dependency Injection.
         try {
@@ -77,19 +107,13 @@ class Container implements ContainerInterface, RegistryInterface
 
         $instance = new $className(...$parameters);
 
-        $this->registry[$className] = $instance;
-    }
-
-    /**
-     * Checks if Service exists in the registry
-     */
-    public function has(string $name): bool
-    {
-        return array_key_exists($name, $this->registry);
+        return $this->set($className, $instance);
     }
 
     /**
      * Auto wires the parameters of the given ReflectionMethod.
+     * @throws ClassNotFoundException
+     * @throws ContainerException
      */
     private function autoWireMethod(ReflectionMethod $method): array
     {
@@ -100,7 +124,11 @@ class Container implements ContainerInterface, RegistryInterface
         foreach ($parameters as $parameter) {
             try {
                 $parameterClass = $parameter->getClass()->getName();
-                $autoWiredParameters[] = $this->get($parameterClass);
+                if ($this->has($parameterClass)) {
+                    $autoWiredParameters[] = $this->get($parameterClass);
+                } else {
+                    $autoWiredParameters[] = $this->autowire($parameterClass);
+                }
             } catch (ReflectionException $e) {
                 throw new ClassNotFoundException($e->getMessage());
             }
