@@ -2,29 +2,18 @@
 
 namespace Pianissimo\Component\Core;
 
-use Pianissimo\Component\Container\Container;
 use Pianissimo\Component\HttpFoundation\Controller\ErrorController;
 use Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Request;
+use Pianissimo\Component\HttpFoundation\RequestHandler;
 use Pianissimo\Component\HttpFoundation\Response;
-use Pianissimo\Component\Routing\RoutingService;
 use ReflectionClass;
 use Throwable;
 
-/**
- * This class is the Core class for the Http environment, with dependencies of the HttpFoundation Component.
- *
- * Configure the services that has to be used at the auto wiring for the given interfaces in config/services.yaml
- */
-class HttpCore implements HttpCoreInterface
+class HttpCore extends Core
 {
-    /** @var Container */
-    private $container;
-
-    /** @var RoutingService */
-    private $routingService;
+    /** @var RequestHandler */
+    private $requestHandler;
 
     /** @var float */
     private $startTime;
@@ -32,12 +21,13 @@ class HttpCore implements HttpCoreInterface
     /** @var string */
     private $environment;
 
+    /**
+     * HttpCore constructor.
+     */
     public function __construct()
     {
-        // Initialize the container
-        $this->container = new Container();
-
-        $this->routingService = $this->container->get(RoutingService::class);
+        parent::__construct();
+        $this->requestHandler = $this->container->autowire(RequestHandler::class);
 
         // Start timer
         $this->startTime = microtime(true);
@@ -54,62 +44,54 @@ class HttpCore implements HttpCoreInterface
         }
     }
 
-    /**
-     * Each request wil go through this function. From this place, all services will be auto wired!
-     *
-     * @throws NotFoundHttpException
-     */
     public function handleRequest(Request $request): Response
     {
-        $this->routingService->initializeRoutes();
-
-        $path = $_SERVER['PATH_INFO'] ?? '';
-        $route = $this->routingService->matchRoute($path);
-
-        if ($route === null) {
-            throw new NotFoundHttpException('404 Not Found');
-        }
-
-        return $this->routingService->handleRoute($route);
+        return $this->requestHandler->handle($request);
     }
 
     /**
      * 'Executes' the given Response
      */
-    public function handleResponse(Response $response): void
+    /**
+     * Send a HTTP response
+     *
+     * @return void
+     */
+    public function handleResponse(Response $response)
     {
-        if ($response instanceof RedirectResponse) {
-            $header = sprintf('Location: %s', $response->getRedirectUrl());
-            header($header, true, $response->getStatusCode());
-            exit;
+        $http_line = sprintf('HTTP/%s %s %s',
+            $response->getProtocolVersion(),
+            $response->getStatusCode(),
+            $response->getReasonPhrase()
+        );
+        header($http_line, true, $response->getStatusCode());
+        foreach ($response->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
         }
+        $stream = $response->getBody();
 
         $pianoTuner = $this->container->getSetting('piano_tuner');
-
-        http_response_code($response->getStatusCode());
-        header('Content-Type: text/html');
-
-        // Clean the output buffer
-        ob_clean();
-
-        echo $response->getContent();
         echo $pianoTuner === true && $response->isRendered() === true ? $this->pianoTuner($response) : '';
-        exit;
-    }
 
-    public function getContainer(): Container
-    {
-        return $this->container;
-    }
-
-    public function getEnvironment(): string
-    {
-        return $this->environment;
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+        while (!$stream->eof()) {
+            echo $stream->read(1024 * 8);
+        }
+        die;
     }
 
     public function getStartTime(): float
     {
         return $this->startTime;
+    }
+
+    public function getEnvironment(): string
+    {
+        return $this->environment;
     }
 
     /**
@@ -194,7 +176,7 @@ class HttpCore implements HttpCoreInterface
      */
     public function exceptionHandler(Throwable $exception): void
     {
-        $exceptionController = $this->container->get(ExceptionController::class);
+        $exceptionController = $this->container->autowire(ExceptionController::class);
         $response = $exceptionController->index($exception);
 
         $this->handleResponse($response);

@@ -2,25 +2,34 @@
 
 namespace Pianissimo\Component\HttpFoundation;
 
-class Request
+use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\ServerRequest;
+
+class Request extends ServerRequest
 {
-    /** @var array */
-    private $queryParameters;
-
-    public function __construct()
+    /**
+     * Return a ServerRequest populated with super globals:
+     * $_GET
+     * $_POST
+     * $_COOKIE
+     * $_FILES
+     * $_SERVER
+     *
+     */
+    public static function fromGlobals(): Request
     {
-        if (isset($_SERVER['QUERY_STRING'])) {
-            parse_str($_SERVER['QUERY_STRING'], $queryParameters);
-            $this->queryParameters = $queryParameters;
-        }
-    }
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $headers = getallheaders();
+        $uri = self::getUriFromGlobals();
+        $body = new LazyOpenStream('php://input', 'r+');
+        $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']) : '1.1';
 
-    public function get(string $parameterName, $defaultValue)
-    {
-        if (isset($this->queryParameters[$parameterName]) === true) {
-            return $this->queryParameters[$parameterName];
-        }
+        $serverRequest = new self($method, $uri, $headers, $body, $protocol, $_SERVER);
 
-        return $defaultValue;
+        return $serverRequest
+            ->withCookieParams($_COOKIE)
+            ->withQueryParams($_GET)
+            ->withParsedBody($_POST)
+            ->withUploadedFiles(self::normalizeFiles($_FILES));
     }
 }

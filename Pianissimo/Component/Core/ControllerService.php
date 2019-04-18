@@ -4,9 +4,9 @@ namespace Pianissimo\Component\Core;
 
 use Pianissimo\Component\Allegro\Allegro;
 use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Response;
+use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 use Pianissimo\Component\Routing\RoutingService;
 
 class ControllerService
@@ -24,7 +24,7 @@ class ControllerService
     }
 
     /**
-     * @throws NotFoundHttpException
+     * @throws RouteNotFoundException
      */
     public function redirectToRoute(string $routeName): RedirectResponse
     {

@@ -2,10 +2,9 @@
 
 namespace Pianissimo\Component\Routing;
 
-use Pianissimo\Component\Core\RegistryInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 
-class RouteRegistry implements RegistryInterface
+class RouteRegistry
 {
     /** @var array */
     private $registry;

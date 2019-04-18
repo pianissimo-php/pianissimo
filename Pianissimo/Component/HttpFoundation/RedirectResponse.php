@@ -4,17 +4,10 @@ namespace Pianissimo\Component\HttpFoundation;
 
 class RedirectResponse extends Response
 {
-    /** @var string */
-    private $redirectUrl;
-
-    public function __construct(string $redirectUrl, int $statusCode = 302)
+    public function __construct($redirectUrl = null, int $status = 302, array $headers = [], string $version = '1.1', ?string $reason = null)
     {
-        parent::__construct('', $statusCode);
-        $this->redirectUrl = $redirectUrl;
-    }
+        $headers['location'] = $redirectUrl;
 
-    public function getRedirectUrl(): string
-    {
-        return $this->redirectUrl;
+        parent::__construct(null, $status, $headers, $version, $reason);
     }
 }
