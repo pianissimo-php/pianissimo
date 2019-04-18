@@ -1,5 +1,6 @@
 .idea/
 vendor/
+var/
 
 #PHP CS fixer
 .php_cs.cache
