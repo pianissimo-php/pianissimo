@@ -4,7 +4,11 @@
     </a>
 </p>
 
-The Pianissimo PHP framework
+Welcome to the Pianissimo PHP framework, a project by [@jonmldr](https://github.com/jonmldr).
+I asked myself the question: "What can Symfony do what I can't build and understand"?
+And here we are. The main goal of Pianissimo is not to become a worthy PHP framework like Symfony and Laravel;  frameworks where whole communities worked years on. This project gives me the opportunity to 
+learn and adapt code standards, techniques and (design) patterns.
+Feedback is always welcome!
 
 **PSR standards**
 - PSR-2: Coding Style Guide
