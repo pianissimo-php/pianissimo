@@ -22,11 +22,6 @@ function dd($var):void
     die;
 }
 
-$cache = new CacheService();
-//dump($cache->set(1, 123123123));
-dump($cache->get(1, 2));
-die;
-
 $core = new HttpCore();
 
 $request = Request::fromGlobals();
