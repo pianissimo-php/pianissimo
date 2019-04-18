@@ -2,15 +2,9 @@
 
 namespace Pianissimo\Component\Routing;
 
+use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\Container\Container;
-use Pianissimo\Component\Container\Exception\ClassNotFoundException;
-use Pianissimo\Component\Finder\Path;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Pianissimo\Component\HttpFoundation\Response;
-use Pianissimo\Component\Routing\Exception\RouteLoaderException;
-use Pianissimo\Component\Routing\Exception\RouteLoaderNotFoundException;
-use Symfony\Component\Yaml\Yaml;
-use UnexpectedValueException;
+use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
 class RoutingService
 {
@@ -20,16 +14,20 @@ class RoutingService
     /** @var RouteRegistry */
     private $routeRegistry;
 
-    public function __construct(Container $container, RouteRegistry $routeRegistry)
+    /** @var AnnotationReader */
+    private $annotationReader;
+
+    public function __construct(Container $container, RouteRegistry $routeRegistry, AnnotationReader $annotationReader)
     {
         $this->container = $container;
         $this->routeRegistry = $routeRegistry;
+        $this->annotationReader = $annotationReader;
     }
 
     /**
      * Returns the registry with the initialized routes.
      */
-    private function getRegistry(): array
+    public function getRegistry(): array
     {
         return $this->routeRegistry->all();
     }
@@ -39,53 +37,8 @@ class RoutingService
      */
     public function initializeRoutes(): void
     {
-        $routes = $this->handleRouteLoaders();
+        $routes = $this->getAnnotationRoutes();
         $this->routeRegistry->initialize($routes);
-    }
-
-    public function handleRouteLoaders(): array
-    {
-        $file = Path::Root()->dir('config')->file('config.yaml')->path();
-        $loaders = Yaml::parseFile($file)['route_loaders'];
-
-        $results = [];
-
-        foreach ($loaders as $name => $class) {
-            try {
-                $loader = $this->container->get($class);
-            } catch (ClassNotFoundException $exception) {
-                throw new RouteLoaderNotFoundException(sprintf("Route loader '%s' not found", $class));
-            }
-
-            if (!$loader instanceof RouteLoaderInterface) {
-                throw new RouteLoaderException(sprintf("Route loaders must implement '%s'. See route loaders config file.", RouteLoaderInterface::class));
-            }
-
-            $results[] = $loader->load();
-        }
-
-        return array_merge(...$results);
-    }
-
-    /**
-     * Calls the matching controller function and returns its Response object.
-     */
-    public function handleRoute(Route $route): Response
-    {
-        $class = $route->getClass();
-        $function = $route->getFunction();
-
-        $controller = $this->container->get($class);
-
-        /** @var Response $response */
-        $response = $controller->$function();
-        $response->setRoute($route);
-
-        if (!$response instanceof Response) {
-            throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return an instance of '%s', '%s' given.", $function, $class, Response::class, gettype($response)));
-        }
-
-        return $response;
     }
 
     /**
@@ -124,16 +77,53 @@ class RoutingService
 
     /**
      * Returns the Route instance whose names match or throws an exception if there are no matches.
-     * @throws NotFoundHttpException
+     * @throws RouteNotFoundException
      */
     public function getRoute(string $routeName): Route
     {
         $route = $this->findRoute($routeName);
 
         if ($route === null) {
-            throw new NotFoundHttpException(sprintf("Route with name '%s' not found", $routeName));
+            throw new RouteNotFoundException(sprintf("Route with name '%s' not found", $routeName));
         }
 
         return $route;
+    }
+
+    /**
+     * Returns all routes defined by annotations in the controllers.
+     */
+    public function getAnnotationRoutes(): array
+    {
+        $routes = [];
+        $classes = $this->findControllerClasses();
+
+        foreach ($classes as $class) {
+            $functions = get_class_methods($class);
+
+            if ($functions === null) {
+                continue;
+            }
+
+            foreach ($functions as $function) {
+                $annotations = $this->annotationReader->getFunctionAnnotations($class, $function, 'Route');
+
+                foreach ($annotations as $annotation) {
+                    $route = new Route($class, $function, $annotation->path, $annotation->name);
+                    $routes[] = $route;
+                }
+            }
+        }
+
+        return $routes;
+    }
+
+    /**
+     * Returns all Controller classes
+     * TODO improve logic
+     */
+    private function findControllerClasses(): array
+    {
+        return $this->container->getSetting('controllers');
     }
 }
