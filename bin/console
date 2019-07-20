@@ -3,10 +3,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Pianissimo\Component\Core\Core;
+use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Console\Application;
 
-$core = new Core();
+$container = new ContainerBuilder();
 $commands = $core->getCommands();
 
 $app = new Application();

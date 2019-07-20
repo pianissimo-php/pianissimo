@@ -8,8 +8,6 @@ use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Framework\Command\DebugRoutesCommand;
 use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
-use Pianissimo\Component\HttpFoundation\Controller\ErrorController;
-use Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\Response;
@@ -46,9 +44,9 @@ class Core
 
         $this->environment = $environment;
         $this->setDebugMode($debug);
-}
+    }
 
-    private function boot(): void
+    public function boot(): void
     {
         if ($this->booted === true) {
             return;
@@ -160,7 +158,8 @@ class Core
      */
     public function errorHandler($errorNo, $errorString, $errorFile, $errorLine): void
     {
-        dd($errorString); //todo
+        echo '<pre style="border: 2px solid black; padding: 20px;">' . print_r($errorString, true) . '</pre>';
+        die;
     }
 
     /**
@@ -168,7 +167,13 @@ class Core
      */
     public function exceptionHandler(Throwable $exception): void
     {
-        dd($exception); //todo
+        echo '<pre style="border: 2px solid black; padding: 20px;">' . print_r($exception->getFile() . $exception->getLine(), true) . '</pre>';
+        die;
+    }
+
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
     }
 
     public function getStartTime(): float

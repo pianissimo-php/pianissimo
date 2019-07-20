@@ -2,6 +2,7 @@
 
 namespace Pianissimo\Component\Framework;
 
+use LogicException;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\Routing\RoutingService;
@@ -40,7 +41,7 @@ class ControllerResolver
         $method = $route->getFunction();
 
         if ($this->container->has($class) === false) {
-            throw new NotFoundHttpException("No route found");
+            throw new LogicException('Route not defined as an service');
         }
 
         $controller = $this->container->get($class);

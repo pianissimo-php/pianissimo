@@ -4,8 +4,6 @@ namespace Pianissimo\Component\Routing;
 
 use App\Controller\IndexController;
 use Pianissimo\Component\Annotation\AnnotationReader;
-use Pianissimo\Component\Container\Container;
-use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
 class RoutingService
@@ -127,7 +125,7 @@ class RoutingService
     private function findControllerClasses(): array
     {
         return [
-          IndexController::class,
+            IndexController::class,
         ];
         //return $this->container->getSetting('controllers');
     }
