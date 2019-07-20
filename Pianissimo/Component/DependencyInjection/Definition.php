@@ -19,7 +19,7 @@ class Definition
      */
     private $arguments;
 
-    public function __construct(?string $class, array $arguments = [])
+    public function __construct(string $class, array $arguments = [])
     {
         $this->class = $class;
         $this->autowired = false;

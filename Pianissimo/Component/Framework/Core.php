@@ -7,6 +7,7 @@ use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Framework\Command\DebugRoutesCommand;
+use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
 use Pianissimo\Component\HttpFoundation\Controller\ErrorController;
 use Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
@@ -95,13 +96,14 @@ class Core
         $routingService = new RoutingService(new RouteRegistry(), new AnnotationReader());
         $controllerResolver = new ControllerResolver($routingService, $this->container);
 
-        $controllerMethod = $controllerResolver->resolve($request);
+        $controllerCallable = $controllerResolver->resolve($request);
 
-        $response = $controllerMethod();
+        $response = $controllerCallable();
         //$response->setRoute($route);
 
         if (!$response instanceof Response) {
-            throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return an instance of '%s', '%s' given.", $function, $class, Response::class, gettype($response)));
+            //throw new UnexpectedValueException(sprintf("Function '%s' in controller class '%s' must return an instance of '%s', '%s' given.", $function, $class, Response::class, gettype($response)));
+            throw new UnexpectedValueException(sprintf("Function must return an instance of '%s'.", Response::class));
         }
 
         return $response;
@@ -128,8 +130,10 @@ class Core
         }
         $stream = $response->getBody();
 
+        // TODO fix debugging toolbar
         //$pianoTuner = $this->container->getSetting('piano_tuner');
         //echo $pianoTuner === true && $response->isRendered() === true ? $this->pianoTuner($response) : '';
+        echo $response->isRendered() === true ? PianoTuner::pianoTuner($response, $this->startTime) : '';
 
         if ($stream->isSeekable()) {
             $stream->rewind();
@@ -156,19 +160,25 @@ class Core
      */
     public function errorHandler($errorNo, $errorString, $errorFile, $errorLine): void
     {
-        $errorController = $this->container->get(ErrorController::class);
-        $response = $errorController->index($errorNo, $errorString, $errorFile, $errorLine);
-        $this->handleResponse($response);
+        dd($errorString); //todo
     }
+
     /**
      * Calls the ExceptionController and handles it's Response
      */
     public function exceptionHandler(Throwable $exception): void
     {
-        dd($exception);
-        $exceptionController = $this->container->autowire(ExceptionController::class);
-        $response = $exceptionController->index($exception);
-        $this->handleResponse($response);
+        dd($exception); //todo
+    }
+
+    public function getStartTime(): float
+    {
+        return $this->startTime;
+    }
+
+    public function getEnvironment(): string
+    {
+        return $this->environment;
     }
 
     public function getCommands(): array

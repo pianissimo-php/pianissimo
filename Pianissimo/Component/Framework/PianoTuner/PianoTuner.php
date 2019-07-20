@@ -2,12 +2,15 @@
 
 namespace Pianissimo\Component\Framework\PianoTuner;
 
+use Pianissimo\Component\HttpFoundation\Response;
+use ReflectionClass;
+
 class PianoTuner
 {
     /**
      * All code below this line is temporary
      */
-    private function pianoTuner(Response $response): string
+    public static function pianoTuner(Response $response, float $startTime): string
     {
         $controllerInfo = (new ReflectionClass($response->getControllerClass()))->getShortName() . '::' . $response->getControllerFunction();
         $originInfo = $response->getRoute() ? $response->getRoute()->getName() : $controllerInfo;
@@ -21,7 +24,7 @@ class PianoTuner
             $codeColor = '#eb4d4b';
         }
 
-        $executionTime = round(((microtime(true) - $this->getStartTime()) * 1000), 0);
+        $executionTime = round(((microtime(true) - $startTime) * 1000), 0);
 
         return '
             <div id="' . $hashToolbar . '" style="font-family: Verdana; font-size: 14px; background: black; position: fixed; 
