@@ -179,7 +179,7 @@ class Builder
             return $definition;
         }
 
-        throw new InvalidArgumentException(sprint_f("Error: unable to inject class '%s': there is no service definition found and autowiring is disabled", $class));
+        throw new InvalidArgumentException(sprintf("Error: unable to inject class '%s': there is no service definition found and autowiring is disabled", $class));
     }
 
     private function registerNewDefinition(Definition $definition): void
