@@ -1,9 +1,9 @@
 <?php
 
-namespace Pianissimo\Component\Core\Command;
+namespace Pianissimo\Component\Framework\Command;
 
 use Pianissimo\Component\Container\Container;
-use Pianissimo\Component\Core\Core;
+use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Routing\RoutingService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DebugRoutesCommand extends Command
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $container;
 

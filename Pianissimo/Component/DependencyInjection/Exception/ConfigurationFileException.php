@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Container\Exception;
+namespace Pianissimo\Component\DependencyInjection\Exception;
 
 use Exception;
 use Throwable;

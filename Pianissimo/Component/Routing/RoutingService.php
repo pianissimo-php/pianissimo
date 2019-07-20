@@ -2,24 +2,26 @@
 
 namespace Pianissimo\Component\Routing;
 
+use App\Controller\IndexController;
 use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\Container\Container;
+use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
 class RoutingService
 {
-    /** @var Container */
-    private $container;
-
-    /** @var RouteRegistry */
+    /**
+     * @var RouteRegistry
+     */
     private $routeRegistry;
 
-    /** @var AnnotationReader */
+    /**
+     * @var AnnotationReader
+     */
     private $annotationReader;
 
-    public function __construct(Container $container, RouteRegistry $routeRegistry, AnnotationReader $annotationReader)
+    public function __construct(RouteRegistry $routeRegistry, AnnotationReader $annotationReader)
     {
-        $this->container = $container;
         $this->routeRegistry = $routeRegistry;
         $this->annotationReader = $annotationReader;
     }
@@ -124,6 +126,9 @@ class RoutingService
      */
     private function findControllerClasses(): array
     {
-        return $this->container->getSetting('controllers');
+        return [
+          IndexController::class,
+        ];
+        //return $this->container->getSetting('controllers');
     }
 }

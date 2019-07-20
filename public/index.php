@@ -1,6 +1,6 @@
 <?php
 
-use Pianissimo\Component\Core\HttpCore;
+use Pianissimo\Component\Framework\Core;
 use Pianissimo\Component\HttpFoundation\Request;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -21,16 +21,8 @@ function dd($var):void
     die;
 }
 
-$core = new HttpCore();
+$core = new Core('dev', true);
 
 $request = Request::fromGlobals();
-$response = $core->handleRequest($request);
-$core->handleResponse($response);
-
-/*
-$core = new HttpCore();
-$request = new Request();
-
-$response = $core->handleRequest($request);
-$core->handleResponse($response);
-*/
+$response = $core->handle($request);
+$core->send($response);
