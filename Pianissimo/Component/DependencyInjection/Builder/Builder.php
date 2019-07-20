@@ -231,6 +231,13 @@ class Builder
         $class = $definition->getClass();
         $serviceId = $this->getServiceId($class);
 
+        $definitionReflectionClass = $this->getReflectionClass($class);
+        $constructor = $definitionReflectionClass->getConstructor();
+
+        if ($constructor && count($arguments) < $constructor->getNumberOfRequiredParameters()) {
+            throw new ContainerException(sprintf("Invalid service definition for class '%s'", $class));
+        }
+
         $instance = new $class(...$arguments);
         $this->services[$serviceId] = $instance;
 

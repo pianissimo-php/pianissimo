@@ -10,7 +10,9 @@ use Throwable;
 
 class ExceptionController
 {
-    /** @var Allegro */
+    /**
+     * @var Allegro
+     */
     private $allegro;
 
     public function __construct(Allegro $allegro)
