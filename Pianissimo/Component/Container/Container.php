@@ -14,8 +14,6 @@ use ReflectionMethod;
 
 class Container implements ContainerInterface
 {
-    /** @var array */
-    private $serviceRegistry;
 
     /** @var ConfigurationRegistry */
     private $configurationRegistry;
@@ -61,7 +59,6 @@ class Container implements ContainerInterface
      * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
      *
      * @param string $id Identifier of the entry to look for.
-     *
      */
     public function has($id): bool
     {
