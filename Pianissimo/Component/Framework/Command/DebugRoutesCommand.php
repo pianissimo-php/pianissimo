@@ -2,7 +2,6 @@
 
 namespace Pianissimo\Component\Framework\Command;
 
-use Pianissimo\Component\Container\Container;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Routing\RoutingService;
 use Symfony\Component\Console\Command\Command;
