@@ -223,6 +223,11 @@ class Builder
                 continue;
             }
 
+            if (is_string($argument) || is_float($argument) || is_int($argument)) {
+                $arguments[] = $argument;
+                continue;
+            }
+
             if ($argumentDefinition === null) {
                 throw new InvalidArgumentException(sprintf("Argument '%s' with type '%s' is not a valid argument type to wire", $argument, gettype($argument)));
             }
