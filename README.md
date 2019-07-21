@@ -26,7 +26,7 @@ Feedback is always welcome!
 - Annotation
 - Cache
 - Config
-- DependencyInjection
+- [DependencyInjection](https://github.com/pianissimo-php/dependency-injection)
 - Finder
 - Framework
 - HttpFoundation
