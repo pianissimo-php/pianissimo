@@ -6,7 +6,9 @@ use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 
 class RouteRegistry
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     private $registry;
 
     public function __construct()

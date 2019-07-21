@@ -3,7 +3,7 @@
 namespace Pianissimo\Component\Framework\Command;
 
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
-use Pianissimo\Component\Routing\RoutingService;
+use Pianissimo\Component\Routing\Router;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,8 +32,8 @@ class DebugRoutesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var RoutingService $routingService */
-        $routingService = $this->container->autowire(RoutingService::class);
+        /** @var Router $routingService */
+        $routingService = $this->container->autowire(Router::class);
         $routingService->initializeRoutes();
 
         $routes = $routingService->getRegistry();

@@ -7,17 +7,21 @@ use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
-use Pianissimo\Component\Routing\RoutingService;
+use Pianissimo\Component\Routing\RouterInterface;
 
 class ControllerService
 {
-    /** @var RoutingService */
+    /**
+     * @var RouterInterface
+     */
     private $routingService;
 
-    /** @var Allegro */
+    /**
+     * @var Allegro
+     */
     private $allegro;
 
-    public function __construct(RoutingService $routingService, Allegro $allegro)
+    public function __construct(RouterInterface $routingService, Allegro $allegro)
     {
         $this->routingService = $routingService;
         $this->allegro = $allegro;

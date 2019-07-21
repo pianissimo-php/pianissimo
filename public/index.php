@@ -1,6 +1,6 @@
 <?php
 
-use Pianissimo\Component\Framework\Core;
+use App\Core;
 use Pianissimo\Component\HttpFoundation\Request;
 
 require __DIR__ . '/../vendor/autoload.php';

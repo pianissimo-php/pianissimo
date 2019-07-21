@@ -2,7 +2,7 @@
 
 namespace App\Manager;
 
-class EntityManager
+class EntityManager implements EntityManagerInterface
 {
 
 }
