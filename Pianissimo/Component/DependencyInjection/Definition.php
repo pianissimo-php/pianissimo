@@ -2,7 +2,7 @@
 
 namespace Pianissimo\Component\DependencyInjection;
 
-class Definition
+class Definition extends DefinitionType
 {
     /**
      * @var string|null

@@ -6,7 +6,7 @@ use App\Controller\IndexController;
 use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
-class RoutingService
+class Router implements RouterInterface
 {
     /**
      * @var RouteRegistry

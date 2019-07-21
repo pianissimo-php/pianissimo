@@ -5,13 +5,13 @@ namespace Pianissimo\Component\Framework;
 use LogicException;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Pianissimo\Component\Routing\RoutingService;
+use Pianissimo\Component\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ControllerResolver
 {
     /**
-     * @var RoutingService
+     * @var Router
      */
     private $routingService;
 
@@ -20,7 +20,7 @@ class ControllerResolver
      */
     private $container;
 
-    public function __construct(RoutingService $routingService, ContainerInterface $container)
+    public function __construct(Router $routingService, ContainerInterface $container)
     {
         $this->routingService = $routingService;
         $this->container = $container;
@@ -41,7 +41,7 @@ class ControllerResolver
         $method = $route->getFunction();
 
         if ($this->container->has($class) === false) {
-            throw new LogicException('Route not defined as an service');
+            throw new LogicException('Controller not defined as an service');
         }
 
         $controller = $this->container->get($class);

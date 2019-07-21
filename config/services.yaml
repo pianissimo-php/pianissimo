@@ -1,0 +1,14 @@
+services:
+  App\Manager\EntityManagerInterface: '@entity_manager'
+
+  entity_manager:
+    class: App\Manager\EntityManager
+    autowire: true
+
+  mailer_service:
+    class: App\Service\MailerService
+    arguments: ['@entity_manager', 'smtp']
+
+  index.controller:
+    class: App\Controller\IndexController
+    autowire: true

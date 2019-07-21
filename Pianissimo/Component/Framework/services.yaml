@@ -1,0 +1,6 @@
+services:
+  Pianissimo\Component\Routing\RouterInterface: '@router'
+
+  router:
+    class: Pianissimo\Component\Routing\Router
+    autowire: true

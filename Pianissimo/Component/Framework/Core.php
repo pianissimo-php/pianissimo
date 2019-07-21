@@ -4,22 +4,27 @@ namespace Pianissimo\Component\Framework;
 
 use App\Controller\IndexController;
 use Pianissimo\Component\Annotation\AnnotationReader;
+use Pianissimo\Component\Config\DelegatingLoader;
+use Pianissimo\Component\Config\FileLocator;
+use Pianissimo\Component\Config\LoaderInterface;
+use Pianissimo\Component\Config\LoaderResolver;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
-use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Framework\Command\DebugRoutesCommand;
+use Pianissimo\Component\Framework\Loader\YamlFileLoader;
 use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\RouteRegistry;
-use Pianissimo\Component\Routing\RoutingService;
+use Pianissimo\Component\Routing\Router;
+use ReflectionObject;
 use Throwable;
 use UnexpectedValueException;
 
 class Core
 {
     /**
-     * @var ContainerInterface
+     * @var ContainerBuilder
      */
     private $container;
 
@@ -38,6 +43,11 @@ class Core
      */
     private $booted;
 
+    /**
+     * @var string
+     */
+    private $projectDir;
+
     public function __construct(string $environment, bool $debug)
     {
         $this->startTime = microtime(true);
@@ -55,33 +65,39 @@ class Core
         $this->initializeContainer();
         $this->booted = true;
 
+        /*
         $this->container
             ->register('controller.index', IndexController::class)
             ->setAutowired(true);
+        */
 
         $this->container->build();
     }
 
     private function initializeContainer(): void
     {
-        $this->container = new ContainerBuilder();
+        $container = new ContainerBuilder();
 
-        /*
-        $this->container
-            ->register('annotation.reader', AnnotationReader::class)
-            ->setAutowired(true);
+        $containerLoader = $this->getContainerLoader($container);
 
-        $this->container
-            ->register('jon', ControllerService::class)
-            ->setAutowired(true);
+        $containerLoader->load(__DIR__ . DIRECTORY_SEPARATOR . 'services.yaml');
 
-        $this->container
-            ->register('bob', RoutingService::class)
-            ->setAutowired(true);
+        if (method_exists($this, 'configureContainer')) {
+            $this->configureContainer($containerLoader);
+        }
 
-        $this->container
-            ->register('kees', RouteRegistry::class);
-        */
+        $this->container = $container;
+    }
+
+    private function getContainerLoader(ContainerBuilder $container): LoaderInterface
+    {
+        $loaders = [
+            new YamlFileLoader($container),
+        ];
+
+        $loaderResolver = new LoaderResolver($loaders);
+
+        return new DelegatingLoader($loaderResolver);
     }
 
     /**
@@ -91,7 +107,9 @@ class Core
     {
         $this->boot();
 
-        $routingService = new RoutingService(new RouteRegistry(), new AnnotationReader());
+        $routeRegistry = new RouteRegistry();
+        $routingService = new Router($routeRegistry, new AnnotationReader());
+
         $controllerResolver = new ControllerResolver($routingService, $this->container);
 
         $controllerCallable = $controllerResolver->resolve($request);
@@ -167,11 +185,34 @@ class Core
      */
     public function exceptionHandler(Throwable $exception): void
     {
+        dd($exception);
         echo '<pre style="border: 2px solid black; padding: 20px;">' . print_r($exception->getFile() . $exception->getLine(), true) . '</pre>';
         die;
     }
 
-    public function getContainer(): ContainerInterface
+    /**
+     * Gets the application root dir (path of the project's composer file).
+     */
+    public function getProjectDir(): string
+    {
+        if ($this->projectDir === null) {
+            $reflectionObject = new ReflectionObject($this);
+            $dir = $rootDir = dirname($reflectionObject->getFileName());
+
+            while (!file_exists($dir . '/composer.json')) {
+                if ($dir === dirname($dir)) {
+                    return $this->projectDir = $rootDir;
+                }
+                $dir = dirname($dir);
+            }
+
+            $this->projectDir = $dir;
+        }
+
+        return $this->projectDir;
+    }
+
+    public function getContainer(): ContainerBuilder
     {
         return $this->container;
     }

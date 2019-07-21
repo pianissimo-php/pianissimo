@@ -5,7 +5,7 @@ namespace Pianissimo\Component\DependencyInjection;
 /**
  * This class holds a reference to a service definition.
  */
-class Reference
+class Reference extends DefinitionType
 {
     /**
      * @var string

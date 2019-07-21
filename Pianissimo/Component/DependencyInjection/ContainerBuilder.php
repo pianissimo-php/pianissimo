@@ -9,7 +9,7 @@ use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class ContainerBuilder extends Container
 {
     /**
-     * @var Definition[]|array
+     * @var DefinitionType[]|array
      */
     private $definitions = [];
 
@@ -38,19 +38,24 @@ class ContainerBuilder extends Container
         $this->parameterBag->set($name, $value);
     }
 
-    public function register(string $id, $class = null): Definition
+    public function add(string $id, DefinitionType $definitionType): void
+    {
+        $this->setDefinition($id, $definitionType);
+    }
+
+    public function register(string $id, string $class): DefinitionType
     {
         return $this->setDefinition($id, new Definition($class));
     }
 
-    public function getDefinitions()
+    public function getDefinitions(): array
     {
         return $this->definitions;
     }
 
-    private function setDefinition(string $id, Definition $serviceDefinition): Definition
+    private function setDefinition(string $id, DefinitionType $definitionType): DefinitionType
     {
-        return $this->definitions[$id] = $serviceDefinition;
+        return $this->definitions[$id] = $definitionType;
     }
 
     public function has($id): bool
