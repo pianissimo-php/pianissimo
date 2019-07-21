@@ -11,6 +11,9 @@ Similarly, the goal isn't to provide a solid solution that fits in any situation
 This project gives me the opportunity to learn and adapt code standards, techniques and (design) patterns.
 Feedback is always welcome!
 
+**Documentation**
+- [Dependency Injection Component](https://github.com/pianissimo-php/docs/tree/master/dependency-injection)
+
 **PSR standards**
 - PSR-2: Coding Style Guide
 - PSR-4: Autoloader
@@ -22,9 +25,10 @@ Feedback is always welcome!
 - Allegro
 - Annotation
 - Cache
-- Container
-- Core
+- Config
+- DependencyInjection
 - Finder
+- Framework
 - HttpFoundation
 - Routing
 
@@ -34,7 +38,7 @@ Feedback is always welcome!
 - psr/simple-cache
 - symfony/console
 - symfony/yaml
-- ~~guzzlehttp/psr7~~
+- guzzlehttp/psr7
 
 **Commands**
 - `bin/console debug:routes`

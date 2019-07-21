@@ -1,0 +1,14 @@
+{
+    "name": "pianissimo-php/dependency-injection",
+    "description": "The Dependency Injection Component allows you to implement the dependency injection design pattern.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "jonmldr",
+            "email": "jonmldr@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "psr/container": "^1.0"
+    }
+}

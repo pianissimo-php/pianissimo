@@ -2,7 +2,6 @@
 
 namespace Pianissimo\Component\DependencyInjection\Builder;
 
-use App\Manager\EntityManagerInterface;
 use BadMethodCallException;
 use InvalidArgumentException;
 use LogicException;
@@ -220,6 +219,11 @@ class Builder
 
             if ($argument instanceof Value) {
                 $arguments[] = (string) $argument;
+                continue;
+            }
+
+            if (is_string($argument) || is_float($argument) || is_int($argument)) {
+                $arguments[] = $argument;
                 continue;
             }
 

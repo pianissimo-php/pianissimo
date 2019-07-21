@@ -4,6 +4,7 @@ namespace Pianissimo\Component\DependencyInjection;
 
 use Pianissimo\Component\DependencyInjection\Builder\Builder;
 use Pianissimo\Component\DependencyInjection\Exception\ContainerException;
+use Pianissimo\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ContainerBuilder extends Container
@@ -43,7 +44,7 @@ class ContainerBuilder extends Container
         $this->setDefinition($id, $definitionType);
     }
 
-    public function register(string $id, string $class): DefinitionType
+    public function register(string $id, string $class): Definition
     {
         return $this->setDefinition($id, new Definition($class));
     }
@@ -69,13 +70,17 @@ class ContainerBuilder extends Container
     {
         $serviceId = $this->getServiceId($id);
 
+        if ($this->has($id) === false) {
+            throw new ServiceNotFoundException('Service not found');
+        }
+
         return parent::get($serviceId);
     }
 
     public function build(): void
     {
         if ($this->built === true) {
-            throw new ContainerException('Container already built');
+            throw new ContainerException('The container has already been built');
         }
 
         $builder = new Builder();
@@ -88,10 +93,12 @@ class ContainerBuilder extends Container
         $this->built = true;
     }
 
-    private function getServiceId(string $id)
+    private function getServiceId(string $id): string
     {
         if (array_key_exists($id, $this->serviceIds)) {
             return $this->serviceIds[$id];
         }
+
+        return $id;
     }
 }
