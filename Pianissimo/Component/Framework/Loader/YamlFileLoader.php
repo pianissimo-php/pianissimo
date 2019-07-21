@@ -2,8 +2,8 @@
 
 namespace Pianissimo\Component\Framework\Loader;
 
-use Pianissimo\Component\DependencyInjection\Reference;
-use Pianissimo\Component\DependencyInjection\Value;
+use Pianissimo\Component\DependencyInjection2\Reference;
+use Pianissimo\Component\DependencyInjection2\Value;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 

@@ -3,7 +3,7 @@
 namespace Pianissimo\Component\Framework\Loader;
 
 use Pianissimo\Component\Config\LoaderInterface;
-use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\DependencyInjection2\ContainerBuilder;
 
 abstract class FileLoader implements LoaderInterface
 {
