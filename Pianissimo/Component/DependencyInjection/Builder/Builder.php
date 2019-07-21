@@ -1,19 +1,19 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection2\Builder;
+namespace Pianissimo\Component\DependencyInjection\Builder;
 
 use App\Manager\EntityManagerInterface;
 use BadMethodCallException;
 use InvalidArgumentException;
 use LogicException;
-use Pianissimo\Component\DependencyInjection2\ContainerBuilder;
-use Pianissimo\Component\DependencyInjection2\ContainerInterface;
-use Pianissimo\Component\DependencyInjection2\Definition;
-use Pianissimo\Component\DependencyInjection2\DefinitionType;
-use Pianissimo\Component\DependencyInjection2\Exception\ClassNotFoundException;
-use Pianissimo\Component\DependencyInjection2\Exception\ContainerException;
-use Pianissimo\Component\DependencyInjection2\Reference;
-use Pianissimo\Component\DependencyInjection2\Value;
+use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\DependencyInjection\ContainerInterface;
+use Pianissimo\Component\DependencyInjection\Definition;
+use Pianissimo\Component\DependencyInjection\DefinitionType;
+use Pianissimo\Component\DependencyInjection\Exception\ClassNotFoundException;
+use Pianissimo\Component\DependencyInjection\Exception\ContainerException;
+use Pianissimo\Component\DependencyInjection\Reference;
+use Pianissimo\Component\DependencyInjection\Value;
 use ReflectionClass;
 use ReflectionException;
 
