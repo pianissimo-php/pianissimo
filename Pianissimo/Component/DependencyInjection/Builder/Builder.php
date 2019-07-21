@@ -2,7 +2,6 @@
 
 namespace Pianissimo\Component\DependencyInjection\Builder;
 
-use App\Manager\EntityManagerInterface;
 use BadMethodCallException;
 use InvalidArgumentException;
 use LogicException;
