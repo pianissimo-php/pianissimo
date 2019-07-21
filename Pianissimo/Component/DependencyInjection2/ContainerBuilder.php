@@ -1,10 +1,10 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection;
+namespace Pianissimo\Component\DependencyInjection2;
 
-use Pianissimo\Component\DependencyInjection\Builder\Builder;
-use Pianissimo\Component\DependencyInjection\Exception\ContainerException;
-use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Pianissimo\Component\DependencyInjection2\Builder\Builder;
+use Pianissimo\Component\DependencyInjection2\Exception\ContainerException;
+use Pianissimo\Component\DependencyInjection2\ParameterBag\ParameterBagInterface;
 
 class ContainerBuilder extends Container
 {
