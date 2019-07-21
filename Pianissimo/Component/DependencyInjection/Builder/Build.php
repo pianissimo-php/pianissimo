@@ -7,17 +7,17 @@ use Pianissimo\Component\DependencyInjection\Definition;
 class Build
 {
     /**
-     * @var object[]
+     * @var object[]|array
      */
     private $services;
 
     /**
-     * @var object[]
+     * @var object[]|array
      */
     private $definitions;
 
     /**
-     * @var string[]
+     * @var string[]|array
      */
     private $serviceIds;
 
