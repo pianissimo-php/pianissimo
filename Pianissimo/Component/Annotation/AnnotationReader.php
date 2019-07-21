@@ -6,7 +6,7 @@ use App\Annotation\Person;
 use Pianissimo\Component\Annotation\Exception\AnnotationNotFoundException;
 use BadFunctionCallException;
 use InvalidArgumentException;
-use Pianissimo\Component\DependencyInjection\ContainerInterface;
+use Pianissimo\Component\DependencyInjection2\ContainerInterface;
 use Pianissimo\Component\Routing\Annotation\Route;
 use ReflectionClass;
 use ReflectionProperty;

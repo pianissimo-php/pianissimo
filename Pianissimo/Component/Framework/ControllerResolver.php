@@ -3,7 +3,7 @@
 namespace Pianissimo\Component\Framework;
 
 use LogicException;
-use Pianissimo\Component\DependencyInjection\ContainerInterface;
+use Pianissimo\Component\DependencyInjection2\ContainerInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;

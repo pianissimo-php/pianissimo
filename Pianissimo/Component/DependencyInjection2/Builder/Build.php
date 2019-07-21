@@ -1,8 +1,8 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection\Builder;
+namespace Pianissimo\Component\DependencyInjection2\Builder;
 
-use Pianissimo\Component\DependencyInjection\Definition;
+use Pianissimo\Component\DependencyInjection2\Definition;
 
 class Build
 {

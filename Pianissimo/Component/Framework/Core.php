@@ -8,7 +8,7 @@ use Pianissimo\Component\Config\DelegatingLoader;
 use Pianissimo\Component\Config\FileLocator;
 use Pianissimo\Component\Config\LoaderInterface;
 use Pianissimo\Component\Config\LoaderResolver;
-use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\DependencyInjection2\ContainerBuilder;
 use Pianissimo\Component\Framework\Command\DebugRoutesCommand;
 use Pianissimo\Component\Framework\Loader\YamlFileLoader;
 use Pianissimo\Component\Framework\PianoTuner\PianoTuner;

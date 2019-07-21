@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection;
+namespace Pianissimo\Component\DependencyInjection2;
 
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 

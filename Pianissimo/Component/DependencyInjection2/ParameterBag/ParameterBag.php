@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection\ParameterBag;
+namespace Pianissimo\Component\DependencyInjection2\ParameterBag;
 
 class ParameterBag implements ParameterBagInterface
 {

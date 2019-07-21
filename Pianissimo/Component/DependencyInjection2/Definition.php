@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection;
+namespace Pianissimo\Component\DependencyInjection2;
 
 class Definition extends DefinitionType
 {
