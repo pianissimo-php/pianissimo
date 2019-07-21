@@ -2,15 +2,13 @@
 
 namespace Pianissimo\Component\HttpFoundation;
 
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Pianissimo\Component\Routing\Route;
 
-class Response
+class Response extends GuzzleResponse
 {
-    /** @var string */
-    private $content;
-
-    /** @var int */
-    private $statusCode;
+    /** @var Route|null */
+    private $route;
 
     /** @var string */
     private $controllerClass;
@@ -18,29 +16,16 @@ class Response
     /** @var string */
     private $controllerFunction;
 
-    /** @var Route|null */
-    private $route;
-
     /** @var bool */
-    private $isRendered;
+    private $rendered;
 
-    public function __construct(string $content, int $statusCode = 200)
+    public function __construct($body = null, int $status = 200, array $headers = [], string $version = '1.1', ?string $reason = null)
     {
-        $this->content = $content;
+        parent::__construct($status, $headers, $body, $version, $reason);
+
         $this->controllerClass = debug_backtrace()[1]['class'];
         $this->controllerFunction = debug_backtrace()[1]['function'];
-        $this->statusCode = $statusCode;
-        $this->isRendered = false;
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    public function getStatusCode(): int
-    {
-        return $this->statusCode;
+        $this->rendered = false;
     }
 
     public function getRoute(): ?Route
@@ -60,17 +45,20 @@ class Response
 
     public function isRendered(): bool
     {
-        return $this->isRendered;
+        return $this->rendered;
     }
 
     public function setRoute(Route $route): self
     {
         $this->route = $route;
+
         return $this;
     }
 
-    public function setRendered(bool $isRendered): void
+    public function setRendered(bool $rendered): self
     {
-        $this->isRendered = $isRendered;
+        $this->rendered = $rendered;
+
+        return $this;
     }
 }

@@ -7,6 +7,13 @@
   },
   "require": {
     "monolog/monolog": "^1.24",
-    "symfony/yaml": "^4.2"
+    "symfony/yaml": "^4.2",
+    "psr/container": "^1.0",
+    "psr/http-server-middleware": "^1.0",
+    "guzzlehttp/psr7": "^1.5",
+    "symfony/console": "^4.2"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.11.12"
   }
 }

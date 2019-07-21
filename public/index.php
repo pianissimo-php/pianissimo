@@ -1,9 +1,9 @@
 <?php
 
-use Pianissimo\Component\Core\HttpCore;
+use App\Core;
 use Pianissimo\Component\HttpFoundation\Request;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 function dump($var, $return = false)
 {
@@ -21,8 +21,8 @@ function dd($var):void
     die;
 }
 
-$core = new HttpCore();
-$request = new Request();
+$core = new Core('dev', true);
 
-$response = $core->handleRequest($request);
-$core->handleResponse($response);
+$request = Request::fromGlobals();
+$response = $core->handle($request);
+$core->send($response);

@@ -2,23 +2,21 @@
 
 namespace Pianissimo\Component\Annotation;
 
+use App\Annotation\Person;
 use Pianissimo\Component\Annotation\Exception\AnnotationNotFoundException;
-use Pianissimo\Component\Container\Container;
 use BadFunctionCallException;
 use InvalidArgumentException;
+use Pianissimo\Component\DependencyInjection\ContainerInterface;
+use Pianissimo\Component\Routing\Annotation\Route;
 use ReflectionClass;
 use ReflectionProperty;
 
+/**
+ * TODO
+ * - clean up logic
+ */
 class AnnotationReader
 {
-    /** @var Container */
-    private $container;
-
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
     public function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationName = null): array
     {
         if (class_exists($className) === false) {
@@ -76,12 +74,15 @@ class AnnotationReader
     }
 
     /**
-     * TODO improve logic
      * @throws AnnotationNotFoundException
      */
     private function getAnnotationClass(string $annotationName): string
     {
-        $annotations = $this->container->getSetting('annotations');
+        //$annotations = $this->container->getSetting('annotations');
+        $annotations = [
+            'Person' => Person::class,
+            'Route' => Route::class,
+        ];
         if (isset($annotations[$annotationName]) === false) {
             throw new AnnotationNotFoundException(sprintf("Annotation '%s' not found. Did u forget to configure it in 'config/config.yaml?'", $annotationName));
         }

@@ -8,19 +8,25 @@ use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\JsonResponse;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\Annotation\Route;
-use Pianissimo\Component\Core\ControllerService;
+use Pianissimo\Component\Framework\ControllerService;
 use App\TestClass;
 
 class IndexController
 {
-    /** @var ControllerService */
+    /**
+     * @var ControllerService
+     */
     private $controllerService;
 
-    /** @var AnnotationReader */
+    /**
+     * @var AnnotationReader
+     */
     private $annotationReader;
 
-    public function __construct(ControllerService $controllerService, AnnotationReader $annotationReader)
-    {
+    public function __construct(
+        ControllerService $controllerService,
+        AnnotationReader $annotationReader
+    ) {
         $this->controllerService = $controllerService;
         $this->annotationReader = $annotationReader;
     }
