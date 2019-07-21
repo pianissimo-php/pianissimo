@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection2;
+namespace Pianissimo\Component\DependencyInjection;
 
 /**
  * This class holds a reference to a service definition.
