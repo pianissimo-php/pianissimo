@@ -1,9 +1,9 @@
 <?php
 
-namespace Pianissimo\Component\DependencyInjection2;
+namespace Pianissimo\Component\DependencyInjection;
 
-use Pianissimo\Component\DependencyInjection2\ParameterBag\ParameterBag;
-use Pianissimo\Component\DependencyInjection2\ParameterBag\ParameterBagInterface;
+use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
