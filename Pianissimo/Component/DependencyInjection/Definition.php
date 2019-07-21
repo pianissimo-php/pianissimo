@@ -15,7 +15,7 @@ class Definition extends DefinitionType
     private $autowired;
 
     /**
-     * @var array
+     * @var mixed[]|array
      */
     private $arguments;
 
