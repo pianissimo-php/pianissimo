@@ -4,8 +4,8 @@ include '../vendor/autoload.php';
 
 use App\Manager\EntityManager;
 use App\Service\MailerService;
-use Pianissimo\Component\DependencyInjection2\ContainerBuilder;
-use Pianissimo\Component\DependencyInjection2\Reference;
+use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\DependencyInjection\Reference;
 
 $containerBuilder = new ContainerBuilder();
 

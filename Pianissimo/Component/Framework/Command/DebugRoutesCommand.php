@@ -2,7 +2,7 @@
 
 namespace Pianissimo\Component\Framework\Command;
 
-use Pianissimo\Component\DependencyInjection2\ContainerInterface;
+use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Routing\Router;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
