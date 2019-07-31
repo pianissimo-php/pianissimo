@@ -28,6 +28,8 @@ In this way one or more configuration files with service definitions can be load
 
 ### Service definitions
 The Framework Component provides a `YamlFileLoader` which allows you to use YAML to define your service definitions.
+The file for the service definitions is located by default in `config/services.yaml`.
+
 You can define a service like this:
 ````YAML
 services:
