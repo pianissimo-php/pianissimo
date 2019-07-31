@@ -2,16 +2,16 @@
 
 namespace App;
 
-use Pianissimo\Component\Config\LoaderInterface;
+use Pianissimo\Component\Config\DelegatingLoader;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 
 class Core extends \Pianissimo\Component\Framework\Core
 {
-    public function configureContainer(LoaderInterface $loader): void
+    public function configureContainer(DelegatingLoader $loader): void
     {
-        $configDir = $this->getProjectDir() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        $configDir = $this->getProjectDir() . DIRECTORY_SEPARATOR . 'config';
 
-        $loader->load($configDir . 'services.yaml');
+        $loader->load($configDir . DIRECTORY_SEPARATOR . 'services.yaml');
     }
 
     public function buildContainer(ContainerBuilder $containerBuilder)

@@ -11,7 +11,7 @@ services:
 
   mailer_service:
     class: App\Service\MailerService
-    arguments: ['@entity_manager', 'smtp']
+    arguments: ['@entity_manager', 'SMTP']
 
   #index.controller:
   #  class: App\Controller\IndexController
