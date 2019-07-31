@@ -66,11 +66,11 @@ $containerBuilder->addCompilerPass($compilerPass);
 ````
 
 ## Get a service from the container
-If the container is built, you can get a service from the container after it like this:
+When the container is built, you can get a service from the container after it like this:
 ````PHP
 $mailerService = $containerBuilder->get('mailer_service');
 ````
-The container loads the service when it is initialized, otherwise it will initialize the services' built definition.
+The container loads the service when it is initialized, otherwise it will initialize the service using its built definition.
 
 Avoid using the `get()` method, you should fetch your dependencies using the constructor.
 If you use the MVC pattern, you should define your controllers as services 
