@@ -234,6 +234,7 @@ class ContainerBuilder extends Container
 
         foreach ($definition->getMethodCalls() as $methodCall) {
             $methodName = $methodCall->getMethod();
+
             $instance->$methodName(...$methodCall->getArguments());
         }
 

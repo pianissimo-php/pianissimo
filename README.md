@@ -12,7 +12,7 @@ This project gives me the opportunity to learn and adapt code standards, techniq
 Feedback is always welcome!
 
 **Documentation**
-- [Dependency Injection Component](https://github.com/pianissimo-php/dependency-injection)
+- [Dependency Injection Component](https://github.com/pianissimo-php/dependency-injection/blob/master/README.md)
 
 **PSR standards**
 - PSR-2: Coding Style Guide
