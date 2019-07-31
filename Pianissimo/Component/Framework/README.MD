@@ -8,7 +8,7 @@ It is common to use a Core class located in `src/Core.php` which extends `Pianis
 This allows you to configure the Core to the requirements of the project.
 
 ### Container
-The Container is booted in the `handle()` method.
+The container is booted in the `handle()` method.
 When the container is booted, the container is initialized and built.
 
 The container is an instance of the `ContainerBuilder` class.
@@ -24,10 +24,10 @@ public function configureContainer(DelegatingLoader $loader): void
     $loader->load($configDir . DIRECTORY_SEPARATOR . 'services.yaml');
 }
 ````
-In this way one or more configuration files with service definitions can be loaded via the `configureContainer()` method by adding them to the `DelegatingLoader`.
+In this way one or more configuration files with service definitions can be loaded via the `configureContainer()` method by adding them to the container loader.
 
 #### Service definitions
-You can define your services in `services.yaml` like this:
+You can define your services in a yaml file (`config/services.yaml` by default) like this:
 ````YAML
 services:
   entity_manager:
