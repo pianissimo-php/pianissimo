@@ -1,7 +1,7 @@
 # The Framework Component
 The Framework Component 'glues' all components together into a framework.
 
-#### WARNING: this component is in development and unstable to use.
+##### WARNING: this component is in development and unstable to use.
 
 ## Core
 It is common to use a Core class located in `src/Core.php` which extends `Pianissimo\Component\Framework\Core`.
@@ -26,8 +26,9 @@ public function configureContainer(DelegatingLoader $loader): void
 ````
 In this way one or more configuration files with service definitions can be loaded via the `configureContainer()` method by adding them to the container loader.
 
-#### Service definitions
-You can define your services in a yaml file (`config/services.yaml` by default) like this:
+### Service definitions
+The Framework Component provides a `YamlFileLoader` which allows you to use YAML to define your service definitions.
+You can define a service like this:
 ````YAML
 services:
   entity_manager:
