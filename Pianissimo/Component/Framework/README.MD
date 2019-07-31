@@ -52,7 +52,10 @@ services:
 ````
 
 ### Controller resolver
-After the container has been booted in the `handle()` method, the controller resolver is called.
+After the container has been booted in the `handle()` method, the `ControllerResolver` is called.
 The `AnnotatedRouteLoader` that implements the `Pianissimo\Component\Routing\RouteLoaderInterface` is used to load the - 
 as the name suggests - annotated routes, defined in the controllers.
-The `RouterControllerCompilerPass` which adds a method call, is used to load the routes.
+The `RouterControllerCompilerPass` is used to add the controller classes to the `AnnotatedRouteLoader`.
+
+`Pianissimo\Component\Framework\Router` that implements the `Pianissimo\Component\Routing\RouterInterface` 
+is used to match the route to a controller method.
