@@ -10,9 +10,7 @@ use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\DependencyInjection\Definition;
 use Pianissimo\Component\DependencyInjection\DefinitionType;
 use Pianissimo\Component\DependencyInjection\Exception\ClassNotFoundException;
-use Pianissimo\Component\DependencyInjection\Exception\ContainerException;
 use Pianissimo\Component\DependencyInjection\Reference;
-use Pianissimo\Component\DependencyInjection\Value;
 use ReflectionClass;
 use ReflectionException;
 
@@ -39,11 +37,6 @@ class Builder
      */
     private $definitions = [];
 
-    /**
-     * @var object[]|array
-     */
-    private $services = [];
-
     public function build(ContainerBuilder $containerBuilder, bool $autowireByDefault = false): Build
     {
         $this->autowireByDefault = $autowireByDefault;
@@ -52,11 +45,10 @@ class Builder
 
         $this->registerServiceIds($definitions);
         $this->buildDefinitions($definitions);
-        $this->initializeDefinitions();
 
         unset($this->reflectionClasses);
 
-        return new Build($this->services, $this->definitions, $this->serviceIds);
+        return new Build($this->definitions, $this->serviceIds);
     }
 
     private function registerServiceIds(array $definitions): void
@@ -93,6 +85,10 @@ class Builder
     {
         if ($definition instanceof Reference) {
             return $definition;
+        }
+
+        if (!$definition instanceof Definition) {
+            throw new LogicException('Unhandled type: TODO');
         }
 
         $class = $definition->getClass();
@@ -189,94 +185,6 @@ class Builder
         $this->definitions[$id] = $definition;
     }
 
-    private function initializeDefinitions(): void
-    {
-        $definitions = $this->definitions;
-
-        foreach ($definitions as $serviceId => $definition) {
-            $this->initializeDefinition($serviceId, $definition);
-        }
-    }
-
-    private function initializeDefinition(string $serviceId, DefinitionType $definition): object
-    {
-        if ($definition instanceof Reference) {
-            return $this->initializeDefinition($serviceId, $this->resolveReference($definition));
-        }
-
-        $arguments = [];
-
-        foreach ($definition->getArguments() as $key => $argument) {
-            $argumentDefinition = null;
-
-            if ($argument instanceof Reference) {
-                $argumentDefinition = $this->resolveReference($argument);
-            }
-
-            if ($argument instanceof Definition) {
-                $argumentDefinition = $argument;
-            }
-
-            if ($argument instanceof Value) {
-                $arguments[] = (string) $argument;
-                continue;
-            }
-
-            if (is_string($argument) || is_float($argument) || is_int($argument)) {
-                $arguments[] = $argument;
-                continue;
-            }
-
-            if ($argumentDefinition === null) {
-                throw new InvalidArgumentException(sprintf("Argument '%s' with type '%s' is not a valid argument type to wire", $argument, gettype($argument)));
-            }
-
-            $argumentServiceId = $this->getServiceId($argumentDefinition->getClass());
-
-            if ($this->hasService($argumentServiceId)) {
-                $arguments[] = $this->getService($argumentServiceId);
-                continue;
-            }
-
-            $arguments[] = $this->initializeDefinition($argumentDefinition->getClass(), $argumentDefinition);
-        }
-
-        $class = $definition->getClass();
-
-        $definitionReflectionClass = $this->getReflectionClass($class);
-        $constructor = $definitionReflectionClass->getConstructor();
-
-        if ($constructor && count($arguments) < $constructor->getNumberOfRequiredParameters()) {
-            throw new ContainerException(sprintf("Invalid service definition for class '%s'", $class));
-        }
-
-        $instance = new $class(...$arguments);
-        $this->services[$serviceId] = $instance;
-
-        return $instance;
-    }
-
-    private function resolveReference(Reference $reference): Definition
-    {
-        $id = (string) $reference;
-
-        if (array_key_exists($id, $this->definitions) === false) {
-            throw new InvalidArgumentException(sprintf("Definition with id '%s' does not exists", $id));
-        }
-
-        $match = $this->definitions[$id];
-
-        if ($match instanceof Definition) {
-            return $match;
-        }
-
-        if ($match instanceof Reference) {
-            return $this->resolveReference($match);
-        }
-
-        throw new LogicException('Unknown type');
-    }
-
     /**
      * @throws ReflectionException
      */
@@ -287,24 +195,5 @@ class Builder
         }
 
         return $this->reflectionClasses[$class];
-    }
-
-    private function getServiceId(string $class): string
-    {
-        if (array_key_exists($class, $this->serviceIds)) {
-            return $this->serviceIds[$class];
-        }
-
-        return $class;
-    }
-
-    private function hasService(string $id): bool
-    {
-        return array_key_exists($id, $this->services);
-    }
-
-    private function getService(string $id): object
-    {
-        return $this->services[$id];
     }
 }

@@ -23,6 +23,8 @@ class Container implements ContainerInterface
     {
         // Initialize Pianissimo's ParameterBag if none is provided
         $this->parameterBag = $parameterBag ?: new ParameterBag();
+
+        $this->services = [];
     }
 
     /**

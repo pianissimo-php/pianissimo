@@ -7,16 +7,24 @@ namespace Pianissimo\Component\Finder;
  */
 class Path
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $dirname;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $basename;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $filename;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $extension;
 
     public function __construct(?string $path = null)

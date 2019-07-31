@@ -2,21 +2,19 @@
 
 namespace Pianissimo\Component\Framework;
 
-use App\Controller\IndexController;
-use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\Config\DelegatingLoader;
-use Pianissimo\Component\Config\FileLocator;
 use Pianissimo\Component\Config\LoaderInterface;
 use Pianissimo\Component\Config\LoaderResolver;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\Framework\Command\DebugRoutesCommand;
+use Pianissimo\Component\Framework\Dump\Dump;
 use Pianissimo\Component\Framework\Loader\YamlFileLoader;
 use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
+use Pianissimo\Component\HttpFoundation\Controller\ErrorController;
+use Pianissimo\Component\HttpFoundation\Controller\ExceptionController;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\Response;
-use Pianissimo\Component\Routing\RouteRegistry;
-use Pianissimo\Component\Routing\Router;
 use ReflectionObject;
 use Throwable;
 use UnexpectedValueException;
@@ -63,15 +61,9 @@ class Core
         }
 
         $this->initializeContainer();
-        $this->booted = true;
-
-        /*
-        $this->container
-            ->register('controller.index', IndexController::class)
-            ->setAutowired(true);
-        */
-
         $this->container->build();
+
+        $this->booted = true;
     }
 
     private function initializeContainer(): void
@@ -107,10 +99,7 @@ class Core
     {
         $this->boot();
 
-        $routeRegistry = new RouteRegistry();
-        $routingService = new Router($routeRegistry, new AnnotationReader());
-
-        $controllerResolver = new ControllerResolver($routingService, $this->container);
+        $controllerResolver = new ControllerResolver($this->container);
 
         $controllerCallable = $controllerResolver->resolve($request);
 
@@ -163,7 +152,7 @@ class Core
     private function setDebugMode(bool $mode): void
     {
         if ($mode === true) {
-            set_error_handler([$this, 'errorHandler'], E_STRICT);
+            set_error_handler([$this, 'errorHandler'], E_ALL);
             set_exception_handler([$this, 'exceptionHandler']);
         } else {
             ini_set('display_errors', 0);
@@ -176,8 +165,9 @@ class Core
      */
     public function errorHandler($errorNo, $errorString, $errorFile, $errorLine): void
     {
-        echo '<pre style="border: 2px solid black; padding: 20px;">' . print_r($errorString, true) . '</pre>';
-        die;
+        $errorController = $this->container->get(ErrorController::class);
+        $response = $errorController->index($errorNo, $errorString, $errorFile, $errorLine);
+        $this->send($response);
     }
 
     /**
@@ -185,9 +175,9 @@ class Core
      */
     public function exceptionHandler(Throwable $exception): void
     {
-        dd($exception);
-        echo '<pre style="border: 2px solid black; padding: 20px;">' . print_r($exception->getFile() . $exception->getLine(), true) . '</pre>';
-        die;
+        $exceptionController = $this->container->get(ExceptionController::class);
+        $response = $exceptionController->index($exception);
+        $this->send($response);
     }
 
     /**

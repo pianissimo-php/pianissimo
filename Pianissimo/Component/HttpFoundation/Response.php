@@ -7,16 +7,24 @@ use Pianissimo\Component\Routing\Route;
 
 class Response extends GuzzleResponse
 {
-    /** @var Route|null */
+    /**
+     * @var Route|null
+     */
     private $route;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $controllerClass;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $controllerFunction;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     private $rendered;
 
     public function __construct($body = null, int $status = 200, array $headers = [], string $version = '1.1', ?string $reason = null)

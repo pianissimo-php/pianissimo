@@ -1,4 +1,8 @@
 services:
+  App\Controller:
+    resource: '../src/Controller/*'
+    tags: ['controller']
+
   App\Manager\EntityManagerInterface: '@entity_manager'
 
   entity_manager:
@@ -9,6 +13,6 @@ services:
     class: App\Service\MailerService
     arguments: ['@entity_manager', 'smtp']
 
-  index.controller:
-    class: App\Controller\IndexController
-    autowire: true
+  #index.controller:
+  #  class: App\Controller\IndexController
+  #  autowire: true

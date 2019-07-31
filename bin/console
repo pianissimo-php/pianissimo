@@ -3,13 +3,15 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use App\Core;
 use Symfony\Component\Console\Application;
 
-$container = new ContainerBuilder();
-$commands = $core->getCommands();
+$core = new Core('dev', true);
+$core->boot();
 
 $app = new Application();
+
+$commands = $core->getCommands();
 
 foreach ($commands as $command) {
     $app->add(new $command($core->getContainer()));

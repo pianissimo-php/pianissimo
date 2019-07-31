@@ -53,12 +53,7 @@ class IndexController
      */
     public function annotation(): Response
     {
-        $annotations = $this->annotationReader->getPropertyAnnotations(TestClass::class, 'person');
-        $content = dump($annotations, true);
-
-        return $this->controllerService->render('dump.html.allegro', [
-            'dump' => $content,
-        ]);
+        dd($this->annotationReader->getPropertyAnnotations(TestClass::class, 'person'));
     }
 
     /**
@@ -74,7 +69,7 @@ class IndexController
     }
 
     /**
-     * @Route(path="/json", name="app_annotation")
+     * @Route(path="/json", name="app_json")
      */
     public function json(): Response
     {

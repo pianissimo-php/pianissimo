@@ -1,0 +1,5 @@
+#!/usr/bin/env php
+<?php
+
+echo exec('git push');
+echo exec('git subtree push --prefix=Pianissimo/Component/DependencyInjection https://github.com/pianissimo-php/dependency-injection.git master');

@@ -9,11 +9,6 @@ class Build
     /**
      * @var object[]|array
      */
-    private $services;
-
-    /**
-     * @var object[]|array
-     */
     private $definitions;
 
     /**
@@ -21,19 +16,10 @@ class Build
      */
     private $serviceIds;
 
-    public function __construct(array $services, array $definitions, array $serviceIds)
+    public function __construct(array $definitions, array $serviceIds)
     {
-        $this->services = $services;
         $this->definitions = $definitions;
         $this->serviceIds = $serviceIds;
-    }
-
-    /**
-     * @return object[]
-     */
-    public function getServices(): array
-    {
-        return $this->services;
     }
 
     /**
