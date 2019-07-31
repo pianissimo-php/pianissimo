@@ -123,10 +123,7 @@ class YamlFileLoader extends FileLoader
     {
         $definitions = [];
 
-        //$currentPath = dirname($this->file);
-        //$resource = $currentPath . DIRECTORY_SEPARATOR . $service['resource'];
         $resource = $service['resource'];
-
         $files = glob($resource);
 
         foreach ($files as $file) {
