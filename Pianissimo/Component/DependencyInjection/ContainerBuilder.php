@@ -85,6 +85,10 @@ class ContainerBuilder extends Container
      */
     public function get($id): object
     {
+        if ($this->built === false) {
+            throw new ContainerException('The container has not yet been built');
+        }
+
         $serviceId = $this->getServiceId($id);
 
         if ($this->has($serviceId)) {
