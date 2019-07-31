@@ -1,11 +1,11 @@
-## The Dependency Injection Component
+# The Dependency Injection Component
 The Dependency Injection Component allows you to implement the dependency injection design pattern.
 
-### What is a service?
+## What is a service?
 A service is a object which can be injected as an dependency of your class.
 The services are stored in the container.
 
-### Defining services
+## Defining services
 
 The most easy way to create a container is to use the `ContainerBuilder`. The `ContainerBuilder` implements the `ContainerInterface`.
 ````PHP
@@ -49,7 +49,7 @@ After the container is built, you can use the `findServicesByTag()` method to re
 $containerBuilder->findServicesByTag('controller');
 ````
 
-### Building the container
+## Building the container
 Build the container using the `build` method:
 ````PHP
 $containerBuilder->build();
@@ -58,14 +58,14 @@ $containerBuilder->build();
 The Builder class builds all definitions and autowires all definitions of which the autowiring is enabled.
 When all the definitions have been built, the definitions are initialized as services, and will be available in the container.
 
-### Compiler passes
+## Compiler passes
 You can add compiler passes to the container, these are processed after all definitions have been built.
 Compiler passes must implement the `CompilerPassInterface`.
 ````PHP
 $containerBuilder->addCompilerPass($compilerPass);
 ````
 
-### Get a service from the container
+## Get a service from the container
 You can get a service from the container like this:
 ````PHP
 $mailerService = $containerBuilder->get('mailer_service');
@@ -74,8 +74,7 @@ Avoid using the `get()` method, you should fetch your dependencies using the con
 If you use the MVC pattern, you should define your controllers as services 
 and use the `get()` method in your controller resolver to initialize the controller.
 
-
-### Injecting the container
+## Injecting the container
 The Dependency Injection Component does not allow you to inject the service container.
 Your services should not be container aware, they do not need to know how and that they have been injected.
 [Read more](https://stackoverflow.com/questions/10356497/is-is-an-anti-pattern-to-inject-di-container-to-almost-each-class)
