@@ -6,7 +6,6 @@
     }
   },
   "require": {
-    "monolog/monolog": "^1.24",
     "symfony/yaml": "^4.2",
     "psr/container": "^1.0",
     "psr/http-server-middleware": "^1.0",

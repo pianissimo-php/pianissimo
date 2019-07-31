@@ -37,13 +37,6 @@ Feedback is always welcome!
 - psr/http-server-middleware
 - psr/simple-cache
 - symfony/console
+- symfony/var-dumper
 - symfony/yaml
 - guzzlehttp/psr7
-
-**Commands**
-- `bin/console debug:routes`
-- `php-cs-fixer fix src`
-- `git remote set-url origin https://github.com/pianissimo-php/pianissimo.git`
-
-**Links**
-- https://flatuicolors.com/palette/au
