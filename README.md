@@ -13,6 +13,7 @@ Feedback is always welcome!
 
 **Documentation**
 - [Dependency Injection Component](https://github.com/pianissimo-php/dependency-injection/blob/master/README.md)
+- [Framework Component](https://github.com/pianissimo-php/pianissimo/blob/master/Pianissimo/Component/Framework/README.MD)
 
 **PSR standards**
 - PSR-2: Coding Style Guide

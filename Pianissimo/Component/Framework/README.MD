@@ -57,5 +57,5 @@ The `AnnotatedRouteLoader` that implements the `Pianissimo\Component\Routing\Rou
 as the name suggests - annotated routes, defined in the controllers.
 The `RouterControllerCompilerPass` is used to add the controller classes to the `AnnotatedRouteLoader`.
 
-`Pianissimo\Component\Framework\Router` that implements the `Pianissimo\Component\Routing\RouterInterface` 
+Class `Pianissimo\Component\Framework\Router` that implements the `Pianissimo\Component\Routing\RouterInterface` 
 is used to match the route to a controller method.
