@@ -55,15 +55,15 @@ Build the container using the `build` method:
 $containerBuilder->build();
 ````
 
+The Builder class builds all definitions and autowires all definitions of which the autowiring is enabled.
+When all the definitions have been built, the definitions are initialized as services, and will be available in the container.
+
 ### Compiler passes
 You can add compiler passes to the container, these are processed after all definitions have been built.
 Compiler passes must implement the `CompilerPassInterface`.
 ````PHP
 $containerBuilder->addCompilerPass($compilerPass);
 ````
-
-The Builder class builds all definitions and autowires all definitions of which the autowiring is enabled.
-When all the definitions have been built, the definitions are initialized as services, and will be available in the container.
 
 ### Get a service from the container
 You can get a service from the container like this:
