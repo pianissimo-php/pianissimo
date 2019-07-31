@@ -2,8 +2,9 @@
 
 namespace Pianissimo\Component\Framework\Command;
 
-use Pianissimo\Component\DependencyInjection\ContainerInterface;
-use Pianissimo\Component\Routing\Router;
+use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\Framework\Router;
+use Pianissimo\Component\Framework\Routing\AnnotatedRouteLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,11 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DebugRoutesCommand extends Command
 {
     /**
-     * @var ContainerInterface
+     * @var ContainerBuilder
      */
     private $container;
 
-    public function __construct(ContainerInterface $container, string $name = null)
+    public function __construct(ContainerBuilder $container, string $name = null)
     {
         parent::__construct($name);
         $this->container = $container;
@@ -32,11 +33,20 @@ class DebugRoutesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var Router $routingService */
-        $routingService = $this->container->autowire(Router::class);
-        $routingService->initializeRoutes();
+        dd($this->container->findServicesByTag('controller'));
 
-        $routes = $routingService->getRegistry();
+        /** @var Router $router */
+        $router = $this->container->get(Router::class);
+
+        /** @var AnnotatedRouteLoader $annotatedRouteLoader */
+        $annotatedRouteLoader = $this->container->get(AnnotatedRouteLoader::class);
+
+
+        $annotatedRouteLoader->load();
+
+        $router->initializeRoutes();
+
+        $routes = $routingService->getRoutes();
 
         $routeRows = [];
 

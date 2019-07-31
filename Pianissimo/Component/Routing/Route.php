@@ -4,16 +4,24 @@ namespace Pianissimo\Component\Routing;
 
 class Route
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $function;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $path;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $name;
 
     public function __construct(string $class, string $function, string $path, ?string $name = null)

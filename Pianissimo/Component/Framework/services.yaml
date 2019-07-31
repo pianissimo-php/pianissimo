@@ -2,5 +2,22 @@ services:
   Pianissimo\Component\Routing\RouterInterface: '@router'
 
   router:
-    class: Pianissimo\Component\Routing\Router
+    class: Pianissimo\Component\Framework\Router
     autowire: true
+
+  annotated_route_loader:
+    class: Pianissimo\Component\Framework\Routing\AnnotatedRouteLoader
+    autowire: true
+    tags: ['framework_annotated_route_loader']
+
+  error_controller:
+    class: Pianissimo\Component\HttpFoundation\Controller\ErrorController
+    autowire: true
+
+  exception_controller:
+    class: Pianissimo\Component\HttpFoundation\Controller\ExceptionController
+    autowire: true
+
+# Temporary solution: Pianissimo doesn't support bundles yet (which can add compiler passes)
+compiler_passes:
+  - Pianissimo\Component\Framework\Routing\RouterControllerCompilerPass

@@ -2,43 +2,33 @@
 
 namespace Pianissimo\Component\Routing;
 
-use App\Controller\IndexController;
-use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
 class Router implements RouterInterface
 {
     /**
-     * @var RouteRegistry
+     * @var Route[]|RouteCollection
      */
-    private $routeRegistry;
+    protected $routeCollection;
 
     /**
-     * @var AnnotationReader
+     * @var RouteLoaderInterface[]|array
      */
-    private $annotationReader;
+    private $routeLoaders;
 
-    public function __construct(RouteRegistry $routeRegistry, AnnotationReader $annotationReader)
+    public function __construct()
     {
-        $this->routeRegistry = $routeRegistry;
-        $this->annotationReader = $annotationReader;
+        $this->routeCollection = new RouteCollection();
+        $this->routeLoaders = [];
     }
 
     /**
-     * Returns the registry with the initialized routes.
+     * Returns the initialized routes.
+     * @return Route[]|array
      */
-    public function getRegistry(): array
+    public function getRoutes(): array
     {
-        return $this->routeRegistry->all();
-    }
-
-    /**
-     * Handles all route loaders and registers their routes in the registry.
-     */
-    public function initializeRoutes(): void
-    {
-        $routes = $this->getAnnotationRoutes();
-        $this->routeRegistry->initialize($routes);
+        return $this->routeCollection->all();
     }
 
     /**
@@ -46,7 +36,7 @@ class Router implements RouterInterface
      */
     public function matchRoute(string $path): ?Route
     {
-        $routes = $this->getRegistry();
+        $routes = $this->getRoutes();
 
         /** @var Route $route */
         foreach ($routes as $route) {
@@ -63,9 +53,8 @@ class Router implements RouterInterface
      */
     public function findRoute(string $routeName): ?Route
     {
-        $routes = $this->getRegistry();
+        $routes = $this->getRoutes();
 
-        /** @var Route $route */
         foreach ($routes as $route) {
             if ($route->getName() === $routeName) {
                 return $route;
@@ -90,43 +79,10 @@ class Router implements RouterInterface
         return $route;
     }
 
-    /**
-     * Returns all routes defined by annotations in the controllers.
-     */
-    public function getAnnotationRoutes(): array
+    public function addLoader(RouteLoaderInterface $routeLoader): self
     {
-        $routes = [];
-        $classes = $this->findControllerClasses();
+        $this->routeLoaders[] = $routeLoader;
 
-        foreach ($classes as $class) {
-            $functions = get_class_methods($class);
-
-            if ($functions === null) {
-                continue;
-            }
-
-            foreach ($functions as $function) {
-                $annotations = $this->annotationReader->getFunctionAnnotations($class, $function, 'Route');
-
-                foreach ($annotations as $annotation) {
-                    $route = new Route($class, $function, $annotation->path, $annotation->name);
-                    $routes[] = $route;
-                }
-            }
-        }
-
-        return $routes;
-    }
-
-    /**
-     * Returns all Controller classes
-     * TODO improve logic
-     */
-    private function findControllerClasses(): array
-    {
-        return [
-            IndexController::class,
-        ];
-        //return $this->container->getSetting('controllers');
+        return $this;
     }
 }

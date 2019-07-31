@@ -8,22 +8,6 @@ use App\Service\MailerService;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\DependencyInjection\Reference;
 
-function dump($var, $return = false)
-{
-    $dump = '<pre style="border: 2px solid black; padding: 20px;">' . print_r($var, true) . '</pre>';
-
-    if ($return === true) {
-        return $dump;
-    }
-    echo $dump;
-}
-
-function dd($var):void
-{
-    dump($var);
-    die;
-}
-
 $containerBuilder = new ContainerBuilder();
 
 $containerBuilder
