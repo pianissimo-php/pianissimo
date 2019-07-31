@@ -11,10 +11,8 @@ class MailerService
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, string $method)
     {
         $this->entityManager = $entityManager;
-
-        //print_r($sendMethod, true);
     }
 }

@@ -19,7 +19,8 @@ $containerBuilder
 
 $containerBuilder
     ->register('mailer.service', MailerService::class)
-    ->setAutowired(true);
+    ->addArgument(new Reference('entity.manager'))
+    ->addArgument('SMTP');
 
 $containerBuilder->add(EntityManagerInterface::class, new Reference('entity.manager'));
 
