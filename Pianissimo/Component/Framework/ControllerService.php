@@ -2,13 +2,14 @@
 
 namespace Pianissimo\Component\Framework;
 
-use Pianissimo\Component\Allegro\Allegro;
-use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
+use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 use Pianissimo\Component\Routing\RouterInterface;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class ControllerService
 {
@@ -18,14 +19,16 @@ class ControllerService
     private $routingService;
 
     /**
-     * @var Allegro
+     * @var ParameterBagInterface
      */
-    private $allegro;
+    private $parameterBag;
 
-    public function __construct(RouterInterface $routingService, Allegro $allegro)
-    {
+    public function __construct(
+        RouterInterface $routingService,
+        ParameterBagInterface $parameterBag
+    ) {
         $this->routingService = $routingService;
-        $this->allegro = $allegro;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -42,12 +45,17 @@ class ControllerService
         return new RedirectResponse($route->getPath());
     }
 
-    /**
-     * @throws TemplateNotFoundException
-     */
     public function render(string $template, array $data = []): Response
     {
-        $response = new Response($this->allegro->render($template, $data));
+        $configDir = $this->parameterBag->get('project.dir') . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+
+        $loader = new FilesystemLoader($configDir . $this->parameterBag->get('templates_dir'));
+
+        $twig = new Environment($loader, [
+            'cache' => $configDir . $this->parameterBag->get('cache_dir'),
+        ]);
+
+        $response = new Response($twig->render($template, $data));
         $response->setRendered(true);
 
         return $response;

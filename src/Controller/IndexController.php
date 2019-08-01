@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
 use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
@@ -44,7 +43,7 @@ class IndexController
      */
     public function index(): Response
     {
-        return $this->controllerService->render('index.html.allegro');
+        return $this->controllerService->render('index.html.twig');
     }
 
     /**
@@ -73,14 +72,13 @@ class IndexController
     }
 
     /**
-     * @Route(path="/allegro", name="app_allegro")
-     * @throws TemplateNotFoundException
+     * @Route(path="/twig", name="app_twig")
      */
-    public function allegro(): Response
+    public function twig(): Response
     {
-        return $this->controllerService->render('allegro.html.allegro', [
-            'title' => 'Allegro template engine',
-            'lead' => 'This is rendered by the Allegro template engine!',
+        return $this->controllerService->render('twig.html.twig', [
+            'title' => 'Pianissimo + Twig',
+            'lead' => 'This is rendered by Twig!',
         ]);
     }
 

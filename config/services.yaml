@@ -1,5 +1,6 @@
 parameters:
-  brand: 'Steinway & Sons'
+  cache_dir: '../var/cache'
+  templates_dir: '../templates'
 
 services:
   App\Controller:
@@ -15,7 +16,3 @@ services:
   mailer_service:
     class: App\Service\MailerService
     arguments: ['@entity_manager', 'SMTP']
-
-  #index.controller:
-  #  class: App\Controller\IndexController
-  #  autowire: true
