@@ -25,30 +25,28 @@ class YamlFileLoader extends FileLoader
             return;
         }
 
-        if (array_key_exists('services', $data)) {
-            $definitions = $this->handleServices($data['services']);
+        if (array_key_exists('parameters', $data)) {
+            $this->handleParameters($data['parameters']);
+        }
 
-            foreach ($definitions as $definitionId => $definition) {
-                $this->containerBuilder
-                    ->add($definitionId, $definition);
-            }
+        if (array_key_exists('services', $data)) {
+            $this->handleServices($data['services']);
         }
 
         if (array_key_exists('compiler_passes', $data)) {
-            $compilerPasses = $data['compiler_passes'];
-
-            if (gettype($compilerPasses) !== gettype([])) {
-                throw new ParseException(sprintf("Value of 'compiler_passes' of service definition of class '%s' must be an collection", $class));
-            }
-
-            foreach ($data['compiler_passes'] as $compilerPass) {
-                $instance = new $compilerPass();
-                $this->containerBuilder->addCompilerPass($instance);
-            }
+            $this->handleCompilerPasses($data['compiler_passes']);
         }
     }
 
-    private function handleServices(array $services): array
+    private function handleParameters(array $parameters): void
+    {
+        // Add the parameters to the ContainerBuilder.
+        foreach ($parameters as $parameterKey => $parameterValue) {
+            $this->containerBuilder->setParameter($parameterKey, $parameterValue);
+        }
+    }
+
+    private function handleServices(array $services): void
     {
         $definitions = [];
 
@@ -113,12 +111,12 @@ class YamlFileLoader extends FileLoader
             $definitions[$serviceId] = $definition;
         }
 
-        return $definitions;
+        // Add the service definitions to the ContainerBuilder.
+        foreach ($definitions as $definitionId => $definition) {
+            $this->containerBuilder->add($definitionId, $definition);
+        }
     }
 
-    /**
-     * @TODO Temporary solution
-     */
     private function handleServiceResource(array $service): array
     {
         $definitions = [];
@@ -146,6 +144,18 @@ class YamlFileLoader extends FileLoader
         }
 
         return $definitions;
+    }
+
+    private function handleCompilerPasses(array $compilerPasses): void
+    {
+        if (gettype($compilerPasses) !== gettype([])) {
+            throw new ParseException(sprintf("Value of 'compiler_passes' of service definition of class '%s' must be an collection", $class));
+        }
+
+        foreach ($compilerPasses as $compilerPass) {
+            $instance = new $compilerPass();
+            $this->containerBuilder->addCompilerPass($instance);
+        }
     }
 
     public function supports(): array

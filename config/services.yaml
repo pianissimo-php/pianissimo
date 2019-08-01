@@ -1,3 +1,6 @@
+parameters:
+  brand: 'Steinway & Sons'
+
 services:
   App\Controller:
     resource: '../src/Controller/*'
