@@ -56,7 +56,6 @@ $containerBuilder->build();
 ````
 
 The Builder class builds all definitions and autowires all definitions of which the autowiring is enabled.
-When all the definitions have been built, the definitions are initialized as services, and will be available in the container.
 
 ## Compiler passes
 You can add compiler passes to the container, these are processed after all definitions have been built.
