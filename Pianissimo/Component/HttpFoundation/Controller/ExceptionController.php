@@ -33,12 +33,7 @@ class ExceptionController
             'exceptionLine' => $exception->getLine(),
         ]);
 
-        // TODO nice stack trace
-        $tempDebug = array_map(static function ($traceItem) {
-           return $traceItem['class'] . ' -> <b>' . $traceItem['function'] . '</b>';
-        }, $exception->getTrace());
-
-        $response = new Response($content . dump($tempDebug, true), $exception->getCode());
+        $response = new Response($content, $exception->getCode());
         $response->setRendered(true);
 
         return $response;

@@ -37,16 +37,6 @@ class ContainerBuilder extends Container
         parent::__construct($parameterBag);
     }
 
-    public function getParameter(string $name)
-    {
-        return $this->parameterBag->get($name);
-    }
-
-    public function setParameter($name, $value): void
-    {
-        $this->parameterBag->set($name, $value);
-    }
-
     public function add(string $id, DefinitionType $definitionType): void
     {
         $this->setDefinition($id, $definitionType);

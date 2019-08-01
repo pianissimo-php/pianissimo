@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Pianissimo\Component\Allegro\Exception\TemplateNotFoundException;
 use Pianissimo\Component\Annotation\AnnotationReader;
+use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\JsonResponse;
 use Pianissimo\Component\HttpFoundation\Response;
@@ -23,12 +24,19 @@ class IndexController
      */
     private $annotationReader;
 
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
     public function __construct(
         ControllerService $controllerService,
-        AnnotationReader $annotationReader
+        AnnotationReader $annotationReader,
+        ParameterBagInterface $parameterBag
     ) {
         $this->controllerService = $controllerService;
         $this->annotationReader = $annotationReader;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -54,6 +62,14 @@ class IndexController
     public function annotation(): Response
     {
         dd($this->annotationReader->getPropertyAnnotations(TestClass::class, 'person'));
+    }
+
+    /**
+     * @Route(path="/parameter-bag", name="app_parameter_bag")
+     */
+    public function parameterBag(): Response
+    {
+        dd($this->parameterBag);
     }
 
     /**

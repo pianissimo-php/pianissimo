@@ -60,6 +60,7 @@ class Core
         }
 
         $this->initializeContainer();
+        $this->addParameters();
         $this->container->build();
 
         $this->booted = true;
@@ -89,6 +90,11 @@ class Core
         $loaderResolver = new LoaderResolver($loaders);
 
         return new DelegatingLoader($loaderResolver);
+    }
+
+    private function addParameters(): void
+    {
+        $this->container->setParameter('project.dir', $this->getProjectDir());
     }
 
     /**

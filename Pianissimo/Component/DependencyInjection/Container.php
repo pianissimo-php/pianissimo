@@ -21,10 +21,23 @@ class Container implements ContainerInterface
 
     public function __construct(ParameterBagInterface $parameterBag = null)
     {
+        $this->services = [];
+
         // Initialize Pianissimo's ParameterBag if none is provided
         $this->parameterBag = $parameterBag ?: new ParameterBag();
 
-        $this->services = [];
+        // Register the ParameterBag as a service
+        $this->services[ParameterBagInterface::class] = $this->parameterBag;
+    }
+
+    public function getParameter(string $name)
+    {
+        return $this->parameterBag->get($name);
+    }
+
+    public function setParameter($name, $value): void
+    {
+        $this->parameterBag->set($name, $value);
     }
 
     /**
