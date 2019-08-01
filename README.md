@@ -23,7 +23,6 @@ Feedback is always welcome!
 - PSR-16: Common Interface for Caching Libraries
 
 **Components**
-- Allegro
 - Annotation
 - Cache
 - Config
