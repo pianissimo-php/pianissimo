@@ -64,7 +64,6 @@ class Container implements ContainerInterface
      *
      * @param string $id Identifier of the entry to look for.
      *
-     * @return bool
      */
     public function has($id): bool
     {

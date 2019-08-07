@@ -123,7 +123,6 @@ class Core
      * Sends the given Response
      * Send a HTTP response
      *
-     * @return void
      */
     public function send(Response $response): void
     {

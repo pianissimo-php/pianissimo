@@ -2,14 +2,12 @@
 
 namespace Pianissimo\Component\Framework;
 
-use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Pianissimo\Component\Framework\Bridge\Twig;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 use Pianissimo\Component\Routing\RouterInterface;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 class ControllerService
 {
@@ -19,16 +17,16 @@ class ControllerService
     private $routingService;
 
     /**
-     * @var ParameterBagInterface
+     * @var Twig
      */
-    private $parameterBag;
+    private $twig;
 
     public function __construct(
         RouterInterface $routingService,
-        ParameterBagInterface $parameterBag
+        Twig $twig
     ) {
         $this->routingService = $routingService;
-        $this->parameterBag = $parameterBag;
+        $this->twig = $twig;
     }
 
     /**
@@ -47,15 +45,7 @@ class ControllerService
 
     public function render(string $template, array $data = []): Response
     {
-        $configDir = $this->parameterBag->get('project.dir') . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
-
-        $loader = new FilesystemLoader($configDir . $this->parameterBag->get('templates_dir'));
-
-        $twig = new Environment($loader, [
-            'cache' => $configDir . $this->parameterBag->get('cache_dir'),
-        ]);
-
-        $response = new Response($twig->render($template, $data));
+        $response = new Response($this->twig->render($template, $data));
         $response->setRendered(true);
 
         return $response;
