@@ -39,7 +39,7 @@ class IndexController
     }
 
     /**
-     * @Rou2te(path="", name="app_home")
+     * @Route(path="", name="app_home")
      */
     public function index(): Response
     {
