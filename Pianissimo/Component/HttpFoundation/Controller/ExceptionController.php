@@ -2,7 +2,6 @@
 
 namespace Pianissimo\Component\HttpFoundation\Controller;
 
-use Pianissimo\Component\Allegro\Allegro;
 use Pianissimo\Component\Finder\Path;
 use Pianissimo\Component\HttpFoundation\Response;
 use ReflectionClass;
@@ -10,16 +9,6 @@ use Throwable;
 
 class ExceptionController
 {
-    /**
-     * @var Allegro
-     */
-    private $allegro;
-
-    public function __construct(Allegro $allegro)
-    {
-        $this->allegro = $allegro;
-    }
-
     public function index(Throwable $exception): Response
     {
         $exceptionName = (new ReflectionClass($exception))->getShortName();
