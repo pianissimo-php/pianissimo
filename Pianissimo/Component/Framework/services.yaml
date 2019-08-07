@@ -11,11 +11,11 @@ services:
     tags: ['framework_annotated_route_loader']
 
   error_controller:
-    class: Pianissimo\Component\HttpFoundation\Controller\ErrorController
+    class: Pianissimo\Component\Framework\Controller\ErrorController
     autowire: true
 
   exception_controller:
-    class: Pianissimo\Component\HttpFoundation\Controller\ExceptionController
+    class: Pianissimo\Component\Framework\Controller\ExceptionController
     autowire: true
 
 # Temporary solution: Pianissimo doesn't support bundles yet (which can add compiler passes)

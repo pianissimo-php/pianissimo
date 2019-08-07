@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\HttpFoundation\Controller;
+namespace Pianissimo\Component\Framework\Controller;
 
 use Pianissimo\Component\HttpFoundation\Response;
 
