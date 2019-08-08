@@ -25,7 +25,12 @@ class ContainerBuilder extends Container
     /**
      * @var bool
      */
-    private $built;
+    private $defaultAutowiring = false;
+
+    /**
+     * @var bool
+     */
+    private $built = false;
 
     /**
      * @var CompilerPassInterface[]|array
@@ -37,14 +42,24 @@ class ContainerBuilder extends Container
         parent::__construct($parameterBag);
     }
 
-    public function add(string $id, DefinitionType $definitionType): void
+    public function add(string $id, DefinitionType $definitionType): self
     {
         $this->setDefinition($id, $definitionType);
+
+        return $this;
     }
 
     public function register(string $id, string $class): Definition
     {
         return $this->setDefinition($id, new Definition($class));
+    }
+
+    public function autowire(string $class): Definition
+    {
+        $definition = new Definition($class);
+        $definition->setAutowired(true);
+
+        return $this->setDefinition($class, $definition);
     }
 
     public function hasDefinition(string $id): bool
@@ -95,7 +110,7 @@ class ContainerBuilder extends Container
         }
 
         $builder = new Builder();
-        $build = $builder->build($this, true);
+        $build = $builder->build($this, $this->defaultAutowiring);
 
         $this->definitions = $build->getDefinitions();
         $this->serviceIds = $build->getServiceIds();
@@ -233,6 +248,18 @@ class ContainerBuilder extends Container
         }
 
         return $instance;
+    }
+
+    public function setDefaultAutowiring(bool $defaultAutowiring): self
+    {
+        $this->defaultAutowiring = $defaultAutowiring;
+
+        return $this;
+    }
+
+    public function isBuilt(): bool
+    {
+        return $this->built;
     }
 
     public function addCompilerPass(CompilerPassInterface $compilerPass): self

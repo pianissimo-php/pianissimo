@@ -27,7 +27,18 @@ $containerBuilder
     ->register('entity_manager', EntityManager::class)
     ->setAutowired(true);
 ````
+
+You can also autowire services using the `autowire` method:
+````PHP
+$containerBuilder->autowire(EntityManager::class);
+````
+
 The `Builder` class will autowire the `Definition` object.
+
+You can also choose to autowire the services by default:
+````PHP
+$containerBuilder->setDefaultAutowiring(true);
+````
 
 You can also define the service to be used for the injection of an interface like this:
 ````PHP

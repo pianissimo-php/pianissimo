@@ -70,6 +70,8 @@ class Core
     {
         $container = new ContainerBuilder();
 
+        $container->setDefaultAutowiring(true);
+
         $containerLoader = $this->getContainerLoader($container);
 
         $containerLoader->load(__DIR__ . DIRECTORY_SEPARATOR . 'services.yaml');
@@ -179,6 +181,10 @@ class Core
      */
     public function exceptionHandler(Throwable $exception): void
     {
+        if ($this->container->isBuilt() === false) {
+            dd($exception);
+        }
+
         $exceptionController = $this->container->get(ExceptionController::class);
         $response = $exceptionController->index($exception);
         $this->send($response);

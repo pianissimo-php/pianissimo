@@ -2,11 +2,14 @@
 
 include '../vendor/autoload.php';
 
+use App\Controller\IndexController;
 use App\Manager\EntityManager;
 use App\Manager\EntityManagerInterface;
 use App\Service\MailerService;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\DependencyInjection\Reference;
+use Pianissimo\Component\Framework\Router;
+use Pianissimo\Component\Routing\RouterInterface;
 
 $containerBuilder = new ContainerBuilder();
 
@@ -22,9 +25,28 @@ $containerBuilder
     ->addArgument(new Reference('entity.manager'))
     ->addArgument('SMTP');
 
-$containerBuilder->add(EntityManagerInterface::class, new Reference('entity.manager'));
+$containerBuilder
+    ->autowire(IndexController::class);
+
+$containerBuilder
+    ->autowire(Router::class);
+
+$containerBuilder
+    ->add(EntityManagerInterface::class, new Reference('entity.manager'))
+    ->add(RouterInterface::class, new Reference(Router::class));
+
+$containerBuilder
+    ->setDefaultAutowiring(true);
+
+$containerBuilder
+    ->setParameter('cache_dir', '../var/cache')
+    ->setParameter('templates_dir', '../templates')
+    ->setParameter('project.dir', __DIR__ . '/../');
 
 $containerBuilder->build();
 
+$indexController = $containerBuilder->get(IndexController::class);
+dump($indexController);
+
 $mailerService = $containerBuilder->get('mailer.service');
-dd($mailerService);
+dump($mailerService);

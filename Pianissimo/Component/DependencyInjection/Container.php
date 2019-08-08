@@ -35,9 +35,11 @@ class Container implements ContainerInterface
         return $this->parameterBag->get($name);
     }
 
-    public function setParameter($name, $value): void
+    public function setParameter($name, $value): self
     {
         $this->parameterBag->set($name, $value);
+
+        return $this;
     }
 
     /**
