@@ -97,15 +97,15 @@ class Router implements RouterInterface
         foreach ($routePathParts as $part) {
             $count++;
 
+            if ($part !== $requestPathParts[$count]) {
+                return false;
+            }
+
             $firstCharacter = substr($part, 0, 1);
             $lastCharacter = substr($part, -1);
 
             if ($firstCharacter === '{' && $lastCharacter === '}') {
                 continue;
-            }
-
-            if ($part !== $requestPathParts[$count]) {
-                return false;
             }
         }
 
