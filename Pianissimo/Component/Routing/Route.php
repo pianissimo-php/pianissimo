@@ -12,7 +12,7 @@ class Route
     /**
      * @var string
      */
-    private $function;
+    private $method;
 
     /**
      * @var string
@@ -26,12 +26,12 @@ class Route
 
     public function __construct(
         string $class,
-        string $function,
+        string $method,
         string $path,
         ?string $name = null
     ) {
         $this->class = $class;
-        $this->function = $function;
+        $this->method = $method;
         $this->path = $path;
         $this->name = $name;
     }
@@ -41,9 +41,9 @@ class Route
         return $this->class;
     }
 
-    public function getFunction(): string
+    public function getMethod(): string
     {
-        return $this->function;
+        return $this->method;
     }
 
     public function getPath(): string

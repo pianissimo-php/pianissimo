@@ -55,7 +55,7 @@ class DebugRoutesCommand extends Command
                 $route->getName(),
                 $route->getPath(),
                 $route->getClass(),
-                $route->getFunction(),
+                $route->getMethod(),
             ];
         }
 

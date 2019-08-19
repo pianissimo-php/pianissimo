@@ -37,7 +37,7 @@ class ControllerResolver
         }
 
         $class = $route->getClass();
-        $method = $route->getFunction();
+        $method = $route->getMethod();
         $parameters = $this->resolveParameters($route->getPath(), $path);
 
         $controller = $this->container->get($class);
