@@ -14,7 +14,7 @@ class ControllerService
     /**
      * @var RouterInterface
      */
-    private $routingService;
+    private $router;
 
     /**
      * @var Twig
@@ -22,10 +22,10 @@ class ControllerService
     private $twig;
 
     public function __construct(
-        RouterInterface $routingService,
+        RouterInterface $router,
         Twig $twig
     ) {
-        $this->routingService = $routingService;
+        $this->router = $router;
         $this->twig = $twig;
     }
 
@@ -35,12 +35,17 @@ class ControllerService
     public function redirectToRoute(string $routeName): RedirectResponse
     {
         try {
-            $route = $this->routingService->getRoute($routeName);
+            $route = $this->router->getRoute($routeName);
         } catch (RouteNotFoundException $e) {
             throw new NotFoundHttpException('404 Not found');
         }
 
         return new RedirectResponse($route->getPath());
+    }
+
+    public function generateUrl(string $routeName, array $parameters): string
+    {
+        return $this->router->generateUrl($routeName, $parameters);
     }
 
     public function render(string $template, array $data = []): Response

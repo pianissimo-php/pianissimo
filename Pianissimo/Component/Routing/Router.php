@@ -2,6 +2,7 @@
 
 namespace Pianissimo\Component\Routing;
 
+use InvalidArgumentException;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
 class Router implements RouterInterface
@@ -80,6 +81,44 @@ class Router implements RouterInterface
     }
 
     /**
+     * @throws RouteNotFoundException
+     */
+    public function generateUrl(string $routeName, array $parameters): string
+    {
+        $route = $this->getRoute($routeName);
+
+        $routePathParts = array_values(array_filter(explode('/', $route->getPath())));
+
+        $resultParts = [];
+        $usedParameters = [];
+
+        foreach ($routePathParts as $routePathPart) {
+            if ($this->isParameter($routePathPart) === false) {
+                $resultParts[] = $routePathPart;
+                continue;
+            }
+
+            $parameterName = str_replace(['{', '}'], [], $routePathPart);
+
+            if (array_key_exists($parameterName, $parameters) === false) {
+                throw new InvalidArgumentException(sprintf("Unable to generate the URL: required parameter '%s' is missing", $parameterName));
+            }
+
+            $resultParts[] = $parameters[$parameterName];
+            $usedParameters[] = $parameterName;
+        }
+
+        $unusedParameters = array_values(array_diff(array_keys($parameters), $usedParameters));
+
+        if (count($unusedParameters) > 0) {
+            throw new InvalidArgumentException(sprintf("Unable to generate the URL: given parameter '%s' does not exists on route '%s'",
+                 $unusedParameters[0], $routeName));
+        }
+
+        return '/' . implode('/', $resultParts);
+    }
+
+    /**
      * Determines whether the route path matches with the requested path.
      */
     private function equalPaths(string $routePath, string $requestPath): bool
@@ -94,22 +133,30 @@ class Router implements RouterInterface
         $match = true;
         $count = -1;
 
-        foreach ($routePathParts as $part) {
+        foreach ($routePathParts as $routePathPart) {
             $count++;
 
-            if ($part !== $requestPathParts[$count]) {
-                return false;
+            if ($this->isParameter($routePathPart)) {
+                continue;
             }
 
-            $firstCharacter = substr($part, 0, 1);
-            $lastCharacter = substr($part, -1);
-
-            if ($firstCharacter === '{' && $lastCharacter === '}') {
-                continue;
+            if ($routePathPart !== $requestPathParts[$count]) {
+                return false;
             }
         }
 
         return $match;
+    }
+
+    /**
+     * Returns true if the given path part is a parameter.
+     */
+    private function isParameter(string $part): bool
+    {
+        $firstCharacter = $part[0];
+        $lastCharacter = substr($part, -1);
+
+        return $firstCharacter === '{' && $lastCharacter === '}';
     }
 
     public function addLoader(RouteLoaderInterface $routeLoader): self

@@ -14,4 +14,9 @@ interface RouterInterface
      * @throws RouteNotFoundException
      */
     public function getRoute(string $routeName): Route;
+
+    /**
+     * @throws RouteNotFoundException
+     */
+    public function generateUrl(string $routeName, array $parameters): string;
 }

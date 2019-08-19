@@ -51,9 +51,15 @@ class IndexController
      */
     public function person(int $id, string $name): Response
     {
+        $routeUrl = $this->controllerService->generateUrl('app_person', [
+            'id' => 8,
+            'name' => 'john_doe',
+        ]);
+
         return $this->controllerService->render('person.html.twig', [
             'id' => $id,
             'name' => $name,
+            'routeUrl' => $routeUrl,
         ]);
     }
 
