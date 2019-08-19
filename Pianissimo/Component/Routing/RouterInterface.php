@@ -2,6 +2,7 @@
 
 namespace Pianissimo\Component\Routing;
 
+use InvalidArgumentException;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 
 interface RouterInterface
@@ -17,6 +18,7 @@ interface RouterInterface
 
     /**
      * @throws RouteNotFoundException
+     * @throws InvalidArgumentException
      */
     public function generateUrl(string $routeName, array $parameters): string;
 }

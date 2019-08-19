@@ -82,6 +82,7 @@ class Router implements RouterInterface
 
     /**
      * @throws RouteNotFoundException
+     * @throws InvalidArgumentException
      */
     public function generateUrl(string $routeName, array $parameters): string
     {

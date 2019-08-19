@@ -2,6 +2,7 @@
 
 namespace Pianissimo\Component\Framework;
 
+use InvalidArgumentException;
 use Pianissimo\Component\Framework\Bridge\Twig;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
@@ -43,6 +44,10 @@ class ControllerService
         return new RedirectResponse($route->getPath());
     }
 
+    /**
+     * @throws RouteNotFoundException
+     * @throws InvalidArgumentException
+     */
     public function generateUrl(string $routeName, array $parameters): string
     {
         return $this->router->generateUrl($routeName, $parameters);
