@@ -84,8 +84,8 @@ class Router implements RouterInterface
      */
     private function equalPaths(string $routePath, string $requestPath): bool
     {
-        $routePathParts = array_filter(explode('/', $routePath));
-        $requestPathParts = array_filter(explode('/', $requestPath));
+        $routePathParts = array_values(array_filter(explode('/', $routePath)));
+        $requestPathParts = array_values(array_filter(explode('/', $requestPath)));
 
         if (count($requestPathParts) !== count($routePathParts)) {
             return false;
@@ -104,9 +104,8 @@ class Router implements RouterInterface
                 continue;
             }
 
-            if (array_key_exists($count, $requestPathParts) && $part !== $requestPathParts[$count]) {
-                $match = false;
-                break;
+            if ($part !== $requestPathParts[$count]) {
+                return false;
             }
         }
 
