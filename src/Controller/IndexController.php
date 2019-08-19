@@ -47,6 +47,17 @@ class IndexController
     }
 
     /**
+     * @Route(path="/person/{id}/{name}", name="app_person")
+     */
+    public function person(int $id, string $name): Response
+    {
+        return $this->controllerService->render('person.html.twig', [
+            'id' => $id,
+            'name' => $name,
+        ]);
+    }
+
+    /**
      * @Route(path="/redirect", name="app_redirect")
      * @throws NotFoundHttpException
      */

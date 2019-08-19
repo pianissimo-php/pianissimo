@@ -39,7 +39,13 @@ class ExceptionController
             'exceptionLine' => $exception->getLine(),
         ]);
 
-        $response = new Response($content, $exception->getCode());
+        $code = $exception->getCode();
+
+        if ($code === 0) {
+            $code = 500;
+        }
+
+        $response = new Response($content, $code);
         $response->setRendered(true);
 
         return $response;

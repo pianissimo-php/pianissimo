@@ -44,7 +44,13 @@ class AnnotatedRouteLoader implements RouteLoaderInterface
                 $annotations = $this->annotationReader->getFunctionAnnotations($class, $function, 'Route');
 
                 foreach ($annotations as $annotation) {
-                    $route = new Route($class, $function, $annotation->path, $annotation->name);
+                    $route = new Route(
+                        $class,
+                        $function,
+                        $annotation->path,
+                        $annotation->name
+                    );
+
                     $routes->add($route);
                 }
             }

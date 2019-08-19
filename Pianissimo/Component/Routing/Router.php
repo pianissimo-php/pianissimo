@@ -34,13 +34,13 @@ class Router implements RouterInterface
     /**
      * Returns the Route instance whose paths match or returns null if there are no matches.
      */
-    public function matchRoute(string $path): ?Route
+    public function matchRoute(string $requestPath): ?Route
     {
         $routes = $this->getRoutes();
 
         /** @var Route $route */
         foreach ($routes as $route) {
-            if ($route->getPath() === $path) {
+            if ($this->equalPaths($route->getPath(), $requestPath)) {
                 return $route;
             }
         }
@@ -77,6 +77,40 @@ class Router implements RouterInterface
         }
 
         return $route;
+    }
+
+    /**
+     * Determines whether the route path matches with the requested path.
+     */
+    private function equalPaths(string $routePath, string $requestPath): bool
+    {
+        $routePathParts = array_filter(explode('/', $routePath));
+        $requestPathParts = array_filter(explode('/', $requestPath));
+
+        if (count($requestPathParts) !== count($routePathParts)) {
+            return false;
+        }
+
+        $match = true;
+        $count = -1;
+
+        foreach ($routePathParts as $part) {
+            $count++;
+
+            $firstCharacter = substr($part, 0, 1);
+            $lastCharacter = substr($part, -1);
+
+            if ($firstCharacter === '{' && $lastCharacter === '}') {
+                continue;
+            }
+
+            if (array_key_exists($count, $requestPathParts) && $part !== $requestPathParts[$count]) {
+                $match = false;
+                break;
+            }
+        }
+
+        return $match;
     }
 
     public function addLoader(RouteLoaderInterface $routeLoader): self

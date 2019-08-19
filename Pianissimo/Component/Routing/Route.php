@@ -24,8 +24,12 @@ class Route
      */
     private $name;
 
-    public function __construct(string $class, string $function, string $path, ?string $name = null)
-    {
+    public function __construct(
+        string $class,
+        string $function,
+        string $path,
+        ?string $name = null
+    ) {
         $this->class = $class;
         $this->function = $function;
         $this->path = $path;

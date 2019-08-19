@@ -2,6 +2,7 @@
 
 namespace Pianissimo\Component\Framework;
 
+use LogicException;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -37,11 +38,49 @@ class ControllerResolver
 
         $class = $route->getClass();
         $method = $route->getFunction();
+        $parameters = $this->resolveParameters($route->getPath(), $path);
 
         $controller = $this->container->get($class);
 
-        return function () use ($controller, $method) {
-            return $controller->$method();
+        return function () use ($controller, $method, $parameters) {
+            return $controller->$method(...$parameters);
         };
+    }
+
+    /**
+     * Resolves the route parameters using the requested path.
+     */
+    private function resolveParameters(string $routePath, string $requestPath): array
+    {
+        $routeParts = array_values(array_filter(explode('/', $routePath)));
+        $requestPathParts = array_values(array_filter(explode('/', $requestPath)));
+
+        $parameters = [];
+        $count = -1;
+
+        foreach ($routeParts as $routePart) {
+            $count++;
+
+            if (array_key_exists($count, $requestPathParts) === false) {
+                throw new LogicException('Can not resolve route parameter, route does not match with the requested URL');
+            }
+
+            if ($routePart === $requestPathParts[$count]) {
+                continue;
+            }
+
+            $firstCharacter = substr($routePart, 0, 1);
+            $lastCharacter = substr($routePart, -1);
+
+            if ($firstCharacter === '{' && $lastCharacter === '}') {
+                $parameters[] = $requestPathParts[$count];
+
+                continue;
+            }
+
+            throw new LogicException('Can not resolve route parameter, route does not match with the requested URL');
+        }
+
+        return $parameters;
     }
 }
