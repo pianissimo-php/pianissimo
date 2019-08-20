@@ -5,7 +5,7 @@ namespace Pianissimo\Component\Framework\Controller;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\Framework\Bridge\Twig\Twig;
 use ReflectionClass;
-use Symfony\Component\HttpFoundation\Response;
+use Pianissimo\Component\Framework\Response;
 use Throwable;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;

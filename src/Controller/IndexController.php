@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
 use Pianissimo\Component\Routing\Annotation\Route;
 use Pianissimo\Component\Framework\ControllerService;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Pianissimo\Component\Framework\Response;
 
 class IndexController
 {

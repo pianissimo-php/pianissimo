@@ -2,7 +2,7 @@
 
 namespace Pianissimo\Component\Framework\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Pianissimo\Component\Framework\Response;
 
 class ErrorController
 {

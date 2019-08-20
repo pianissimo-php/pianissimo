@@ -8,7 +8,6 @@ use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 use Pianissimo\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class ControllerService
 {

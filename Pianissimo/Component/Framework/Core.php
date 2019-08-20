@@ -14,8 +14,6 @@ use Pianissimo\Component\Framework\Controller\ErrorController;
 use Pianissimo\Component\Framework\Controller\ExceptionController;
 use Pianissimo\Component\Framework\Routing\Command\DebugRoutesCommand;
 use ReflectionObject;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use UnexpectedValueException;
 

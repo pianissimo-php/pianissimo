@@ -5,7 +5,6 @@ namespace Pianissimo\Component\Framework;
 use LogicException;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\Request;
 
 class ControllerResolver
 {

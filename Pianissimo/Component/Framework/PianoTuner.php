@@ -3,7 +3,6 @@
 namespace Pianissimo\Component\Framework;
 
 use ReflectionClass;
-use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
