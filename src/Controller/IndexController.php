@@ -72,17 +72,6 @@ class IndexController
     }
 
     /**
-     * @Route(path="/twig", name="app_twig")
-     */
-    public function twig(): Response
-    {
-        return $this->controllerService->render('twig.html.twig', [
-            'title' => 'Pianissimo + Twig',
-            'lead' => 'This is rendered by Twig!',
-        ]);
-    }
-
-    /**
      * @Route(path="/json", name="app_json")
      */
     public function json(): Response
