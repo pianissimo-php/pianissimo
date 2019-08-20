@@ -23,20 +23,8 @@ Feedback is always welcome!
 - PSR-16: Common Interface for Caching Libraries
 
 **Components**
-- Annotation
-- Cache
 - Config
 - [DependencyInjection](https://github.com/pianissimo-php/dependency-injection)
-- Finder
 - Framework
 - HttpFoundation
 - Routing
-
-**Used libraries**
-- psr/container
-- psr/http-server-middleware
-- psr/simple-cache
-- symfony/console
-- symfony/var-dumper
-- symfony/yaml
-- guzzlehttp/psr7
