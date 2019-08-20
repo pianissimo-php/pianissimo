@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\HttpFoundation;
+namespace Pianissimo\Experimental\HttpFoundation;
 
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Pianissimo\Component\Routing\Route;

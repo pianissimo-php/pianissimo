@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\HttpFoundation;
+namespace Pianissimo\Experimental\HttpFoundation;
 
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\ServerRequest;

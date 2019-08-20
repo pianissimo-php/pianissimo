@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Annotation\Exception;
+namespace Pianissimo\Experimental\Annotation\Exception;
 
 use Exception;
 use Throwable;

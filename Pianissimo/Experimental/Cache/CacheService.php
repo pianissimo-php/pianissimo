@@ -1,10 +1,10 @@
 <?php
 
-namespace Pianissimo\Component\Cache;
+namespace Pianissimo\Experimental\Cache;
 
 use DateInterval;
 use DateTime;
-use Pianissimo\Component\Cache\Exception\InvalidCacheKeyException;
+use Pianissimo\Experimental\Cache\Exception\InvalidCacheKeyException;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;

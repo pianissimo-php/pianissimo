@@ -1,8 +1,8 @@
 <?php
 
-namespace Pianissimo\Component\Annotation;
+namespace Pianissimo\Experimental\Annotation;
 
-use Pianissimo\Component\Annotation\Exception\AnnotationNotFoundException;
+use Pianissimo\Experimental\Annotation\Exception\AnnotationNotFoundException;
 use BadFunctionCallException;
 use InvalidArgumentException;
 use Pianissimo\Component\Routing\Annotation\Route;

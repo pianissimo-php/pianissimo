@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Finder;
+namespace Pianissimo\Experimental\Finder;
 
 /**
  * This is a utility tool to help you with navigating through paths.

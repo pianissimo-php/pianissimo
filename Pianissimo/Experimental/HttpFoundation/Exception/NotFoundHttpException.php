@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\HttpFoundation\Exception;
+namespace Pianissimo\Experimental\HttpFoundation\Exception;
 
 use Exception;
 use Throwable;

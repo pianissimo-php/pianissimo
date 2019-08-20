@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\HttpFoundation;
+namespace Pianissimo\Experimental\HttpFoundation;
 
 class JsonResponse extends Response
 {
