@@ -2,25 +2,26 @@
 
 namespace Pianissimo\Component\Framework\Bridge\Doctrine;
 
+use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class EntityManager extends \Doctrine\ORM\EntityManager
+class EntityManager extends DoctrineEntityManager
 {
     /**
      * @throws ORMException
      */
     public function __construct(ParameterBagInterface $parameterBag)
     {
-        $isDevMode = true;
-        $srcDirectory = $parameterBag->get('project.dir') . DIRECTORY_SEPARATOR . 'src';
+        $isDevEnvironment = $parameterBag->get('environment') === 'dev';
+        $srcDirectory = $parameterBag->get('project_dir') . DIRECTORY_SEPARATOR . 'src';
 
-        $config = Setup::createAnnotationMetadataConfiguration([$srcDirectory], $isDevMode, null, null, false);
+        $config = Setup::createAnnotationMetadataConfiguration([$srcDirectory], $isDevEnvironment, null, null, false);
 
         $connection = [
             'driver' => 'pdo_sqlite',
-            'path' => $parameterBag->get('project.dir') . '/var/db.sqlite',
+            'path' => $parameterBag->get('project_dir') . '/var/db.sqlite',
         ];
 
         if (!$config->getMetadataDriverImpl()) {

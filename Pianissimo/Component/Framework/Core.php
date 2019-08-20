@@ -6,6 +6,7 @@ use Pianissimo\Component\Config\DelegatingLoader;
 use Pianissimo\Component\Config\LoaderInterface;
 use Pianissimo\Component\Config\LoaderResolver;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\Framework\Bridge\Doctrine\Command\CreateCommand;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\UpdateCommand;
 use Pianissimo\Component\Framework\Loader\YamlFileLoader;
 use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
@@ -97,7 +98,8 @@ class Core
 
     private function addParameters(): void
     {
-        $this->container->setParameter('project.dir', $this->getProjectDir());
+        $this->container->setParameter('environment', $this->getEnvironment());
+        $this->container->setParameter('project_dir', $this->getProjectDir());
     }
 
     /**
@@ -235,6 +237,7 @@ class Core
     {
         return [
             DebugRoutesCommand::class,
+            CreateCommand::class,
             UpdateCommand::class,
         ];
     }

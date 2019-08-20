@@ -18,12 +18,15 @@ class Twig
 
     public function __construct(ParameterBagInterface $parameterBag)
     {
-        $configDir = $parameterBag->get('project.dir') . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        $configDir = $parameterBag->get('project_dir') . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
 
         $loader = new FilesystemLoader($configDir . $parameterBag->get('templates_dir'));
 
+        // Use cache only when not in a dev environment.
+        $cache = $parameterBag->get('environment') !== 'dev' ? $configDir . $parameterBag->get('cache_dir') : false;
+
         $this->environment = new Environment($loader, [
-            'cache' => $configDir . $parameterBag->get('cache_dir'),
+            'cache' => $cache,
         ]);
     }
 

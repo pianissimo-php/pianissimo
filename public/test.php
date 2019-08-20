@@ -41,7 +41,7 @@ $containerBuilder
 $containerBuilder
     ->setParameter('cache_dir', '../var/cache')
     ->setParameter('templates_dir', '../templates')
-    ->setParameter('project.dir', __DIR__ . '/../');
+    ->setParameter('project_dir', __DIR__ . '/../');
 
 $containerBuilder->build();
 
