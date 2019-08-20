@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
     /**
+     * @var string
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
@@ -18,6 +19,7 @@ class Product
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", nullable=false)
      **/
     private $name;
@@ -27,12 +29,12 @@ class Product
         $this->name = $name;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
