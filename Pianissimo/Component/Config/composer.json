@@ -13,8 +13,5 @@
       "name": "jonmldr",
       "email": "jonmldr@users.noreply.github.com"
     }
-  ],
-  "require": {
-    "psr/container": "^1.0"
-  }
+  ]
 }
