@@ -45,9 +45,6 @@ class ExceptionController
             $code = 500;
         }
 
-        $response = new Response($content, $code);
-        $response->setRendered(true);
-
-        return $response;
+        return new Response($content, $code);
     }
 }

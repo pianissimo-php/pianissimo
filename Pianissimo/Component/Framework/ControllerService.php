@@ -55,9 +55,6 @@ class ControllerService
 
     public function render(string $template, array $data = []): Response
     {
-        $response = new Response($this->twig->render($template, $data));
-        $response->setRendered(true);
-
-        return $response;
+        return new Response($this->twig->render($template, $data));
     }
 }

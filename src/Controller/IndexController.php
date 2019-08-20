@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use Doctrine\ORM\EntityManagerInterface;
 use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
@@ -30,21 +28,14 @@ class IndexController
      */
     private $parameterBag;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
         ControllerService $controllerService,
         AnnotationReader $annotationReader,
-        ParameterBagInterface $parameterBag,
-        EntityManagerInterface $entityManager
+        ParameterBagInterface $parameterBag
     ) {
         $this->controllerService = $controllerService;
         $this->annotationReader = $annotationReader;
         $this->parameterBag = $parameterBag;
-        $this->entityManager = $entityManager;
     }
 
     /**

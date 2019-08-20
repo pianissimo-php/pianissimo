@@ -14,6 +14,7 @@ use Pianissimo\Component\Framework\Controller\ErrorController;
 use Pianissimo\Component\Framework\Controller\ExceptionController;
 use Pianissimo\Component\Framework\Routing\Command\DebugRoutesCommand;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
+use Pianissimo\Component\HttpFoundation\JsonResponse;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\Response;
 use ReflectionObject;
@@ -147,7 +148,10 @@ class Core
         // TODO fix debugging toolbar
         //$pianoTuner = $this->container->getSetting('piano_tuner');
         //echo $pianoTuner === true && $response->isRendered() === true ? $this->pianoTuner($response) : '';
-        echo $response->isRendered() === true ? PianoTuner::pianoTuner($response, $this->startTime) : '';
+
+        if (!$response instanceof JsonResponse) {
+            echo PianoTuner::pianoTuner($response, $this->startTime);
+        }
 
         if ($stream->isSeekable()) {
             $stream->rewind();
