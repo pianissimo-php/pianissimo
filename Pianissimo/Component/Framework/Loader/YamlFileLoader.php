@@ -93,7 +93,7 @@ class YamlFileLoader extends FileLoader
                             continue;
                         }
 
-                        $definition->addArgument(new Value($argument));
+                        $definition->addArgument($argument);
                     }
                 }
             }

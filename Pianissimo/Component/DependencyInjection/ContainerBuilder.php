@@ -152,11 +152,6 @@ class ContainerBuilder extends Container
                 $argumentDefinition = $argument;
             }
 
-            if ($argument instanceof Value) {
-                $arguments[] = (string) $argument;
-                continue;
-            }
-
             if (is_string($argument) || is_float($argument) || is_int($argument)) {
                 $arguments[] = $argument;
                 continue;

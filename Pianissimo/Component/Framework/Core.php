@@ -182,7 +182,7 @@ class Core
      */
     public function exceptionHandler(Throwable $exception): void
     {
-        if ($this->container->isBuilt() === false) {
+        if ($this->container === null || $this->container->isBuilt() === false) {
             dd($exception);
         }
 
