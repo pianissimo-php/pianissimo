@@ -21,7 +21,7 @@ class EntityManager extends DoctrineEntityManager
 
         $connection = [
             'driver' => 'pdo_sqlite',
-            'path' => $parameterBag->get('project_dir') . '/var/db.sqlite',
+            'path' => $parameterBag->get('project_dir') . '/var/pianissimo.db',
         ];
 
         if (!$config->getMetadataDriverImpl()) {
