@@ -3,6 +3,11 @@
     "description": "The Dependency Injection Component allows you to implement the dependency injection design pattern.",
     "type": "library",
     "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pianissimo\\DependencyInjection\\": ""
+        }
+    },
     "authors": [
         {
             "name": "jonmldr",
