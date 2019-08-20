@@ -20,14 +20,14 @@ class Response extends GuzzleResponse
     /**
      * @var string
      */
-    private $controllerFunction;
+    private $controllerMethod;
 
     public function __construct($body = null, int $status = 200, array $headers = [], string $version = '1.1', ?string $reason = null)
     {
         parent::__construct($status, $headers, $body, $version, $reason);
 
         $this->controllerClass = debug_backtrace()[1]['class'];
-        $this->controllerFunction = debug_backtrace()[1]['function'];
+        $this->controllerMethod = debug_backtrace()[1]['function'];
     }
 
     public function getRoute(): ?Route
@@ -40,9 +40,9 @@ class Response extends GuzzleResponse
         return $this->controllerClass;
     }
 
-    public function getControllerFunction(): string
+    public function getControllerMethod(): string
     {
-        return $this->controllerFunction;
+        return $this->controllerMethod;
     }
 
     public function setRoute(Route $route): self

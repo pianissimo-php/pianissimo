@@ -12,7 +12,7 @@ class PianoTuner
      */
     public static function pianoTuner(Response $response, float $startTime): string
     {
-        $controllerInfo = (new ReflectionClass($response->getControllerClass()))->getShortName() . '::' . $response->getControllerFunction();
+        $controllerInfo = (new ReflectionClass($response->getControllerClass()))->getShortName() . '::' . $response->getControllerMethod();
         $originInfo = $response->getRoute() ? $response->getRoute()->getName() : $controllerInfo;
 
         // Generate a hash to prevent outside manipulation/conflicts of/with the PianoTuner elements
