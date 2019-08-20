@@ -9,7 +9,6 @@ use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\CreateCommand;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\UpdateCommand;
 use Pianissimo\Component\Framework\Loader\YamlFileLoader;
-use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
 use Pianissimo\Component\Framework\Controller\ErrorController;
 use Pianissimo\Component\Framework\Controller\ExceptionController;
 use Pianissimo\Component\Framework\Routing\Command\DebugRoutesCommand;
@@ -145,19 +144,15 @@ class Core
         }
         $stream = $response->getBody();
 
-        // TODO fix debugging toolbar
-        //$pianoTuner = $this->container->getSetting('piano_tuner');
-        //echo $pianoTuner === true && $response->isRendered() === true ? $this->pianoTuner($response) : '';
-
-        if (!$response instanceof JsonResponse) {
-            echo PianoTuner::pianoTuner($response, $this->startTime);
-        }
-
         if ($stream->isSeekable()) {
             $stream->rewind();
         }
         while (!$stream->eof()) {
             echo $stream->read(1024 * 8);
+        }
+
+        if (!$response instanceof JsonResponse) {
+            PianoTuner::render($response, $this->startTime);
         }
         die;
     }
