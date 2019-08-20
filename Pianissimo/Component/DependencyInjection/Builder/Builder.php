@@ -10,6 +10,7 @@ use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\DependencyInjection\Definition;
 use Pianissimo\Component\DependencyInjection\DefinitionType;
 use Pianissimo\Component\DependencyInjection\Exception\ClassNotFoundException;
+use Pianissimo\Component\DependencyInjection\Exception\ContainerException;
 use Pianissimo\Component\DependencyInjection\Reference;
 use ReflectionClass;
 use ReflectionException;
@@ -76,17 +77,24 @@ class Builder
 
     private function buildDefinitions(array $definitions): void
     {
+        $references = [];
+
         foreach ($definitions as $id => $definition) {
+            if ($definition instanceof Reference) {
+                $references[$id] = $definition;
+                continue;
+            }
+
             $this->definitions[$id] = $this->buildDefinition($id, $definition);
+        }
+
+        foreach ($references as $id => $reference) {
+            $this->definitions[$id] = $this->resolveReference($id, $reference);
         }
     }
 
     private function buildDefinition(string $id, DefinitionType $definition): DefinitionType
     {
-        if ($definition instanceof Reference) {
-            return $definition;
-        }
-
         if (!$definition instanceof Definition) {
             throw new LogicException('Unhandled type: TODO');
         }
@@ -102,6 +110,17 @@ class Builder
         }
 
         return $definition;
+    }
+
+    private function resolveReference(string $id, Reference $reference): Definition
+    {
+        $definition = (string) $reference;
+
+        if (array_key_exists($definition, $this->definitions) === false) {
+            throw new ContainerException(sprintf("Reference '%s' refers to definition '%s', but does not exists", $id, $definition));
+        }
+
+        return $this->definitions[$definition];
     }
 
     private function autowireDefinition(Definition $definition): Definition
