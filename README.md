@@ -11,6 +11,11 @@ Similarly, the goal isn't to provide a solid solution that fits in any situation
 This project gives me the opportunity to learn and adapt code standards, techniques and (design) patterns.
 Feedback is always welcome!
 
+**Installation**
+````
+composer create-project pianissimo-php/skeleton:master-dev my_project_name
+````
+
 **Documentation**
 - [Dependency Injection Component](https://github.com/pianissimo-php/dependency-injection/blob/master/README.md)
 - [Framework Component](https://github.com/pianissimo-php/pianissimo/blob/master/Pianissimo/Component/Framework/README.MD)
