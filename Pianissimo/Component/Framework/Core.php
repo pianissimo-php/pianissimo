@@ -8,15 +8,14 @@ use Pianissimo\Component\Config\LoaderResolver;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\CreateCommand;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\UpdateCommand;
+use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
 use Pianissimo\Component\Framework\Loader\YamlFileLoader;
 use Pianissimo\Component\Framework\Controller\ErrorController;
 use Pianissimo\Component\Framework\Controller\ExceptionController;
 use Pianissimo\Component\Framework\Routing\Command\DebugRoutesCommand;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Pianissimo\Component\HttpFoundation\JsonResponse;
-use Pianissimo\Component\HttpFoundation\Request;
-use Pianissimo\Component\HttpFoundation\Response;
 use ReflectionObject;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use UnexpectedValueException;
 
@@ -126,35 +125,12 @@ class Core
 
     /**
      * Sends the given Response
-     * Send a HTTP response
-     *
      */
     public function send(Response $response): void
     {
-        $http_line = sprintf('HTTP/%s %s %s',
-            $response->getProtocolVersion(),
-            $response->getStatusCode(),
-            $response->getReasonPhrase()
-        );
-        header($http_line, true, $response->getStatusCode());
-        foreach ($response->getHeaders() as $name => $values) {
-            foreach ($values as $value) {
-                header("$name: $value", false);
-            }
-        }
-        $stream = $response->getBody();
+        //PianoTuner::get($response, $this->startTime);
 
-        if ($stream->isSeekable()) {
-            $stream->rewind();
-        }
-        while (!$stream->eof()) {
-            echo $stream->read(1024 * 8);
-        }
-
-        if (!$response instanceof JsonResponse) {
-            PianoTuner::render($response, $this->startTime);
-        }
-        die;
+        $response->send();
     }
 
     private function setDebugMode(bool $mode): void

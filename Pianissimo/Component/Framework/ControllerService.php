@@ -4,11 +4,11 @@ namespace Pianissimo\Component\Framework;
 
 use InvalidArgumentException;
 use Pianissimo\Component\Framework\Bridge\Twig\Twig;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Pianissimo\Component\HttpFoundation\RedirectResponse;
-use Pianissimo\Component\HttpFoundation\Response;
+use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
 use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 use Pianissimo\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ControllerService
 {

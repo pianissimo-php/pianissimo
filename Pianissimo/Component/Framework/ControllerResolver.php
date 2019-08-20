@@ -4,8 +4,8 @@ namespace Pianissimo\Component\Framework;
 
 use LogicException;
 use Pianissimo\Component\DependencyInjection\ContainerInterface;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Psr\Http\Message\ServerRequestInterface;
+use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 
 class ControllerResolver
 {
@@ -25,7 +25,10 @@ class ControllerResolver
         $this->router = $container->get(Router::class);
     }
 
-    public function resolve(ServerRequestInterface $request): Callable
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function resolve(Request $request): Callable
     {
         $router = $this->router;
 

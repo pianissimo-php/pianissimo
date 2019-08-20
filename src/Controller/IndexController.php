@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
-use Pianissimo\Component\HttpFoundation\JsonResponse;
-use Pianissimo\Component\HttpFoundation\Response;
+use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
 use Pianissimo\Component\Routing\Annotation\Route;
 use Pianissimo\Component\Framework\ControllerService;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController
 {
@@ -60,7 +60,7 @@ class IndexController
      */
     public function redirect(): Response
     {
-        return $this->controllerService->redirectToRoute('app_twig');
+        return $this->controllerService->redirectToRoute('app_parameter_bag');
     }
 
     /**
