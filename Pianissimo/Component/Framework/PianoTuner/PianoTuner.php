@@ -26,13 +26,19 @@ class PianoTuner
 
         $executionTime = round(((microtime(true) - $startTime) * 1000), 0);
 
+        $requestMethod = '-';
+
+        if (isset($_SERVER['REQUEST_METHOD'])) {
+            $requestMethod = $_SERVER['REQUEST_METHOD'];
+        }
+
         return '
             <div id="' . $hashToolbar . '" style="font-family: Verdana; font-size: 14px; background: black; position: fixed; 
                 bottom: 0; left: 0; right: 0; height: 40px; color: white; padding-right: 40px;">
                 <div style="background: ' . $codeColor . '; float: left; height: 100%; padding: 10px;">' . $response->getStatusCode() . '</div>
                 <div style="background: #1e272e; float: left; height: 100%; padding: 10px;">PianoTuner @' . $originInfo . '</div>
                 <div style="background: #22a6b3; float: left; height: 100%; padding: 10px;">' . $executionTime . ' ms</div>
-                <div style="background: #535c68; float: right; height: 100%; padding: 10px;">' . $_SERVER['REQUEST_METHOD'] . '</div>
+                <div style="background: #535c68; float: right; height: 100%; padding: 10px;">' . $requestMethod . '</div>
             </div>
             <div style="background: #22a6b3; font-family: Verdana; width: 40px; height: 40px; vertical-align: middle;
                 font-size: 20px; position: fixed; bottom: 0; right: 0; line-height: 35px; padding: 0px; cursor: pointer;

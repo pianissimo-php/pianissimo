@@ -1,6 +1,6 @@
 <?php
 
-namespace Pianissimo\Component\Framework\Command;
+namespace Pianissimo\Component\Framework\Routing\Command;
 
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\Framework\Router;

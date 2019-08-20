@@ -10,6 +10,12 @@ services:
     autowire: true
     tags: ['framework_annotated_route_loader']
 
+  Doctrine\ORM\EntityManagerInterface: '@entity_manager'
+
+  entity_manager:
+    class: Pianissimo\Component\Framework\Bridge\Doctrine\EntityManager
+    autowire: true
+
   error_controller:
     class: Pianissimo\Component\Framework\Controller\ErrorController
     autowire: true

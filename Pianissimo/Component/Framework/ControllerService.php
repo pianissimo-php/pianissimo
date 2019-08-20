@@ -3,7 +3,7 @@
 namespace Pianissimo\Component\Framework;
 
 use InvalidArgumentException;
-use Pianissimo\Component\Framework\Bridge\Twig;
+use Pianissimo\Component\Framework\Bridge\Twig\Twig;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\RedirectResponse;
 use Pianissimo\Component\HttpFoundation\Response;

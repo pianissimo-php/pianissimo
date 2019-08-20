@@ -1,9 +1,12 @@
 <?php
 
-namespace Pianissimo\Component\Framework\Bridge;
+namespace Pianissimo\Component\Framework\Bridge\Twig;
 
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 class Twig
@@ -25,9 +28,9 @@ class Twig
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function render($name, array $context = []): string
     {

@@ -9,12 +9,13 @@ use Symfony\Component\Console\Application;
 $core = new Core('dev', true);
 $core->boot();
 
-$app = new Application();
+$cli = new Application();
 
 $commands = $core->getCommands();
 
 foreach ($commands as $command) {
-    $app->add(new $command($core->getContainer()));
+    $command = new $command($core->getContainer());
+    $cli->add($command);
 }
 
-$app->run();
+$cli->run();

@@ -6,11 +6,12 @@ use Pianissimo\Component\Config\DelegatingLoader;
 use Pianissimo\Component\Config\LoaderInterface;
 use Pianissimo\Component\Config\LoaderResolver;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
-use Pianissimo\Component\Framework\Command\DebugRoutesCommand;
+use Pianissimo\Component\Framework\Bridge\Doctrine\Command\UpdateCommand;
 use Pianissimo\Component\Framework\Loader\YamlFileLoader;
 use Pianissimo\Component\Framework\PianoTuner\PianoTuner;
 use Pianissimo\Component\Framework\Controller\ErrorController;
 use Pianissimo\Component\Framework\Controller\ExceptionController;
+use Pianissimo\Component\Framework\Routing\Command\DebugRoutesCommand;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\Request;
 use Pianissimo\Component\HttpFoundation\Response;
@@ -227,10 +228,14 @@ class Core
         return $this->environment;
     }
 
+    /**
+     * @TODO command locator
+     */
     public function getCommands(): array
     {
         return [
             DebugRoutesCommand::class,
+            UpdateCommand::class,
         ];
     }
 }
