@@ -1,11 +1,11 @@
 {
   "name": "pianissimo-php/framework",
-  "description": "The Pianissimo PHP framework",
+  "description": "The Pianissimo PHP framework.",
   "type": "library",
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Pianissimo\\Framework\\": ""
+      "Pianissimo\\Component\\Framework\\": ""
     }
   },
   "require": {

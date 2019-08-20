@@ -1,0 +1,20 @@
+{
+  "name": "pianissimo-php/config",
+  "description": "The Pianissimo Config Component.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Pianissimo\\Component\\Config\\": ""
+    }
+  },
+  "authors": [
+    {
+      "name": "jonmldr",
+      "email": "jonmldr@users.noreply.github.com"
+    }
+  ],
+  "require": {
+    "psr/container": "^1.0"
+  }
+}
