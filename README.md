@@ -26,5 +26,4 @@ Feedback is always welcome!
 - Config
 - [DependencyInjection](https://github.com/pianissimo-php/dependency-injection)
 - Framework
-- HttpFoundation
 - Routing
