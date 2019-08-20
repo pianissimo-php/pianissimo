@@ -14,7 +14,9 @@
     "twig/twig": "^2.0",
     "doctrine/orm": "^2.6",
     "symfony/http-foundation": "^4.3",
-    "pianissimo-php/dependency-injection": "dev-master"
+    "pianissimo-php/dependency-injection": "dev-master",
+    "pianissimo-php/routing": "dev-master",
+    "pianissimo-php/config": "dev-master"
   },
   "require-dev": {
     "symfony/var-dumper": "^4.3"
