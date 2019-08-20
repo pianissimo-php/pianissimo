@@ -14,7 +14,6 @@ class Request extends ServerRequest
      * $_COOKIE
      * $_FILES
      * $_SERVER
-     *
      */
     public static function fromGlobals(): Request
     {

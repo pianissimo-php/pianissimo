@@ -2,11 +2,9 @@
 
 namespace Pianissimo\Component\Annotation;
 
-use App\Annotation\Person;
 use Pianissimo\Component\Annotation\Exception\AnnotationNotFoundException;
 use BadFunctionCallException;
 use InvalidArgumentException;
-use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Routing\Annotation\Route;
 use ReflectionClass;
 use ReflectionProperty;
@@ -80,7 +78,6 @@ class AnnotationReader
     {
         //$annotations = $this->container->getSetting('annotations');
         $annotations = [
-            'Person' => Person::class,
             'Route' => Route::class,
         ];
         if (isset($annotations[$annotationName]) === false) {

@@ -2,14 +2,12 @@
 
 namespace App\Controller;
 
-use Pianissimo\Component\Annotation\AnnotationReader;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\HttpFoundation\Exception\NotFoundHttpException;
 use Pianissimo\Component\HttpFoundation\JsonResponse;
 use Pianissimo\Component\HttpFoundation\Response;
 use Pianissimo\Component\Routing\Annotation\Route;
 use Pianissimo\Component\Framework\ControllerService;
-use App\TestClass;
 
 class IndexController
 {
@@ -19,22 +17,15 @@ class IndexController
     private $controllerService;
 
     /**
-     * @var AnnotationReader
-     */
-    private $annotationReader;
-
-    /**
      * @var ParameterBagInterface
      */
     private $parameterBag;
 
     public function __construct(
         ControllerService $controllerService,
-        AnnotationReader $annotationReader,
         ParameterBagInterface $parameterBag
     ) {
         $this->controllerService = $controllerService;
-        $this->annotationReader = $annotationReader;
         $this->parameterBag = $parameterBag;
     }
 
@@ -69,15 +60,7 @@ class IndexController
      */
     public function redirect(): Response
     {
-        return $this->controllerService->redirectToRoute('app_annotation');
-    }
-
-    /**
-     * @Route(path="/annotation", name="app_annotation")
-     */
-    public function annotation(): Response
-    {
-        dd($this->annotationReader->getPropertyAnnotations(TestClass::class, 'person'));
+        return $this->controllerService->redirectToRoute('app_twig');
     }
 
     /**

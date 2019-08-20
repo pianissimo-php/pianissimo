@@ -2,10 +2,12 @@
 
 namespace Pianissimo\Component\Framework\Routing;
 
-use Pianissimo\Component\Annotation\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Pianissimo\Component\Routing\Annotation\Route as RouteAnnotation;
 use Pianissimo\Component\Routing\Route;
 use Pianissimo\Component\Routing\RouteCollection;
 use Pianissimo\Component\Routing\RouteLoaderInterface;
+use ReflectionMethod;
 
 class AnnotatedRouteLoader implements RouteLoaderInterface
 {
@@ -41,9 +43,18 @@ class AnnotatedRouteLoader implements RouteLoaderInterface
             }
 
             foreach ($functions as $function) {
-                $annotations = $this->annotationReader->getFunctionAnnotations($class, $function, 'Route');
+                $reflectionMethod = new ReflectionMethod($class, $function);
+                $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
+
+                if ($annotations === null) {
+                    continue;
+                }
 
                 foreach ($annotations as $annotation) {
+                    if (!$annotation instanceof RouteAnnotation) {
+                        continue;
+                    }
+
                     $route = new Route(
                         $class,
                         $function,
