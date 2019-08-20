@@ -55,33 +55,10 @@ class IndexController
     }
 
     /**
-     * @Route(path="/redirect", name="app_redirect")
-     * @throws NotFoundHttpException
-     */
-    public function redirect(): Response
-    {
-        return $this->controllerService->redirectToRoute('app_parameter_bag');
-    }
-
-    /**
      * @Route(path="/parameter-bag", name="app_parameter_bag")
      */
     public function parameterBag(): Response
     {
         dd($this->parameterBag);
-    }
-
-    /**
-     * @Route(path="/json", name="app_json")
-     */
-    public function json(): Response
-    {
-        return new JsonResponse([
-            'This is' => 'a json response',
-            'Pianissimo' => [
-                'PHP',
-                'Framework',
-            ],
-        ]);
     }
 }
