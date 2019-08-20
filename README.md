@@ -23,7 +23,7 @@ Feedback is always welcome!
 - PSR-16: Common Interface for Caching Libraries
 
 **Components**
-- Config
+- [Config](https://github.com/pianissimo-php/config)
 - [DependencyInjection](https://github.com/pianissimo-php/dependency-injection)
-- Framework
-- Routing
+- [Framework](https://github.com/pianissimo-php/framework)
+- [Routing](https://github.com/pianissimo-php/routing)
