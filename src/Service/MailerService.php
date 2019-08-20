@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Manager\EntityManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class MailerService
 {

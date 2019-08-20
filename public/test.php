@@ -3,11 +3,11 @@
 include '../vendor/autoload.php';
 
 use App\Controller\IndexController;
-use App\Manager\EntityManager;
-use App\Manager\EntityManagerInterface;
 use App\Service\MailerService;
+use Doctrine\ORM\EntityManagerInterface;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
 use Pianissimo\Component\DependencyInjection\Reference;
+use Pianissimo\Component\Framework\Bridge\Doctrine\EntityManager;
 use Pianissimo\Component\Framework\Router;
 use Pianissimo\Component\Routing\RouterInterface;
 
@@ -39,6 +39,7 @@ $containerBuilder
     ->setDefaultAutowiring(true);
 
 $containerBuilder
+    ->setParameter('environment', 'dev')
     ->setParameter('cache_dir', '../var/cache')
     ->setParameter('templates_dir', '../templates')
     ->setParameter('project_dir', __DIR__ . '/../');
