@@ -1,6 +1,6 @@
 # The Pianissimo Routing Component
 
-##Installation
+## Installation
 ```
 composer require pianissimo-php/routing:master-dev
 ```

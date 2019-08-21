@@ -1,6 +1,6 @@
 # The Pianissimo Config Component
 
-##Installation
+## Installation
 ```
 composer require pianissimo-php/config:master-dev
 ```

@@ -1,7 +1,7 @@
 # The Dependency Injection Component
 The Dependency Injection Component allows you to implement the dependency injection design pattern.
 
-##Installation
+## Installation
 ```
 composer require pianissimo-php/dependency-injection:master-dev
 ```
