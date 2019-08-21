@@ -1,6 +1,11 @@
 # The Dependency Injection Component
 The Dependency Injection Component allows you to implement the dependency injection design pattern.
 
+##Installation
+```
+composer require pianissimo-php/dependency-injection:master-dev
+```
+
 ## What is a service?
 A service is a object which can be injected as an dependency of your class.
 The services are stored in the container.
