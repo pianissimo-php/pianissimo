@@ -3,14 +3,15 @@
 namespace Pianissimo\Component\Framework;
 
 use Pianissimo\Component\Framework\Routing\AnnotatedRouteLoader;
+use Pianissimo\Component\Framework\Routing\YamlRouteLoader;
 use Pianissimo\Component\Routing\Router as BaseRouter;
 
 class Router extends BaseRouter
 {
-    public function __construct(AnnotatedRouteLoader $annotatedRouteLoader)
+    public function __construct(AnnotatedRouteLoader $annotatedRouteLoader, YamlRouteLoader $yamlRouteLoader)
     {
-        parent::__construct();
-
-        $this->routeCollection = $annotatedRouteLoader->load();
+        $this
+            ->addLoader($annotatedRouteLoader)
+            ->addLoader($yamlRouteLoader);
     }
 }

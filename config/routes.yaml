@@ -1,0 +1,10 @@
+routes:
+  app_parameter_bag:
+    path:         '/parameter-bag'
+    class:        'App\Controller\IndexController'
+    method:       'parameterBag'
+
+  personTest:
+    path:         '/person-test/{name}'
+    class:        'App\Controller\IndexController'
+    method:       'personTest'

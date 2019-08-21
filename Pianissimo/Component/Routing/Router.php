@@ -8,28 +8,53 @@ use Pianissimo\Component\Routing\Exception\RouteNotFoundException;
 class Router implements RouterInterface
 {
     /**
-     * @var Route[]|RouteCollection
+     * @var Route[]|RouteCollection|null
      */
     protected $routeCollection;
 
     /**
      * @var RouteLoaderInterface[]|array
      */
-    private $routeLoaders;
-
-    public function __construct()
-    {
-        $this->routeCollection = new RouteCollection();
-        $this->routeLoaders = [];
-    }
+    private $routeLoaders = [];
 
     /**
      * Returns the initialized routes.
-     * @return Route[]|array
      */
-    public function getRoutes(): array
+    public function getRouteCollection(): RouteCollection
     {
-        return $this->routeCollection->all();
+        if ($this->routeCollection === null) {
+            $this->load();
+        }
+
+        return $this->routeCollection;
+    }
+
+    /**
+     * Adds an RouteLoader to the Router.
+     */
+    public function addLoader(RouteLoaderInterface $routeLoader): self
+    {
+        $this->routeLoaders[] = $routeLoader;
+
+        return $this;
+    }
+
+    /**
+     * Executes the RouteLoaders and sets the RouteCollection.
+     */
+    public function load(): void
+    {
+        $routes = new RouteCollection();
+
+        foreach ($this->routeLoaders as $routeLoader) {
+            if (!$routeLoader instanceof RouteLoaderInterface) {
+                throw new InvalidArgumentException(sprintf("Route loader '%s' must implement '%s'",  get_class($routeLoader), RouteLoaderInterface::class));
+            }
+
+            $routes->merge($routeLoader->load());
+        }
+
+        $this->routeCollection = $routes;
     }
 
     /**
@@ -37,7 +62,7 @@ class Router implements RouterInterface
      */
     public function matchRoute(string $requestPath): ?Route
     {
-        $routes = $this->getRoutes();
+        $routes = $this->getRouteCollection();
 
         /** @var Route $route */
         foreach ($routes as $route) {
@@ -54,7 +79,7 @@ class Router implements RouterInterface
      */
     public function findRoute(string $routeName): ?Route
     {
-        $routes = $this->getRoutes();
+        $routes = $this->getRouteCollection();
 
         foreach ($routes as $route) {
             if ($route->getName() === $routeName) {
@@ -158,12 +183,5 @@ class Router implements RouterInterface
         $lastCharacter = substr($part, -1);
 
         return $firstCharacter === '{' && $lastCharacter === '}';
-    }
-
-    public function addLoader(RouteLoaderInterface $routeLoader): self
-    {
-        $this->routeLoaders[] = $routeLoader;
-
-        return $this;
     }
 }

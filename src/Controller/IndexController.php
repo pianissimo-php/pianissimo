@@ -52,11 +52,13 @@ class IndexController
         ]);
     }
 
-    /**
-     * @Route(path="/parameter-bag", name="app_parameter_bag")
-     */
     public function parameterBag(): Response
     {
         dd($this->parameterBag);
+    }
+
+    public function personTest(string $name): Response
+    {
+        dd($name);
     }
 }

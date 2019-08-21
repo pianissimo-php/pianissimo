@@ -49,7 +49,14 @@ class RouteCollection implements IteratorAggregate
         return $this;
     }
 
-    public function all(): array
+    public function merge(RouteCollection $routeCollection): self
+    {
+        $this->routes = array_merge($this->routes, $routeCollection->toArray());
+
+        return $this;
+    }
+
+    public function toArray(): array
     {
         return $this->routes;
     }
