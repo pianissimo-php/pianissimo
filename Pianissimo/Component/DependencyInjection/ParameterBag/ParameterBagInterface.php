@@ -2,7 +2,9 @@
 
 namespace Pianissimo\Component\DependencyInjection\ParameterBag;
 
-interface ParameterBagInterface
+use IteratorAggregate;
+
+interface ParameterBagInterface extends IteratorAggregate
 {
     public function get(string $name);
 

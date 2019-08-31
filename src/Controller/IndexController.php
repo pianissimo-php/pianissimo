@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Dummy\SophieLetitiaRoxane;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Pianissimo\Component\Routing\Annotation\Route;
 use Pianissimo\Component\Framework\ControllerService;
@@ -21,7 +22,8 @@ class IndexController
 
     public function __construct(
         ControllerService $controllerService,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        SophieLetitiaRoxane $sophie
     ) {
         $this->controllerService = $controllerService;
         $this->parameterBag = $parameterBag;

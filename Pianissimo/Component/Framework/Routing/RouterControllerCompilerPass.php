@@ -9,18 +9,18 @@ class RouterControllerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $containerBuilder): void
     {
-        $result = $containerBuilder->findServicesByTag('framework_annotated_route_loader');
+        $annotatedRouteLoaderDefinitions = $containerBuilder->findServicesByTag('framework_annotated_route_loader');
 
-        if (count($result) === 0) {
+        if (count($annotatedRouteLoaderDefinitions) === 0) {
             return;
         }
 
-        $annotatedRouteLoaderDefinition = $result[0];
+        foreach ($annotatedRouteLoaderDefinitions as $annotatedRouteLoaderDefinition) {
+            $definitions = $containerBuilder->findServicesByTag('controller');
 
-        $definitions = $containerBuilder->findServicesByTag('controller');
-
-        foreach ($definitions as $definition) {
-            $annotatedRouteLoaderDefinition->addMethodCall('addController', [$definition->getClass()]);
+            foreach ($definitions as $key => $definition) {
+                $annotatedRouteLoaderDefinition->addMethodCall('addController', [$key]);
+            }
         }
     }
 }

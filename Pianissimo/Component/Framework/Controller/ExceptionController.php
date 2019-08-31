@@ -17,14 +17,12 @@ class ExceptionController
      */
     private $twig;
 
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct()
     {
         $loader = new FilesystemLoader(__DIR__ . DIRECTORY_SEPARATOR . '../templates/');
 
-        $configDir = $parameterBag->get('project_dir') . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
-
         $this->twig = new Environment($loader, [
-            'cache' => $configDir . $parameterBag->get('cache_dir'),
+            'cache' => false,
         ]);
     }
 

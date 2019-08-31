@@ -6,6 +6,7 @@ use Pianissimo\Component\Config\DelegatingLoader;
 use Pianissimo\Component\Config\LoaderInterface;
 use Pianissimo\Component\Config\LoaderResolver;
 use Pianissimo\Component\DependencyInjection\ContainerBuilder;
+use Pianissimo\Component\DependencyInjection\ContainerInterface;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\CreateCommand;
 use Pianissimo\Component\Framework\Bridge\Doctrine\Command\UpdateCommand;
 use Pianissimo\Component\Framework\Exception\NotFoundHttpException;
@@ -20,7 +21,7 @@ use UnexpectedValueException;
 class Core
 {
     /**
-     * @var ContainerBuilder
+     * @var ContainerInterface
      */
     private $container;
 
@@ -58,14 +59,25 @@ class Core
             return;
         }
 
-        $this->initializeContainer();
-        $this->addParameters();
-        $this->container->build();
+        $containerBuilder = $this->initializeContainer();
+        $this->container = $containerBuilder;
+
+        $cachedContainerFile = $containerBuilder->getCachedContainerFile();
+
+        if (file_exists($cachedContainerFile) === true) {
+            $this->container = $containerBuilder->getCachedContainer();
+            $this->booted = true;
+
+            return;
+        }
+
+        $containerBuilder->build();
+        $this->container = $containerBuilder->dump();
 
         $this->booted = true;
     }
 
-    private function initializeContainer(): void
+    private function initializeContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();
 
@@ -79,7 +91,10 @@ class Core
             $this->configureContainer($containerLoader);
         }
 
-        $this->container = $container;
+        $container->setParameter('environment', $this->getEnvironment());
+        $container->setParameter('project_dir', $this->getProjectDir());
+
+        return $container;
     }
 
     private function getContainerLoader(ContainerBuilder $container): LoaderInterface
@@ -91,12 +106,6 @@ class Core
         $loaderResolver = new LoaderResolver($loaders);
 
         return new DelegatingLoader($loaderResolver);
-    }
-
-    private function addParameters(): void
-    {
-        $this->container->setParameter('environment', $this->getEnvironment());
-        $this->container->setParameter('project_dir', $this->getProjectDir());
     }
 
     /**
@@ -128,6 +137,9 @@ class Core
     {
         //PianoTuner::get($response, $this->startTime);
 
+        //$executionTime = round((microtime(true) - $this->startTime) * 1000);
+        //dd($executionTime);
+
         $response->send();
     }
 
@@ -147,6 +159,10 @@ class Core
      */
     public function errorHandler($errorNo, $errorString, $errorFile, $errorLine): void
     {
+        if ($this->container instanceof ContainerBuilder && $this->container->isBuilt() === false) {
+            dd($errorString);
+        }
+
         $errorController = $this->container->get(ErrorController::class);
         $response = $errorController->index($errorNo, $errorString, $errorFile, $errorLine);
         $this->send($response);
@@ -157,7 +173,7 @@ class Core
      */
     public function exceptionHandler(Throwable $exception): void
     {
-        if ($this->container === null || $this->container->isBuilt() === false) {
+        if ($this->container === null || ($this->container instanceof ContainerBuilder && $this->container->isBuilt() === false)) {
             dd($exception);
         }
 
@@ -188,7 +204,16 @@ class Core
         return $this->projectDir;
     }
 
-    public function getContainer(): ContainerBuilder
+    private function getCacheDir(): string
+    {
+        // Temporary solution
+        $projectDir = $this->container->getParameter('project_dir');
+        $cacheDir = $this->container->getParameter('cache_dir');
+
+        return $projectDir . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $cacheDir;
+    }
+
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }

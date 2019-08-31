@@ -18,6 +18,11 @@ use ReflectionException;
 class Builder
 {
     /**
+     * @var ContainerBuilder
+     */
+    private $containerBuilder;
+
+    /**
      * @var bool
      */
     private $autowireByDefault;
@@ -40,6 +45,7 @@ class Builder
 
     public function build(ContainerBuilder $containerBuilder, bool $autowireByDefault = false): Build
     {
+        $this->containerBuilder = $containerBuilder;
         $this->autowireByDefault = $autowireByDefault;
 
         $definitions = $containerBuilder->getDefinitions();
@@ -168,12 +174,14 @@ class Builder
                 throw new LogicException('Not allowed to inject the container');
             }
 
-            if (array_key_exists($type, $this->serviceIds)) {
-                $definitionArguments[] = new Reference($type);
+            $serviceId = $this->getServiceId($type);
+
+            if (array_key_exists($serviceId, $this->serviceIds)) {
+                $definitionArguments[] = new Reference($serviceId);
                 continue;
             }
 
-            $definitionArguments[] = new Reference($type);
+            $definitionArguments[] = new Reference($serviceId);
             $this->buildNewDefinition($type);
         }
 
@@ -198,7 +206,8 @@ class Builder
 
     private function registerNewDefinition(Definition $definition): void
     {
-        $id = $class = $definition->getClass();
+        $class = $definition->getClass();
+        $id = $this->getServiceId($class);
 
         $this->serviceIds[$class] = $id;
         $this->definitions[$id] = $definition;
@@ -214,5 +223,14 @@ class Builder
         }
 
         return $this->reflectionClasses[$class];
+    }
+
+    private function getServiceId(string $id): string
+    {
+        if (array_key_exists($id, $this->serviceIds)) {
+            return $this->serviceIds[$id];
+        }
+
+        return $id;
     }
 }

@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use LogicException;
 use Pianissimo\Component\DependencyInjection\Builder\Builder;
 use Pianissimo\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Pianissimo\Component\DependencyInjection\Dumper\Dumper;
 use Pianissimo\Component\DependencyInjection\Exception\ContainerException;
 use Pianissimo\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Pianissimo\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -204,12 +205,12 @@ class ContainerBuilder extends Container
     {
         $taggedServices = [];
 
-        foreach ($this->definitions as $definition) {
+        foreach ($this->definitions as $key => $definition) {
             if ($definition instanceof Reference) {
                 $definition = $this->resolveReference($definition);
             }
             if ($definition->hasTag($tag) === true) {
-                $taggedServices[] = $definition;
+                $taggedServices[$key] = $definition;
             }
         }
 
@@ -255,6 +256,34 @@ class ContainerBuilder extends Container
     public function isBuilt(): bool
     {
         return $this->built;
+    }
+
+    public function dump(): ContainerInterface
+    {
+        $cachedContainerFile = $this->getCachedContainerFile();
+
+        $dumper = new Dumper();
+        $dumper->dump($this, $cachedContainerFile);
+
+        return $this->getCachedContainer();
+    }
+
+    public function getCachedContainer(): ContainerInterface
+    {
+        require_once $this->getCachedContainerFile();
+
+        return new \CachedContainer();
+    }
+
+    public function getCachedContainerFile(): string
+    {
+        // Temporary solution
+        $projectDir = $this->getParameter('project_dir');
+        $cacheDir = $this->getParameter('cache_dir');
+
+        $cacheDir = $projectDir . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $cacheDir;
+
+        return $cacheDir . DIRECTORY_SEPARATOR . 'CachedContainer.php';
     }
 
     public function addCompilerPass(CompilerPassInterface $compilerPass): self

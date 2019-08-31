@@ -2,6 +2,8 @@
 
 namespace Pianissimo\Component\DependencyInjection\ParameterBag;
 
+use ArrayIterator;
+
 class ParameterBag implements ParameterBagInterface
 {
     /**
@@ -17,5 +19,10 @@ class ParameterBag implements ParameterBagInterface
     public function set($name, $value)
     {
         $this->parameters[$name] = $value;
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->parameters);
     }
 }
